@@ -10,12 +10,14 @@ public class playercontroller : MonoBehaviour
     private Animator animator;
 
     float movesSpeed= 10f;  
-
+    float jumpForce = 7f;
     private int moveChangesAni;
 
     public float moveX;
 
     private Vector3 originalScale;
+
+
     float moveY;
     // Start is called before the first frame update
     void Start()
@@ -30,6 +32,7 @@ public class playercontroller : MonoBehaviour
     {
         Movement();
         Direction();
+        Jump();
     }
     private void Movement()
     {
@@ -65,4 +68,23 @@ public class playercontroller : MonoBehaviour
             transform.localScale = new Vector3(-originalScale.x, originalScale.y, originalScale.z);
         }
     }
+private bool jump = true;
+
+private void Jump()
+{
+    if (Input.GetKeyDown(KeyCode.Space) && jump)
+    {
+        rigi.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+        animator.SetTrigger("jump");
+        jump = false; // Disable jumping until player lands
+    }
+
+    // Reset jumping ability when the player is on the ground
+    if (rigi.velocity.y == 0)
+    {
+        jump = true;
+    }
+    
 }
+}
+
