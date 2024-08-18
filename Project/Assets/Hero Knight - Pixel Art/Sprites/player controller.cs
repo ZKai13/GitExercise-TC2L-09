@@ -14,12 +14,15 @@ public class playercontroller : MonoBehaviour
     private int moveChangesAni;
 
     public float moveX;
+
+    private Vector3 originalScale;
     float moveY;
     // Start is called before the first frame update
     void Start()
     {
        rigi = GetComponent<Rigidbody2D>(); 
        animator = GetComponent<Animator>();
+       originalScale = transform.localScale;
     }
 
     // Update is called once per frame
@@ -39,7 +42,11 @@ public class playercontroller : MonoBehaviour
         {
             moveChangesAni = 1;
         }
-        else    
+        else if (moveX < 0) 
+        {
+            moveChangesAni = -1;
+        }
+        else  
         {
             moveChangesAni = 0;    
         }
@@ -51,11 +58,11 @@ public class playercontroller : MonoBehaviour
     {
         if (moveX > 0)
         {
-            transform.localScale = Vector3.one;
+            transform.localScale = new Vector3(originalScale.x, originalScale.y, originalScale.z);
         }
         else if (moveX < 0 )
         {
-            transform.localScale = flippedScale;
+            transform.localScale = new Vector3(-originalScale.x, originalScale.y, originalScale.z);
         }
     }
 }
