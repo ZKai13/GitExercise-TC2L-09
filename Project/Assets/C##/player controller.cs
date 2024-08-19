@@ -2,29 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class playercontroller : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
-    Vector3 flippedScale=new Vector3(-1,1,1);
+    Vector3 flippedScale = new Vector3(-1, 1, 1);
 
     private Rigidbody2D rigi;
     private Animator animator;
 
-    float movesSpeed= 10f;  
-    float jumpForce = 7f;
+    float movesSpeed = 7f;
+    float jumpForce = 5f;
     private int moveChangesAni;
 
     public float moveX;
 
     private Vector3 originalScale;
+    private bool jump = true; // Declare the jump variable
 
-
-    float moveY;
     // Start is called before the first frame update
     void Start()
     {
-       rigi = GetComponent<Rigidbody2D>(); 
-       animator = GetComponent<Animator>();
-       originalScale = transform.localScale;
+        rigi = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        originalScale = transform.localScale;
     }
 
     // Update is called once per frame
@@ -34,27 +33,27 @@ public class playercontroller : MonoBehaviour
         Direction();
         Jump();
     }
+
     private void Movement()
     {
-        moveX= Input.GetAxis("Horizontal");
-        moveY= Input.GetAxisRaw("Vertical");
+        moveX = Input.GetAxis("Horizontal");
 
-        rigi.velocity= new Vector2(moveX * movesSpeed, rigi.velocity.y);
+        rigi.velocity = new Vector2(moveX * movesSpeed, rigi.velocity.y);
 
-        if(moveX>0)
+        if (moveX > 0)
         {
             moveChangesAni = 1;
         }
-        else if (moveX < 0) 
+        else if (moveX < 0)
         {
             moveChangesAni = -1;
         }
-        else  
+        else
         {
-            moveChangesAni = 0;    
+            moveChangesAni = 0;
         }
 
-        animator.SetInteger("movement",moveChangesAni);
+        animator.SetInteger("movement", moveChangesAni);
     }
 
     private void Direction()
@@ -63,28 +62,32 @@ public class playercontroller : MonoBehaviour
         {
             transform.localScale = new Vector3(originalScale.x, originalScale.y, originalScale.z);
         }
-        else if (moveX < 0 )
+        else if (moveX < 0)
         {
             transform.localScale = new Vector3(-originalScale.x, originalScale.y, originalScale.z);
         }
     }
-private bool jump = true;
 
-private void Jump()
-{
-    if (Input.GetKeyDown(KeyCode.Space) && jump)
+    private void Jump()
     {
-        rigi.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-        animator.SetTrigger("jump");
-        jump = false; // Disable jumping until player lands
+        if (Input.GetKeyDown(KeyCode.Space) && jump)
+        {
+            rigi.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            animator.SetTrigger("jump");
+            jump = false; // Disable jumping until player lands
+        }
+
+        // Reset jumping ability when the player is on the ground
+        if (IsGrounded())
+        {
+            jump = true;
+        }
     }
 
-    // Reset jumping ability when the player is on the ground
-    if (rigi.velocity.y == 0)
+    private bool IsGrounded()
     {
-        jump = true;
+        // Use a ground check method to determine if the player is on the ground
+        // This example uses a simple raycast, adjust as needed
+        return Physics2D.Raycast(transform.position, Vector2.down, 0.1f);
     }
-    
 }
-}
-

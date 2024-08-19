@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     public float maxHP;
     public Transform target;
     public float enemyMoveSpeed;
+    public float FollowDistance;
 
     void Start()
     {
@@ -23,6 +24,9 @@ public class Enemy : MonoBehaviour
 
     void FollowPlayer()
     {
+        if (transform.position.x - target.position.x < FollowDistance)
+        {
         transform.position = Vector2.MoveTowards(transform.position, target.position, enemyMoveSpeed * Time.deltaTime);
+        }
     }
 }
