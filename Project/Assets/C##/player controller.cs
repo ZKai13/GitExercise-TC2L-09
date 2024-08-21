@@ -5,15 +5,20 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     Vector3 flippedScale = new Vector3(-1, 1, 1);
+    //add a 3d position and direction to flipp the character
 
     private Rigidbody2D rigi;
+    //used for physics calculations.
     private Animator animator;
 
     float movesSpeed = 7f;
     float jumpForce = 5f;
+    //The force applied when the player jumps
     private int moveChangesAni;
+    //An integer used to change the player movement animation 
 
     public float moveX;
+    //A float to store the player x axis input.
 
     private Vector3 originalScale;
     private bool jump = true; // Declare the jump variable
@@ -23,22 +28,30 @@ public class PlayerController : MonoBehaviour
     {
         rigi = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        //Initializes the Animator and rigidbody2d
         originalScale = transform.localScale;
+        //Saves the player scale to handle character flipping.
+    
     }
 
     // Update is called once per frame
     void Update()
     {
         Movement();
+        //Handle the player movement input and animation
         Direction();
+        //Manage the direction based on movement
         Jump();
+        //Controls and check the jumping
     }
 
     private void Movement()
     {
         moveX = Input.GetAxis("Horizontal");
+        // X axis input (-1 to 1).
 
         rigi.velocity = new Vector2(moveX * movesSpeed, rigi.velocity.y);
+        //Sets the player velocity based on input and movement speed
 
         if (moveX > 0)
         {
@@ -52,8 +65,9 @@ public class PlayerController : MonoBehaviour
         {
             moveChangesAni = 0;
         }
-
+        //Determines the player's movement animation state(-1/0/1)
         animator.SetInteger("movement", moveChangesAni);
+        //Update the animation state based on this movement state
     }
 
     private void Direction()
@@ -66,15 +80,20 @@ public class PlayerController : MonoBehaviour
         {
             transform.localScale = new Vector3(-originalScale.x, originalScale.y, originalScale.z);
         }
+        // If the player moves left, their scale on the x-axis is inverted to face left(-1). If moving right, the original scale is restored(1).
     }
 
     private void Jump()
     {
         if (Input.GetKeyDown(KeyCode.Space) && jump)
+        //Get Key dowm is to check the space key is pressed
         {
             rigi.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            //applies a upward force to make player jump
             animator.SetTrigger("jump");
-            jump = false; // Disable jumping until player lands
+            //check the player jump or not
+            jump = false; 
+            // Disable jumping until player lands the ground
         }
 
         // Reset jumping ability when the player is on the ground
