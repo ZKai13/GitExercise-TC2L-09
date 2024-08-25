@@ -401,6 +401,37 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.1600756, y: 0.07669182}
   m_EdgeRadius: 0
+--- !u!1 &112437164
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 112437165}
+  m_Layer: 7
+  m_Name: attackpoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &112437165
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112437164}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.85, y: 0.36, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1110314179}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &187199703
 GameObject:
   m_ObjectHideFlags: 0
@@ -68932,6 +68963,7 @@ GameObject:
   - component: {fileID: 1110314174}
   - component: {fileID: 1110314180}
   - component: {fileID: 1110314182}
+  - component: {fileID: 1110314183}
   m_Layer: 7
   m_Name: PLAYER
   m_TagString: Player
@@ -69066,6 +69098,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 449428496}
+  - {fileID: 112437165}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &1110314180
@@ -69128,6 +69161,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e373a742c51673442b1e45cdbb6e646c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1110314183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1110314173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5c0e45fffcb0454c8a346208768f9a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1110314177}
+  attackpoint: {fileID: 112437165}
+  attackrange: 0.55
+  enemyLayers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &1139897774
 GameObject:
   m_ObjectHideFlags: 0
