@@ -691,6 +691,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  target: {fileID: 0}
+  enemyMoveSpeed: 0
+  FollowDistance: 0
 --- !u!70 &261012963
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -739,6 +742,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  target: {fileID: 1110314179}
+  enemyMoveSpeed: 3
+  FollowDistance: 5
 --- !u!1 &356738444
 GameObject:
   m_ObjectHideFlags: 0
@@ -137865,12 +137871,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1110314177}
-  attackpoint: {fileID: 112437165}
+  attackPoint: {fileID: 112437165}
   attackRange: 0.7
   enemyLayers:
     serializedVersion: 2
     m_Bits: 256
-  attackdamage: 40
+  lightAttackDamage: 20
+  heavyAttackDamage: 60
+  heavyAttackThreshold: 1
 --- !u!1 &1139897774
 GameObject:
   m_ObjectHideFlags: 0
