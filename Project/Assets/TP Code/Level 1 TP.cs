@@ -8,7 +8,7 @@ public class Teleporter : MonoBehaviour
     {  
         if (other.CompareTag("Player")) 
         {  
-            // 获取 Health 组件  
+            
             Health playerHealth = other.GetComponent<Health>();  
             if (playerHealth != null)  
             {  

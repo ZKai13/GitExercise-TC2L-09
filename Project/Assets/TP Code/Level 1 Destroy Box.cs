@@ -12,6 +12,7 @@ public class Level1DestroyBox : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             Destroy(box);
+            Destroy(gameObject);
         }  
     }  
 }
