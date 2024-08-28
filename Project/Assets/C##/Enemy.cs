@@ -40,8 +40,8 @@ public class Enemy : MonoBehaviour
         if (transform.position.x - target.position.x < FollowDistance)
         {
         transform.position = Vector2.MoveTowards(transform.position, target.position, enemyMoveSpeed * Time.deltaTime);
-        if (transform.position.x - target.position.x < 0) transform.eulerAngles = new Vector3(0, 0, 0);
-        if (transform.position.x - target.position.x > 0) transform.eulerAngles = new Vector3(0, 180, 0);
+        if (transform.position.x - target.position.x < 0) transform.eulerAngles = new Vector3(0, 180, 0);
+        if (transform.position.x - target.position.x > 0) transform.eulerAngles = new Vector3(0, 0, 0);
         }
     }
 }
