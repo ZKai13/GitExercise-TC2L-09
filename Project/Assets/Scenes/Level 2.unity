@@ -6183,12 +6183,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1356978128}
-  attackpoint: {fileID: 1193873233}
+  attackPoint: {fileID: 0}
   attackRange: 0.7
   enemyLayers:
     serializedVersion: 2
     m_Bits: 256
-  attackdamage: 40
+  lightAttackDamage: 20
+  heavyAttackDamage: 40
+  heavyAttackThreshold: 1
 --- !u!114 &1356978123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6201,6 +6203,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e373a742c51673442b1e45cdbb6e646c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  melonCountToCollect: 3
+  box2: {fileID: 0}
 --- !u!70 &1356978124
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
