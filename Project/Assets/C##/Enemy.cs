@@ -381,6 +381,8 @@ public class Enemy : MonoBehaviour
     private bool isAttacking = false;
 
     public Health playerHealth; // Reference to the Player's Health script
+    public float cooldownTime = 0.75f; // Cooldown time after an attack
+    private float nextAttackTime = 0f; // The time at which the enemy can attack again
     void Start()
     {
         currentHealth = maxHealth;
@@ -444,6 +446,8 @@ public class Enemy : MonoBehaviour
         isAttacking = true;
         animator.SetBool("isWalking", false); // Stop walking
         animator.SetTrigger("attack");
+        
+        nextAttackTime = Time.time + cooldownTime;
 
         // Call the player's TakeDamage method when the attack animation is finished
         Invoke("ApplyDamageToPlayer", 0.5f); // Adjust the delay based on attack animation timing
