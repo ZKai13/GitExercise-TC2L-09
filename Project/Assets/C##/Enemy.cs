@@ -418,11 +418,12 @@ public class Enemy : MonoBehaviour
 
             if (spriteRenderer != null)
             {
-                spriteRenderer.flipX = direction.x > 0;
+                spriteRenderer.flipX = direction.x < 0;
             }
 
-            if (distanceToPlayer <= 1f) // Attack range
+            if (distanceToPlayer <= 1.5f) // Attack range
             {
+                
                 Attack();
             }
             else
@@ -452,7 +453,7 @@ public class Enemy : MonoBehaviour
     {
         if (playerHealth != null)
         {
-            playerHealth.Takedamage(10); // Adjust damage as needed
+            playerHealth.Takedamage(1); // Adjust damage as needed
         }
         isAttacking = false;
     }
@@ -469,14 +470,14 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            animator.SetTrigger("hurt");
+            animator.SetTrigger("Hurt");
         }
     }
 
     void Die()
     {
         isDead = true;
-        animator.SetTrigger("die");
+        animator.SetTrigger("Die");
         StartCoroutine(DestroyAfterAnimation());
     }
 
