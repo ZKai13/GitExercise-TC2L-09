@@ -401,9 +401,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  target: {fileID: 0}
   enemyMoveSpeed: 0
-  FollowDistance: 0
+  followDistance: 0
+  playerHealth: {fileID: 0}
 --- !u!50 &67411335
 Rigidbody2D:
   serializedVersion: 4
@@ -444,9 +444,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  target: {fileID: 1110314179}
   enemyMoveSpeed: 3
-  FollowDistance: 5
+  followDistance: 0
+  playerHealth: {fileID: 0}
 --- !u!95 &67411337
 Animator:
   serializedVersion: 5
@@ -1023,9 +1023,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  target: {fileID: 0}
   enemyMoveSpeed: 0
-  FollowDistance: 0
+  followDistance: 0
+  playerHealth: {fileID: 0}
 --- !u!50 &251772919
 Rigidbody2D:
   serializedVersion: 4
@@ -1066,9 +1066,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  target: {fileID: 1110314179}
   enemyMoveSpeed: 3
-  FollowDistance: 5
+  followDistance: 0
+  playerHealth: {fileID: 0}
 --- !u!95 &251772921
 Animator:
   serializedVersion: 5
@@ -1167,11 +1167,10 @@ GameObject:
   m_Component:
   - component: {fileID: 261012961}
   - component: {fileID: 261012960}
-  - component: {fileID: 261012959}
-  - component: {fileID: 261012964}
   - component: {fileID: 261012957}
-  - component: {fileID: 261012962}
   - component: {fileID: 261012963}
+  - component: {fileID: 261012965}
+  - component: {fileID: 261012964}
   m_Layer: 8
   m_Name: Qiyuan
   m_TagString: Enemy
@@ -1206,27 +1205,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!95 &261012959
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 261012955}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0e3412ee34165bf459408df468cdf17f, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!212 &261012960
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1268,9 +1246,9 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 4723107735738678597, guid: c1cdd26cc09ad224884556bc4d8296ae, type: 3}
+  m_Sprite: {fileID: 4723107735738678597, guid: 1018b0ba13578bf459bd254ae1a2be99, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1.5, y: 1.5}
@@ -1294,22 +1272,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &261012962
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 261012955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3c0989c63cb41e4dbcd7f4451bce9ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 100
-  target: {fileID: 0}
-  enemyMoveSpeed: 0
-  FollowDistance: 0
 --- !u!70 &261012963
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1358,9 +1320,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  target: {fileID: 1110314179}
   enemyMoveSpeed: 3
-  FollowDistance: 5
+  followDistance: 6
+  playerHealth: {fileID: 1110314181}
+--- !u!95 &261012965
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261012955}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4f230fa6acf87ff4aa55a06a9691101d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &301068477
 GameObject:
   m_ObjectHideFlags: 0
@@ -1431,9 +1414,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  target: {fileID: 0}
   enemyMoveSpeed: 0
-  FollowDistance: 0
+  followDistance: 0
+  playerHealth: {fileID: 0}
 --- !u!50 &301068480
 Rigidbody2D:
   serializedVersion: 4
@@ -1474,9 +1457,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  target: {fileID: 1110314179}
   enemyMoveSpeed: 3
-  FollowDistance: 5
+  followDistance: 0
+  playerHealth: {fileID: 0}
 --- !u!95 &301068482
 Animator:
   serializedVersion: 5
@@ -1838,9 +1821,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  target: {fileID: 0}
   enemyMoveSpeed: 0
-  FollowDistance: 0
+  followDistance: 0
+  playerHealth: {fileID: 0}
 --- !u!50 &369765951
 Rigidbody2D:
   serializedVersion: 4
@@ -1881,9 +1864,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  target: {fileID: 1110314179}
   enemyMoveSpeed: 3
-  FollowDistance: 5
+  followDistance: 0
+  playerHealth: {fileID: 0}
 --- !u!95 &369765953
 Animator:
   serializedVersion: 5
@@ -77971,9 +77954,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  target: {fileID: 0}
   enemyMoveSpeed: 0
-  FollowDistance: 0
+  followDistance: 0
+  playerHealth: {fileID: 0}
 --- !u!50 &770960054
 Rigidbody2D:
   serializedVersion: 4
@@ -78014,9 +77997,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  target: {fileID: 1110314179}
   enemyMoveSpeed: 3
-  FollowDistance: 5
+  followDistance: 0
+  playerHealth: {fileID: 0}
 --- !u!95 &770960056
 Animator:
   serializedVersion: 5
@@ -78330,9 +78313,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  target: {fileID: 0}
   enemyMoveSpeed: 0
-  FollowDistance: 0
+  followDistance: 0
+  playerHealth: {fileID: 0}
 --- !u!50 &801767223
 Rigidbody2D:
   serializedVersion: 4
@@ -78373,9 +78356,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  target: {fileID: 1110314179}
   enemyMoveSpeed: 3
-  FollowDistance: 5
+  followDistance: 0
+  playerHealth: {fileID: 0}
 --- !u!95 &801767225
 Animator:
   serializedVersion: 5
@@ -140540,9 +140523,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  target: {fileID: 0}
   enemyMoveSpeed: 0
-  FollowDistance: 0
+  followDistance: 0
+  playerHealth: {fileID: 0}
 --- !u!50 &1136144388
 Rigidbody2D:
   serializedVersion: 4
@@ -140583,9 +140566,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  target: {fileID: 1110314179}
   enemyMoveSpeed: 3
-  FollowDistance: 5
+  followDistance: 0
+  playerHealth: {fileID: 0}
 --- !u!95 &1136144390
 Animator:
   serializedVersion: 5
@@ -142162,9 +142145,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  target: {fileID: 0}
   enemyMoveSpeed: 0
-  FollowDistance: 0
+  followDistance: 0
+  playerHealth: {fileID: 0}
 --- !u!50 &1574061857
 Rigidbody2D:
   serializedVersion: 4
@@ -142205,9 +142188,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  target: {fileID: 1110314179}
   enemyMoveSpeed: 3
-  FollowDistance: 5
+  followDistance: 0
+  playerHealth: {fileID: 0}
 --- !u!95 &1574061859
 Animator:
   serializedVersion: 5
@@ -142678,9 +142661,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  target: {fileID: 0}
   enemyMoveSpeed: 0
-  FollowDistance: 0
+  followDistance: 0
+  playerHealth: {fileID: 0}
 --- !u!50 &1649847123
 Rigidbody2D:
   serializedVersion: 4
@@ -142721,9 +142704,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  target: {fileID: 1110314179}
   enemyMoveSpeed: 3
-  FollowDistance: 5
+  followDistance: 0
+  playerHealth: {fileID: 0}
 --- !u!95 &1649847125
 Animator:
   serializedVersion: 5
@@ -143822,9 +143805,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  target: {fileID: 0}
   enemyMoveSpeed: 0
-  FollowDistance: 0
+  followDistance: 0
+  playerHealth: {fileID: 0}
 --- !u!50 &1998729945
 Rigidbody2D:
   serializedVersion: 4
@@ -143865,9 +143848,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  target: {fileID: 1110314179}
   enemyMoveSpeed: 3
-  FollowDistance: 5
+  followDistance: 0
+  playerHealth: {fileID: 0}
 --- !u!95 &1998729947
 Animator:
   serializedVersion: 5
