@@ -3,6 +3,7 @@ using UnityEngine;
 public class Teleporter : MonoBehaviour  
 {  
     public Vector2 teleportPosition;
+    public Health playerHealth;
 
     private void OnTriggerEnter2D(Collider2D other)  
     {  
@@ -12,7 +13,7 @@ public class Teleporter : MonoBehaviour
             Health playerHealth = other.GetComponent<Health>();  
             if (playerHealth != null)  
             {  
-                playerHealth.Takedamage(1);
+                playerHealth.Takedamage(20);
             }  
             
             other.transform.position = teleportPosition;   

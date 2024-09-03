@@ -22,7 +22,6 @@ public class Camp : MonoBehaviour
         {  
             playerHealth.Heal(20);
             Destroy(Square1);
-            Destroy(gameObject);
         }  
     }  
 
