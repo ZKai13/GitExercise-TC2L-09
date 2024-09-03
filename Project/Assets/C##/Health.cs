@@ -23,6 +23,12 @@ public class Health : MonoBehaviour
         }
     }
 
+      public void Heal(float _healAmount)
+    {  
+        currentHealth = Mathf.Clamp(currentHealth + _healAmount, 0, startingHealth);  
+       
+    }  
+
     private void Update()
     {
        if(Input.GetKeyDown(KeyCode.E))
