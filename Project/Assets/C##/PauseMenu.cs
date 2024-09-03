@@ -14,7 +14,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] RectTransform pausePanelRect;
     [SerializeField] float leftPosX, middlePosX;
     [SerializeField] float tweenDuration;
-    [SerializeField] CanvasGroup canvasGroup;
+    [SerializeField] CanvasGroup settingsCanvasGroup;
 
     public void Pause()
     {
@@ -45,13 +45,13 @@ public class PauseMenu : MonoBehaviour
 
     void PausePanelIntro()
     {
-        canvasGroup.DOFade(1, tweenDuration).SetUpdate(true);
+        settingsCanvasGroup.DOFade(1, tweenDuration).SetUpdate(true);
         pausePanelRect.DOAnchorPosX(middlePosX, tweenDuration).SetUpdate(true);
     }
 
     async Task PausePanelOutro()
     {
-        canvasGroup.DOFade(0, tweenDuration).SetUpdate(true);
+        settingsCanvasGroup.DOFade(0, tweenDuration).SetUpdate(true);
         await pausePanelRect.DOAnchorPosX(leftPosX, tweenDuration).SetUpdate(true).AsyncWaitForCompletion();
     }
 
