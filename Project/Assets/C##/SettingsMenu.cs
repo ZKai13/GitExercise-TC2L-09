@@ -25,11 +25,17 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] float soundTweenDuration;
     [SerializeField] CanvasGroup soundCanvasGroup;
 
+    private AudioManager audioManager; // Declare audioManager as a private field within the class
 
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
 
     public void Settings()
     {
         settingsMenu.SetActive(true);
+        audioManager.PlaySFX(audioManager.buttonClick);
         Time.timeScale = 0;
         SettingsPanelIntro();
     }
@@ -37,6 +43,7 @@ public class SettingsMenu : MonoBehaviour
 
     public async void Back()
     {
+        audioManager.PlaySFX(audioManager.buttonClick);
         await SettingsPanelOutro();
         settingsMenu.SetActive(false);
         Time.timeScale = 1; 
@@ -59,6 +66,7 @@ public class SettingsMenu : MonoBehaviour
 
     public async void Sound()
     {
+        audioManager.PlaySFX(audioManager.buttonClick);
         await SettingsPanelOutro();
         settingsMenu.SetActive(false);
         SoundPanelIntro();
@@ -68,9 +76,26 @@ public class SettingsMenu : MonoBehaviour
     }
 
 
+    public async void SoundBack()
+    {
+        audioManager.PlaySFX(audioManager.buttonClick);
+        await SoundPanelOutro();
+        settingsMenu.SetActive(false);
+        Time.timeScale = 1; 
+        
+    }
+
+
     void SoundPanelIntro()
     {
         soundCanvasGroup.DOFade(1, soundTweenDuration).SetUpdate(true);
         soundPanelRect.DOAnchorPosX(middlePosX, soundTweenDuration).SetUpdate(true);
+    }
+
+
+    async Task SoundPanelOutro()
+    {
+        soundCanvasGroup.DOFade(0, settingsTweenDuration).SetUpdate(true);
+        await soundPanelRect.DOAnchorPosX(leftPosX, settingsTweenDuration).SetUpdate(true).AsyncWaitForCompletion();
     }
 }

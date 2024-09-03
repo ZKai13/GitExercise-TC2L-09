@@ -5,6 +5,7 @@ using System.Collections;
 
 public class SceneTransition : MonoBehaviour
 {
+
     public Image fadeImage; // add in the picture to fade (which is black)
     public float fadeDuration = 1f; // duration of crossfade
 
