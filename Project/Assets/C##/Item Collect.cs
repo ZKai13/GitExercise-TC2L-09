@@ -25,7 +25,7 @@ public class ItemCollect : MonoBehaviour
 
     private void HandleThreeMelonsCollected()  
     {  
-       Debug.Log("Collected three melons!");  
+       Debug.Log("Collected three Coins!");  
        Destroy(box2);
     }  
 }

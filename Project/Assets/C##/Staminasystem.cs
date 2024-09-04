@@ -32,7 +32,7 @@ public class Staminasystem : MonoBehaviour
     {
         if (currentStamina >= amount)
         {
-            currentStamina -= amount;
+            currentStamina -= amount;// Subtract the amount from the current stamina
             UpdateStaminaBar(); // Update stamina bar UI
             return true; // Return true if stamina was successfully consumed
         }
@@ -46,5 +46,6 @@ public class Staminasystem : MonoBehaviour
     private void UpdateStaminaBar()
     {
         staminaBar.fillAmount = currentStamina / maxStamina;
+        // Calculate the fill amount for the stamina bar based on the current stamina as a percentage of the maximum stamina
     }
 }
