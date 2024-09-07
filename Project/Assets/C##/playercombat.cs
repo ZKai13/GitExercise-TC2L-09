@@ -136,6 +136,195 @@
 //         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
 //     }
 // }
+// using System.Collections;
+// using System.Collections.Generic;
+// using UnityEngine;
+
+// public class PlayerCombat : MonoBehaviour
+// {
+//     public Animator animator;
+    
+//     public Transform attackPoint;
+//     public float attackRange = 2.5f;
+//     public LayerMask enemyLayers;
+//     public int lightAttackDamage = 20;
+//     public int heavyAttackDamage = 40;
+//     public float heavyAttackThreshold = 1f;
+
+//     public float lightAttackStaminaCost = 10f;
+//     public float heavyAttackStaminaCost = 25f;
+//     public float blockStaminaCost = 15f;
+
+//     public Staminasystem staminaSystem;
+
+//     private float holdTime = 0f;
+//     private bool isAttacking = false;
+//     private bool attackButtonHeld = false;
+//     public bool isBlocking = false;
+//     public float blockDuration = 2f;
+//     public float blockCooldown = 1f;
+//     public float successfulBlockDuration = 0.5f;
+//     private bool canBlockImpact = true;
+
+//     void Start()
+//     {
+//         staminaSystem = GetComponent<Staminasystem>();
+//         if (staminaSystem == null)
+//         {
+//             Debug.LogError("Staminasystem not found on this GameObject!");
+//         }
+//     }
+
+//     void Update()
+//     {
+//         if (Input.GetKeyDown(KeyCode.Q))
+//         {
+//             if (!isAttacking)
+//             {
+//                 holdTime = 0f;
+//                 isAttacking = true;
+//                 attackButtonHeld = true;
+//             }
+//         }
+
+//         if (attackButtonHeld)
+//         {
+//             holdTime += Time.deltaTime;
+//         }
+
+//         if (Input.GetKeyUp(KeyCode.Q))
+//         {
+//             if (isAttacking)
+//             {
+//                 if (holdTime >= heavyAttackThreshold && staminaSystem.ConsumeStamina(heavyAttackStaminaCost))
+//                 {
+//                     HeavyAttack();
+//                 }
+//                 else if (staminaSystem.ConsumeStamina(lightAttackStaminaCost))
+//                 {
+//                     LightAttack();
+//                 }
+
+//                 isAttacking = false;
+//                 attackButtonHeld = false;
+//                 holdTime = 0f;
+//             }
+//         }
+
+//         if (Input.GetKeyDown(KeyCode.E))
+//         {   
+//             if ( !isBlocking && staminaSystem.ConsumeStamina(blockStaminaCost))
+//             {
+//                StartCoroutine(Block()); 
+//             }
+            
+//         }
+//     }
+
+//     void LightAttack()
+//     {
+//         animator.SetBool("isHeavyAttack", false);
+//         animator.SetTrigger("attack");
+
+//         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+
+//         foreach (Collider2D enemy in hitEnemies)
+//         {
+//             Enemy enemyScript = enemy.GetComponent<Enemy>();
+//             if (enemyScript != null)
+//             {
+//                 enemyScript.Takedamage(lightAttackDamage, false);
+//             }
+//         }
+//     }
+
+//     void HeavyAttack()
+//     {
+//         animator.SetBool("isHeavyAttack", true);
+//         animator.SetTrigger("attack");
+
+//         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+
+//         foreach (Collider2D enemy in hitEnemies)
+//         {
+//             Enemy enemyScript = enemy.GetComponent<Enemy>();
+//             if (enemyScript != null)
+//             {
+//                 enemyScript.Takedamage(heavyAttackDamage, false);
+//             }
+//         }
+//     }
+
+//     IEnumerator Block()
+//     {
+//         isBlocking = true;
+//         animator.SetBool("isBlocking", true);
+        
+//         while (isBlocking)
+//         {
+//             if (Input.GetKeyUp(KeyCode.E))
+//             {
+//                 break;
+//             }
+//             yield return null;
+//         }
+//         isBlocking = false;
+//         animator.SetBool("isBlocking", false);
+//         yield return new WaitForSeconds(blockCooldown);
+//     }
+//         public void OnEnemyAttack(int damage)
+//     {
+//         if (isBlocking && canBlockImpact)
+//         {
+//             StartCoroutine(SuccessfulBlock());
+//         }
+//         else
+//         {
+//             // Take damage logic here
+//         }
+//     }
+//         IEnumerator SuccessfulBlock()
+//     {
+//         canBlockImpact = false;
+//         animator.SetTrigger("BlockImpact");
+
+//         // Play block effect
+//         // You'd need to implement this part, e.g., particle system, sound effect, etc.
+//         PlayBlockEffect();
+
+//         // Stun the enemy
+//         StunNearbyEnemies();
+
+//         yield return new WaitForSeconds(successfulBlockDuration);
+//         canBlockImpact = true;
+//     }
+//         void PlayBlockEffect()
+//     {
+//         // Implement your block effect here
+//         // For example:
+//         // blockEffectParticleSystem.Play();
+//         // audioSource.PlayOneShot(blockSoundEffect);
+//     }
+//         void StunNearbyEnemies()
+//     {
+//         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, attackRange, enemyLayers);
+//         foreach (Collider2D enemy in hitEnemies)
+//         {
+//             Enemy enemyScript = enemy.GetComponent<Enemy>();
+//             if (enemyScript != null)
+//             {
+//                 enemyScript.GetStunned();
+//             }
+//         }
+//     }
+
+//     void OnDrawGizmosSelected()
+//     {
+//         if (attackPoint == null) return;
+//         Gizmos.color = Color.red;
+//         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+//     }
+// }
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -143,7 +332,6 @@ using UnityEngine;
 public class PlayerCombat : MonoBehaviour
 {
     public Animator animator;
-    
     public Transform attackPoint;
     public float attackRange = 2.5f;
     public LayerMask enemyLayers;
@@ -156,6 +344,7 @@ public class PlayerCombat : MonoBehaviour
     public float blockStaminaCost = 15f;
 
     public Staminasystem staminaSystem;
+    public Health healthSystem;
 
     private float holdTime = 0f;
     private bool isAttacking = false;
@@ -165,9 +354,12 @@ public class PlayerCombat : MonoBehaviour
     public float blockCooldown = 1f;
     public float successfulBlockDuration = 0.5f;
     private bool canBlockImpact = true;
+    private string blockImpactTrigger = "BlockImpact";
+    
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         staminaSystem = GetComponent<Staminasystem>();
         if (staminaSystem == null)
         {
@@ -212,14 +404,14 @@ public class PlayerCombat : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.E))
-        {   
-            if ( !isBlocking && staminaSystem.ConsumeStamina(blockStaminaCost))
+        {
+            if( !isBlocking && staminaSystem.ConsumeStamina(blockStaminaCost))
             {
-               StartCoroutine(Block()); 
+                StartCoroutine(Block());
             }
-            
         }
     }
+
 
     void LightAttack()
     {
@@ -259,7 +451,6 @@ public class PlayerCombat : MonoBehaviour
     {
         isBlocking = true;
         animator.SetBool("isBlocking", true);
-        
         while (isBlocking)
         {
             if (Input.GetKeyUp(KeyCode.E))
@@ -272,7 +463,7 @@ public class PlayerCombat : MonoBehaviour
         animator.SetBool("isBlocking", false);
         yield return new WaitForSeconds(blockCooldown);
     }
-        public void OnEnemyAttack(int damage)
+    public void OnEnemyAttack(int damage)
     {
         if (isBlocking && canBlockImpact)
         {
@@ -280,13 +471,15 @@ public class PlayerCombat : MonoBehaviour
         }
         else
         {
-            // Take damage logic here
-        }
+            if (healthSystem != null)
+            {
+                healthSystem.Takedamage(damage);
+            }
     }
         IEnumerator SuccessfulBlock()
     {
         canBlockImpact = false;
-        animator.SetTrigger("BlockImpact");
+        animator.SetTrigger("BlockImpactTrigger");
 
         // Play block effect
         // You'd need to implement this part, e.g., particle system, sound effect, etc.
@@ -298,7 +491,8 @@ public class PlayerCombat : MonoBehaviour
         yield return new WaitForSeconds(successfulBlockDuration);
         canBlockImpact = true;
     }
-        void PlayBlockEffect()
+
+    void PlayBlockEffect()
     {
         // Implement your block effect here
         // For example:
@@ -317,11 +511,10 @@ public class PlayerCombat : MonoBehaviour
             }
         }
     }
-
     void OnDrawGizmosSelected()
     {
         if (attackPoint == null) return;
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
-}
+}}

@@ -331,140 +331,302 @@
 //         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
 //     }
 // }
-using UnityEngine;
+// using UnityEngine;
+// using System.Collections;
+
+// public class Enemy : MonoBehaviour
+// {
+//     [Header("Stats")]
+//     public int maxHealth = 100;
+//     public int currentHealth;
+//     public int damage = 20;
+//     public float moveSpeed = 3f;
+
+//     [Header("Attack Settings")]
+//     public float attackRange = 2f;
+//     public float attackCooldown = 2f;
+//     public float attackWindupTime = 0.5f;
+
+//     [Header("Chase Settings")]
+//     public float maxChaseDistance = 5f;
+
+//     [Header("Stun Settings")]
+//     public float stunDuration = 3f;
+
+//     [Header("References")]
+//     public Transform attackPoint;
+//     public LayerMask playerLayer;
+//     private Vector3 originalScale;
+
+//     private bool canAttack = true;
+//     private bool isStunned = false;
+//     private Transform player;
+//     private PlayerCombat playerCombat;
+//     private Animator animator;
+//     private Rigidbody2D rb;
+
+//     void Start()
+//     {
+//         currentHealth = maxHealth;
+//         player = GameObject.FindGameObjectWithTag("Player").transform;
+//         playerCombat = player.GetComponent<PlayerCombat>();
+//         animator = GetComponent<Animator>();
+//         rb = GetComponent<Rigidbody2D>();
+//         originalScale = transform.localScale;
+
+//         if (attackPoint == null)
+//         {
+//             attackPoint = transform;
+//         }
+//     }
+
+//     void Update()
+//     {
+//         if (!isStunned)
+//         {
+//             float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+
+//             if (distanceToPlayer <= maxChaseDistance)
+//             {
+//                 MoveTowardsPlayer();
+
+//                 if (canAttack && distanceToPlayer <= attackRange)
+//                 {
+//                     StartCoroutine(AttackPlayer());
+//                 }
+//             }
+//             else
+//             {
+//                 rb.velocity = Vector2.zero;
+//                 animator.SetBool("isWalking", false);
+//             }
+//         }
+//     }
+
+//     void MoveTowardsPlayer()
+//     {
+//         Vector2 direction = (player.position - transform.position).normalized;
+//         rb.velocity = direction * moveSpeed;
+
+//         // Update walking animation
+//         animator.SetBool("isWalking", rb.velocity.magnitude > 0.1f);
+
+//         // Flip sprite based on movement direction
+//         if (direction.x < 0)
+//         {
+//             transform.localScale = new Vector3(originalScale.x, originalScale.y, originalScale.z);
+//         }
+//         else if (direction.x > 0)
+//         {
+//             transform.localScale = new Vector3(-originalScale.x, originalScale.y, originalScale.z);
+//         }
+//     }
+
+//     IEnumerator AttackPlayer()
+//     {
+//         canAttack = false;
+//         rb.velocity = Vector2.zero;
+//         animator.SetTrigger("attack");
+
+//         // Attack windup
+//         yield return new WaitForSeconds(attackWindupTime);
+
+//         // Perform attack
+//         Collider2D hitPlayer = Physics2D.OverlapCircle(attackPoint.position, attackRange, playerLayer);
+//         if (hitPlayer != null)
+//         {
+//             playerCombat.OnEnemyAttack(damage); // Call the player's damage function
+//         }
+
+//         // Attack cooldown
+//         yield return new WaitForSeconds(attackCooldown - attackWindupTime);
+//         canAttack = true;
+//     }
+
+//     public void Takedamage(int damage, bool isHeavyAttack)
+//     {
+//         currentHealth -= damage;
+//         animator.SetTrigger("Hurt"); // Play hurt animation
+
+//         if (currentHealth <= 0)
+//         {
+//             Die(); // Play die animation and disable enemy
+//         }
+//     }
+
+//     void Die()
+//     {
+//         animator.SetTrigger("Die");
+//         rb.velocity = Vector2.zero;
+//         GetComponent<Collider2D>().enabled = false; // Disable collider
+//         this.enabled = false; // Disable script
+
+//         // Destroy the game object after 2 seconds to allow death animation to play
+//         Destroy(gameObject, 2f);
+//     }
+
+//     public void GetStunned()
+//     {
+//         if (!isStunned)
+//         {
+//             StartCoroutine(ApplyStun());
+//         }
+//     }
+
+//     IEnumerator ApplyStun()
+//     {
+//         isStunned = true;
+//         rb.velocity = Vector2.zero; // Stop movement
+//         animator.SetBool("Stunned", true); // Play stunned animation
+
+//         yield return new WaitForSeconds(stunDuration);
+
+//         isStunned = false;
+//         animator.SetBool("Stunned", false); // End stunned state
+//     }
+
+//     // Visualize the attack range in the Unity editor
+//     void OnDrawGizmosSelected()
+//     {
+//         if (attackPoint == null)
+//             return;
+
+//         Gizmos.color = Color.red;
+//         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+//     }
+// }
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [Header("Stats")]
     public int maxHealth = 100;
-    public int currentHealth;
-    public int damage = 20;
-    public float moveSpeed = 3f;
+    private int currentHealth;
+    private Transform target;
 
-    [Header("Attack Settings")]
-    public float attackRange = 2f;
-    public float attackCooldown = 2f;
-    public float attackWindupTime = 0.5f;
+    public float enemyMoveSpeed = 2f;
+    public float followDistance = 10f;
+    public float stunDuration = 2f;
 
-    [Header("Chase Settings")]
-    public float maxChaseDistance = 5f;
-
-    [Header("Stun Settings")]
-    public float stunDuration = 3f;
-
-    [Header("References")]
-    public Transform attackPoint;
-    public LayerMask playerLayer;
-    private Vector3 originalScale;
-
-    private bool canAttack = true;
-    private bool isStunned = false;
-    private Transform player;
-    private PlayerCombat playerCombat;
     private Animator animator;
-    private Rigidbody2D rb;
+    private SpriteRenderer spriteRenderer;
+
+    private bool isDead = false;
+    private bool isAttacking = false;
+    private bool isStunned = false;
+
+    public Health playerHealth;
+    public float cooldownTime = 0.75f;
+    private float nextAttackTime = 0f;
 
     void Start()
     {
         currentHealth = maxHealth;
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        playerCombat = player.GetComponent<PlayerCombat>();
-        animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
-        originalScale = transform.localScale;
+        target = GameObject.FindGameObjectWithTag("Player").transform;
 
-        if (attackPoint == null)
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        if (spriteRenderer == null)
         {
-            attackPoint = transform;
+            Debug.LogError("SpriteRenderer component is missing from this game object.");
+        }
+
+        if (animator != null)
+        {
+            animator.Play("goblin_Idle");
         }
     }
 
     void Update()
     {
-        if (!isStunned)
+        if (!isDead && !isAttacking && !isStunned)
         {
-            float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+            FollowPlayer();
+        }
+    }
 
-            if (distanceToPlayer <= maxChaseDistance)
+    void FollowPlayer()
+    {
+        float distanceToPlayer = Vector2.Distance(transform.position, target.position);
+
+        if (distanceToPlayer < followDistance)
+        {
+            Vector2 direction = (target.position - transform.position).normalized;
+            transform.position = Vector2.MoveTowards(transform.position, target.position, enemyMoveSpeed * Time.deltaTime);
+
+            if (spriteRenderer != null)
             {
-                MoveTowardsPlayer();
+                spriteRenderer.flipX = direction.x < 0;
+            }
 
-                if (canAttack && distanceToPlayer <= attackRange)
-                {
-                    StartCoroutine(AttackPlayer());
-                }
+            if (distanceToPlayer <= 1.5f)
+            {
+                Attack();
             }
             else
             {
-                rb.velocity = Vector2.zero;
-                animator.SetBool("isWalking", false);
+                animator.SetBool("isWalking", true);
+            }
+        }
+        else
+        {
+            animator.SetBool("isWalking", false);
+        }
+    }
+
+    void Attack()
+    {
+        if (isDead) return;
+
+        isAttacking = true;
+        animator.SetBool("isWalking", false);
+        animator.SetTrigger("attack");
+
+        nextAttackTime = Time.time + cooldownTime;
+        Invoke("ApplyDamageToPlayer", 0.5f);
+    }
+
+    void ApplyDamageToPlayer()
+    {
+        if (playerHealth != null)
+        {
+            playerHealth.Takedamage(1);
+        }
+        isAttacking = false;
+    }
+
+    public void Takedamage(int damage, bool isBlocked)
+    {
+        if (isDead) return;
+
+        if (isBlocked)
+        {
+            StartCoroutine(Stun());
+        }
+        else
+        {
+            currentHealth -= damage;
+
+            if (currentHealth <= 0)
+            {
+                Die();
+            }
+            else
+            {
+                animator.SetTrigger("Hurt");
             }
         }
     }
 
-    void MoveTowardsPlayer()
+    IEnumerator Stun()
     {
-        Vector2 direction = (player.position - transform.position).normalized;
-        rb.velocity = direction * moveSpeed;
-
-        // Update walking animation
-        animator.SetBool("isWalking", rb.velocity.magnitude > 0.1f);
-
-        // Flip sprite based on movement direction
-        if (direction.x < 0)
-        {
-            transform.localScale = new Vector3(originalScale.x, originalScale.y, originalScale.z);
-        }
-        else if (direction.x > 0)
-        {
-            transform.localScale = new Vector3(-originalScale.x, originalScale.y, originalScale.z);
-        }
+        isStunned = true;
+        animator.SetTrigger("Stunned");
+        yield return new WaitForSeconds(stunDuration);
+        isStunned = false;
     }
-
-    IEnumerator AttackPlayer()
-    {
-        canAttack = false;
-        rb.velocity = Vector2.zero;
-        animator.SetTrigger("attack");
-
-        // Attack windup
-        yield return new WaitForSeconds(attackWindupTime);
-
-        // Perform attack
-        Collider2D hitPlayer = Physics2D.OverlapCircle(attackPoint.position, attackRange, playerLayer);
-        if (hitPlayer != null)
-        {
-            playerCombat.OnEnemyAttack(damage); // Call the player's damage function
-        }
-
-        // Attack cooldown
-        yield return new WaitForSeconds(attackCooldown - attackWindupTime);
-        canAttack = true;
-    }
-
-    public void Takedamage(int damage, bool isHeavyAttack)
-    {
-        currentHealth -= damage;
-        animator.SetTrigger("Hurt"); // Play hurt animation
-
-        if (currentHealth <= 0)
-        {
-            Die(); // Play die animation and disable enemy
-        }
-    }
-
-    void Die()
-    {
-        animator.SetTrigger("Die");
-        rb.velocity = Vector2.zero;
-        GetComponent<Collider2D>().enabled = false; // Disable collider
-        this.enabled = false; // Disable script
-
-        // Destroy the game object after 2 seconds to allow death animation to play
-        Destroy(gameObject, 2f);
-    }
-
     public void GetStunned()
     {
         if (!isStunned)
@@ -472,26 +634,51 @@ public class Enemy : MonoBehaviour
             StartCoroutine(ApplyStun());
         }
     }
-
+    void Die()
+    {
+        isDead = true;
+        animator.SetTrigger("Die");
+        StartCoroutine(DestroyAfterAnimation());
+    }
     IEnumerator ApplyStun()
     {
         isStunned = true;
-        rb.velocity = Vector2.zero; // Stop movement
-        animator.SetBool("Stunned", true); // Play stunned animation
+        animator.SetBool("Stunned", true);
+        
+        // Disable movement and attacks
+        // If you have a separate movement script, disable it here
+        // e.g., GetComponent<EnemyMovement>().enabled = false;
 
         yield return new WaitForSeconds(stunDuration);
 
         isStunned = false;
-        animator.SetBool("Stunned", false); // End stunned state
+        animator.SetBool("Stunned", false);
+        
+        // Re-enable movement
+        // e.g., GetComponent<EnemyMovement>().enabled = true;
+    }
+    IEnumerator DestroyAfterAnimation()
+    {
+        yield return new WaitForEndOfFrame();
+
+        if (animator != null)
+        {
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName("goblin_Die"))
+            {
+                float dieAnimationLength = stateInfo.length;
+                Destroy(gameObject, dieAnimationLength);
+            }
+            else
+            {
+                Destroy(gameObject, 1f);
+            }
+        }
     }
 
-    // Visualize the attack range in the Unity editor
-    void OnDrawGizmosSelected()
+    public void OnAttackFinished()
     {
-        if (attackPoint == null)
-            return;
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        isAttacking = false;
     }
 }
+
