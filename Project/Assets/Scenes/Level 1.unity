@@ -858,10 +858,11 @@ Transform:
   m_GameObject: {fileID: 261012955}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.59, y: -2.45, z: 0}
+  m_LocalPosition: {x: 0.83, y: -2.54, z: 0}
   m_LocalScale: {x: 4.9428, y: 3.8526, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2127578068}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &261012963
@@ -912,10 +913,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  enemyMoveSpeed: 3
-  followDistance: 6
-  playerHealth: {fileID: 1110314181}
-  cooldownTime: 0.75
+  currentHealth: 0
+  damage: 20
+  moveSpeed: 3
+  attackRange: 2
+  attackCooldown: 2
+  attackWindupTime: 0.5
+  stunDuration: 2
+  attackPoint: {fileID: 0}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!95 &261012965
 Animator:
   serializedVersion: 5
@@ -971,10 +979,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  enemyMoveSpeed: 3
-  followDistance: 6
-  playerHealth: {fileID: 1110314181}
-  cooldownTime: 0.75
+  currentHealth: 0
+  damage: 20
+  moveSpeed: 3
+  attackRange: 2
+  attackCooldown: 2
+  attackWindupTime: 0.5
+  stunDuration: 2
+  attackPoint: {fileID: 0}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!95 &327044188
 Animator:
   serializedVersion: 5
@@ -1287,10 +1302,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  enemyMoveSpeed: 3
-  followDistance: 6
-  playerHealth: {fileID: 1110314181}
-  cooldownTime: 0.75
+  currentHealth: 0
+  damage: 20
+  moveSpeed: 3
+  attackRange: 2
+  attackCooldown: 2
+  attackWindupTime: 0.5
+  stunDuration: 2
+  attackPoint: {fileID: 0}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!95 &345733485
 Animator:
   serializedVersion: 5
@@ -1678,10 +1700,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  enemyMoveSpeed: 3
-  followDistance: 6
-  playerHealth: {fileID: 1110314181}
-  cooldownTime: 0.75
+  currentHealth: 0
+  damage: 20
+  moveSpeed: 3
+  attackRange: 2
+  attackCooldown: 2
+  attackWindupTime: 0.5
+  stunDuration: 2
+  attackPoint: {fileID: 0}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!95 &372375460
 Animator:
   serializedVersion: 5
@@ -77997,10 +78026,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  enemyMoveSpeed: 3
-  followDistance: 6
-  playerHealth: {fileID: 1110314181}
-  cooldownTime: 0.75
+  currentHealth: 0
+  damage: 20
+  moveSpeed: 3
+  attackRange: 2
+  attackCooldown: 2
+  attackWindupTime: 0.5
+  stunDuration: 2
+  attackPoint: {fileID: 0}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!95 &828899157
 Animator:
   serializedVersion: 5
@@ -78185,10 +78221,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  enemyMoveSpeed: 3
-  followDistance: 6
-  playerHealth: {fileID: 1110314181}
-  cooldownTime: 0.75
+  currentHealth: 0
+  damage: 20
+  moveSpeed: 3
+  attackRange: 2
+  attackCooldown: 2
+  attackWindupTime: 0.5
+  stunDuration: 2
+  attackPoint: {fileID: 0}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!95 &850827148
 Animator:
   serializedVersion: 5
@@ -79233,10 +79276,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  enemyMoveSpeed: 3
-  followDistance: 6
-  playerHealth: {fileID: 1110314181}
-  cooldownTime: 0.75
+  currentHealth: 0
+  damage: 20
+  moveSpeed: 3
+  attackRange: 2
+  attackCooldown: 2
+  attackWindupTime: 0.5
+  stunDuration: 2
+  attackPoint: {fileID: 0}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!95 &1017478122
 Animator:
   serializedVersion: 5
@@ -140437,8 +140487,8 @@ Transform:
   m_GameObject: {fileID: 1110314173}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -24.5, y: -3.7, z: 0}
-  m_LocalScale: {x: 1.3734, y: 1.44, z: 1}
+  m_LocalPosition: {x: -24.4773, y: -3.6773, z: 0}
+  m_LocalScale: {x: 1.3879579, y: 1.4267521, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 449428496}
@@ -140531,7 +140581,12 @@ MonoBehaviour:
   heavyAttackThreshold: 1
   lightAttackStaminaCost: 10
   heavyAttackStaminaCost: 25
+  blockStaminaCost: 15
   staminaSystem: {fileID: 779914567}
+  isBlocking: 0
+  blockDuration: 2
+  blockCooldown: 1
+  successfulBlockDuration: 0.5
 --- !u!114 &1110314184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141471,10 +141526,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  enemyMoveSpeed: 3
-  followDistance: 6
-  playerHealth: {fileID: 1110314181}
-  cooldownTime: 0.75
+  currentHealth: 0
+  damage: 20
+  moveSpeed: 3
+  attackRange: 2
+  attackCooldown: 2
+  attackWindupTime: 0.5
+  stunDuration: 2
+  attackPoint: {fileID: 0}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!95 &1328404641
 Animator:
   serializedVersion: 5
@@ -142345,10 +142407,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  enemyMoveSpeed: 3
-  followDistance: 6
-  playerHealth: {fileID: 1110314181}
-  cooldownTime: 0.75
+  currentHealth: 0
+  damage: 20
+  moveSpeed: 3
+  attackRange: 2
+  attackCooldown: 2
+  attackWindupTime: 0.5
+  stunDuration: 2
+  attackPoint: {fileID: 0}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!95 &1502491398
 Animator:
   serializedVersion: 5
@@ -144191,10 +144260,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  enemyMoveSpeed: 3
-  followDistance: 6
-  playerHealth: {fileID: 1110314181}
-  cooldownTime: 0.75
+  currentHealth: 0
+  damage: 20
+  moveSpeed: 3
+  attackRange: 2
+  attackCooldown: 2
+  attackWindupTime: 0.5
+  stunDuration: 2
+  attackPoint: {fileID: 0}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!95 &1978071872
 Animator:
   serializedVersion: 5
@@ -144760,10 +144836,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  enemyMoveSpeed: 3
-  followDistance: 6
-  playerHealth: {fileID: 1110314181}
-  cooldownTime: 0.75
+  currentHealth: 0
+  damage: 20
+  moveSpeed: 3
+  attackRange: 2
+  attackCooldown: 2
+  attackWindupTime: 0.5
+  stunDuration: 2
+  attackPoint: {fileID: 0}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!95 &2127195847
 Animator:
   serializedVersion: 5
@@ -144913,6 +144996,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2127578067
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2127578068}
+  m_Layer: 7
+  m_Name: attackpoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2127578068
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2127578067}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -4.813138, y: -0.118583195, z: 0}
+  m_LocalScale: {x: 0.2808044, y: 0.3703343, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 261012961}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2133026667
 GameObject:
