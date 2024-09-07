@@ -857,14 +857,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 261012955}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.83, y: -2.54, z: 0}
-  m_LocalScale: {x: 4.9428, y: 3.8526, z: 1}
+  m_LocalRotation: {x: 0.020732023, y: -0.027908592, z: 0.0026202858, w: 0.99939203}
+  m_LocalPosition: {x: 0.38, y: -2.626, z: 0.0000000034033514}
+  m_LocalScale: {x: 4.901579, y: 3.8204713, z: 0.9916604}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2127578068}
+  - {fileID: 334054314}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 2.383, y: -3.194, z: 0.234}
 --- !u!70 &261012963
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -913,18 +913,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  currentHealth: 0
-  damage: 20
-  moveSpeed: 3
-  attackRange: 2
-  attackCooldown: 2
-  attackWindupTime: 0.5
-  maxChaseDistance: 5
+  attackPoint: {fileID: 334054314}
+  attackRange: 0.99
+  enemyMoveSpeed: 2
+  followDistance: 10
+  playerHealth: {fileID: 1110314181}
+  cooldownTime: 0.75
   stunDuration: 2
-  attackPoint: {fileID: 2127578068}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!95 &261012965
 Animator:
   serializedVersion: 5
@@ -980,18 +975,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  currentHealth: 0
-  damage: 20
-  moveSpeed: 3
-  attackRange: 2
-  attackCooldown: 2
-  attackWindupTime: 0.5
-  maxChaseDistance: 5
-  stunDuration: 2
   attackPoint: {fileID: 0}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  attackRange: 2
+  enemyMoveSpeed: 2
+  followDistance: 10
+  playerHealth: {fileID: 0}
+  cooldownTime: 0.75
+  stunDuration: 2
 --- !u!95 &327044188
 Animator:
   serializedVersion: 5
@@ -1141,6 +1131,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &334054313
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 334054314}
+  m_Layer: 8
+  m_Name: goblin_attackpoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &334054314
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 334054313}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.208, y: 0.006, z: 0.05}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 261012961}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &334972787
 GameObject:
@@ -1304,18 +1325,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  currentHealth: 0
-  damage: 20
-  moveSpeed: 3
-  attackRange: 2
-  attackCooldown: 2
-  attackWindupTime: 0.5
-  maxChaseDistance: 5
-  stunDuration: 2
   attackPoint: {fileID: 0}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  attackRange: 2
+  enemyMoveSpeed: 2
+  followDistance: 10
+  playerHealth: {fileID: 0}
+  cooldownTime: 0.75
+  stunDuration: 2
 --- !u!95 &345733485
 Animator:
   serializedVersion: 5
@@ -1703,18 +1719,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  currentHealth: 0
-  damage: 20
-  moveSpeed: 3
-  attackRange: 2
-  attackCooldown: 2
-  attackWindupTime: 0.5
-  maxChaseDistance: 5
-  stunDuration: 2
   attackPoint: {fileID: 0}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  attackRange: 2
+  enemyMoveSpeed: 2
+  followDistance: 10
+  playerHealth: {fileID: 0}
+  cooldownTime: 0.75
+  stunDuration: 2
 --- !u!95 &372375460
 Animator:
   serializedVersion: 5
@@ -78030,18 +78041,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  currentHealth: 0
-  damage: 20
-  moveSpeed: 3
-  attackRange: 2
-  attackCooldown: 2
-  attackWindupTime: 0.5
-  maxChaseDistance: 5
-  stunDuration: 2
   attackPoint: {fileID: 0}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  attackRange: 2
+  enemyMoveSpeed: 2
+  followDistance: 10
+  playerHealth: {fileID: 0}
+  cooldownTime: 0.75
+  stunDuration: 2
 --- !u!95 &828899157
 Animator:
   serializedVersion: 5
@@ -78226,18 +78232,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  currentHealth: 0
-  damage: 20
-  moveSpeed: 3
-  attackRange: 2
-  attackCooldown: 2
-  attackWindupTime: 0.5
-  maxChaseDistance: 5
-  stunDuration: 2
   attackPoint: {fileID: 0}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  attackRange: 2
+  enemyMoveSpeed: 2
+  followDistance: 10
+  playerHealth: {fileID: 0}
+  cooldownTime: 0.75
+  stunDuration: 2
 --- !u!95 &850827148
 Animator:
   serializedVersion: 5
@@ -79282,18 +79283,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  currentHealth: 0
-  damage: 20
-  moveSpeed: 3
-  attackRange: 2
-  attackCooldown: 2
-  attackWindupTime: 0.5
-  maxChaseDistance: 5
-  stunDuration: 2
   attackPoint: {fileID: 0}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  attackRange: 2
+  enemyMoveSpeed: 2
+  followDistance: 10
+  playerHealth: {fileID: 0}
+  cooldownTime: 0.75
+  stunDuration: 2
 --- !u!95 &1017478122
 Animator:
   serializedVersion: 5
@@ -141533,18 +141529,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  currentHealth: 0
-  damage: 20
-  moveSpeed: 3
-  attackRange: 2
-  attackCooldown: 2
-  attackWindupTime: 0.5
-  maxChaseDistance: 5
-  stunDuration: 2
   attackPoint: {fileID: 0}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  attackRange: 2
+  enemyMoveSpeed: 2
+  followDistance: 10
+  playerHealth: {fileID: 0}
+  cooldownTime: 0.75
+  stunDuration: 2
 --- !u!95 &1328404641
 Animator:
   serializedVersion: 5
@@ -142415,18 +142406,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  currentHealth: 0
-  damage: 20
-  moveSpeed: 3
-  attackRange: 2
-  attackCooldown: 2
-  attackWindupTime: 0.5
-  maxChaseDistance: 5
-  stunDuration: 2
   attackPoint: {fileID: 0}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  attackRange: 2
+  enemyMoveSpeed: 2
+  followDistance: 10
+  playerHealth: {fileID: 0}
+  cooldownTime: 0.75
+  stunDuration: 2
 --- !u!95 &1502491398
 Animator:
   serializedVersion: 5
@@ -144269,18 +144255,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  currentHealth: 0
-  damage: 20
-  moveSpeed: 3
-  attackRange: 2
-  attackCooldown: 2
-  attackWindupTime: 0.5
-  maxChaseDistance: 5
-  stunDuration: 2
   attackPoint: {fileID: 0}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  attackRange: 2
+  enemyMoveSpeed: 2
+  followDistance: 10
+  playerHealth: {fileID: 0}
+  cooldownTime: 0.75
+  stunDuration: 2
 --- !u!95 &1978071872
 Animator:
   serializedVersion: 5
@@ -144846,18 +144827,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  currentHealth: 0
-  damage: 20
-  moveSpeed: 3
-  attackRange: 2
-  attackCooldown: 2
-  attackWindupTime: 0.5
-  maxChaseDistance: 5
-  stunDuration: 2
   attackPoint: {fileID: 0}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  attackRange: 2
+  enemyMoveSpeed: 2
+  followDistance: 10
+  playerHealth: {fileID: 0}
+  cooldownTime: 0.75
+  stunDuration: 2
 --- !u!95 &2127195847
 Animator:
   serializedVersion: 5
@@ -145007,37 +144983,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2127578067
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2127578068}
-  m_Layer: 8
-  m_Name: attackpoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2127578068
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2127578067}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.813138, y: -0.118583195, z: 0}
-  m_LocalScale: {x: 0.2808044, y: 0.3703343, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 261012961}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2133026667
 GameObject:

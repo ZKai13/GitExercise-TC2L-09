@@ -211,9 +211,13 @@ public class PlayerCombat : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.E) && !isBlocking && staminaSystem.ConsumeStamina(blockStaminaCost))
-        {
-            StartCoroutine(Block());
+        if (Input.GetKeyDown(KeyCode.E))
+        {   
+            if ( !isBlocking && staminaSystem.ConsumeStamina(blockStaminaCost))
+            {
+               StartCoroutine(Block()); 
+            }
+            
         }
     }
 
@@ -255,6 +259,7 @@ public class PlayerCombat : MonoBehaviour
     {
         isBlocking = true;
         animator.SetBool("isBlocking", true);
+        
         while (isBlocking)
         {
             if (Input.GetKeyUp(KeyCode.E))
