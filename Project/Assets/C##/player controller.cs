@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rigi;
     //used for physics calculations.
     private Animator animator;
+    
 
     float movesSpeed = 7f;
     float jumpForce = 5f;
@@ -109,4 +110,24 @@ public class PlayerController : MonoBehaviour
         // This example uses a simple raycast, adjust as needed
         return Physics2D.Raycast(transform.position, Vector2.down, 0.1f);
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)  
+    {  
+        if (collision.gameObject.CompareTag("MovingPlatform"))  
+        {    
+            GameObject parentObject = new GameObject("ParentObject");  
+            parentObject.transform.position = transform.position; // 设置位置  
+            transform.parent = parentObject.transform; // 设置角色的父物体  
+            parentObject.transform.parent = collision.transform;
+        }  
+    }  
+
+    private void OnCollisionExit2D(Collision2D collision)  
+    {    
+        if (collision.gameObject.CompareTag("MovingPlatform"))  
+        {  
+            transform.parent = null; // 解除父物体  
+            Destroy(transform.parent.gameObject); // 删除空物体 
+        }  
+    }  
 }
