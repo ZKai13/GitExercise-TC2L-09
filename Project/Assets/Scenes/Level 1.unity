@@ -919,8 +919,9 @@ MonoBehaviour:
   attackRange: 2
   attackCooldown: 2
   attackWindupTime: 0.5
+  maxChaseDistance: 5
   stunDuration: 2
-  attackPoint: {fileID: 0}
+  attackPoint: {fileID: 2127578068}
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -985,6 +986,7 @@ MonoBehaviour:
   attackRange: 2
   attackCooldown: 2
   attackWindupTime: 0.5
+  maxChaseDistance: 5
   stunDuration: 2
   attackPoint: {fileID: 0}
   playerLayer:
@@ -1308,6 +1310,7 @@ MonoBehaviour:
   attackRange: 2
   attackCooldown: 2
   attackWindupTime: 0.5
+  maxChaseDistance: 5
   stunDuration: 2
   attackPoint: {fileID: 0}
   playerLayer:
@@ -1706,6 +1709,7 @@ MonoBehaviour:
   attackRange: 2
   attackCooldown: 2
   attackWindupTime: 0.5
+  maxChaseDistance: 5
   stunDuration: 2
   attackPoint: {fileID: 0}
   playerLayer:
@@ -78032,6 +78036,7 @@ MonoBehaviour:
   attackRange: 2
   attackCooldown: 2
   attackWindupTime: 0.5
+  maxChaseDistance: 5
   stunDuration: 2
   attackPoint: {fileID: 0}
   playerLayer:
@@ -78227,6 +78232,7 @@ MonoBehaviour:
   attackRange: 2
   attackCooldown: 2
   attackWindupTime: 0.5
+  maxChaseDistance: 5
   stunDuration: 2
   attackPoint: {fileID: 0}
   playerLayer:
@@ -79282,6 +79288,7 @@ MonoBehaviour:
   attackRange: 2
   attackCooldown: 2
   attackWindupTime: 0.5
+  maxChaseDistance: 5
   stunDuration: 2
   attackPoint: {fileID: 0}
   playerLayer:
@@ -141532,6 +141539,7 @@ MonoBehaviour:
   attackRange: 2
   attackCooldown: 2
   attackWindupTime: 0.5
+  maxChaseDistance: 5
   stunDuration: 2
   attackPoint: {fileID: 0}
   playerLayer:
@@ -142413,6 +142421,7 @@ MonoBehaviour:
   attackRange: 2
   attackCooldown: 2
   attackWindupTime: 0.5
+  maxChaseDistance: 5
   stunDuration: 2
   attackPoint: {fileID: 0}
   playerLayer:
@@ -144266,6 +144275,7 @@ MonoBehaviour:
   attackRange: 2
   attackCooldown: 2
   attackWindupTime: 0.5
+  maxChaseDistance: 5
   stunDuration: 2
   attackPoint: {fileID: 0}
   playerLayer:
@@ -144842,6 +144852,7 @@ MonoBehaviour:
   attackRange: 2
   attackCooldown: 2
   attackWindupTime: 0.5
+  maxChaseDistance: 5
   stunDuration: 2
   attackPoint: {fileID: 0}
   playerLayer:
@@ -145006,7 +145017,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2127578068}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: attackpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
