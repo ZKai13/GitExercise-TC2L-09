@@ -30,11 +30,13 @@ public class EvilWizardBoss : MonoBehaviour
     public float heavyAttackCooldown = 4f;
     public float jumpForce = 10f;
     public float jumpCooldown = 3f;
+    public float lightAttackDamage = 10f;
+    public float heavyAttackDamage = 20f;
 
     [Header("Ground Check")]
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
-    public LayerMask groundLayer;
+    public LayerMask playerLayer;
 
     private BossState currentState;
     private Animator animator;
@@ -43,6 +45,7 @@ public class EvilWizardBoss : MonoBehaviour
     private bool canJump = true;
     private bool facingRight = true;
     private bool isGrounded;
+    private PlayerCombat playerCombat;
 
     private void Start()
     {
@@ -56,11 +59,17 @@ public class EvilWizardBoss : MonoBehaviour
             enabled = false;
             return;
         }
+
+        playerCombat = player.GetComponent<PlayerCombat>();
+        if (playerCombat == null)
+        {
+            Debug.LogError("PlayerCombat component not found on the player!");
+        }
     }
 
     private void Update()
     {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, playerLayer);
 
         UpdateAnimatorParameters();
         CheckForStateTransitions();
@@ -72,6 +81,8 @@ public class EvilWizardBoss : MonoBehaviour
         animator.SetBool("IsGrounded", isGrounded);
         animator.SetFloat("Speed", rb2D.velocity.magnitude);
         animator.SetFloat("VerticalSpeed", rb2D.velocity.y);
+        animator.SetBool("IsJumping", !isGrounded && rb2D.velocity.y > 0);
+        animator.SetBool("IsFalling", !isGrounded && rb2D.velocity.y < 0);
     }
 
     private void CheckForStateTransitions()
@@ -115,9 +126,15 @@ public class EvilWizardBoss : MonoBehaviour
 
     private bool ShouldJump()
     {
-        // Implement jump decision logic here
-        // For example, jump if there's an obstacle between the boss and the player
-        return false;
+        float rayDistance = 4.0f;
+        Vector2 rayOrigin = new Vector2(transform.position.x, transform.position.y - 0.5f);
+        Vector2 rayDirection = facingRight ? Vector2.right : Vector2.left;
+
+        RaycastHit2D groundAhead = Physics2D.Raycast(rayOrigin, rayDirection, rayDistance, playerLayer);
+
+        Debug.DrawRay(rayOrigin, rayDirection * rayDistance, Color.red);
+
+        return groundAhead.collider == null && isGrounded;
     }
 
     private void HandleCurrentState()
@@ -148,6 +165,30 @@ public class EvilWizardBoss : MonoBehaviour
             case BossState.Dying:
                 HandleDyingState();
                 break;
+        }
+    }
+
+    private void HandleJumpingState()
+    {
+        if (canJump && isGrounded)
+        {
+            rb2D.velocity = new Vector2(rb2D.velocity.x, 0);
+            rb2D.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            animator.SetTrigger("Jump");
+            StartCoroutine(JumpCooldown());
+        }
+    }
+
+    private void HandleFallingState()
+    {
+        if (isGrounded)
+        {
+            animator.ResetTrigger("Fall");
+            TransitionToState(BossState.Idle);
+        }
+        else
+        {
+            animator.SetBool("IsFalling", true);
         }
     }
 
@@ -210,36 +251,12 @@ public class EvilWizardBoss : MonoBehaviour
         }
     }
 
-    private void HandleJumpingState()
-    {
-        if (canJump && isGrounded)
-        {
-            rb2D.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            StartCoroutine(JumpCooldown());
-        }
-    }
-
-    private void HandleFallingState()
-    {
-        if (isGrounded)
-        {
-            if (Vector2.Distance(transform.position, player.position) > attackRange)
-            {
-                TransitionToState(BossState.Walking);
-            }
-            else
-            {
-                TransitionToState(BossState.Idle);
-            }
-        }
-    }
-
     private void HandleLightAttackState()
     {
         if (canAttack)
         {
-            // Perform light attack
             Debug.Log("Performing Light Attack");
+            AttackPlayer(lightAttackDamage);
             StartCoroutine(AttackCooldown(lightAttackCooldown));
         }
     }
@@ -248,8 +265,8 @@ public class EvilWizardBoss : MonoBehaviour
     {
         if (canAttack)
         {
-            // Perform heavy attack
             Debug.Log("Performing Heavy Attack");
+            AttackPlayer(heavyAttackDamage);
             StartCoroutine(AttackCooldown(heavyAttackCooldown));
         }
     }
@@ -261,7 +278,6 @@ public class EvilWizardBoss : MonoBehaviour
 
     private void HandleDyingState()
     {
-        // Handle dying behavior
         Destroy(gameObject, 2f);
     }
 
@@ -283,6 +299,18 @@ public class EvilWizardBoss : MonoBehaviour
         else
         {
             TransitionToState(BossState.Dying);
+        }
+    }
+
+    private void AttackPlayer(float damage)
+    {
+        if (playerCombat != null)
+        {
+            float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+            if (distanceToPlayer <= attackRange)
+            {
+                playerCombat.OnEnemyAttack(damage);
+            }
         }
     }
 
@@ -310,5 +338,9 @@ public class EvilWizardBoss : MonoBehaviour
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
+        Gizmos.color = Color.blue;
+        Vector2 rayOrigin = new Vector2(transform.position.x, transform.position.y - 0.5f);
+        Vector2 rayDirection = facingRight ? Vector2.right : Vector2.left;
+        Gizmos.DrawLine(rayOrigin, rayOrigin + rayDirection * 5f);
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 using System.Threading.Tasks;
-
+using UnityEngine.UI;
 
 
 public class LevelMenu : MonoBehaviour
@@ -22,9 +22,20 @@ public class LevelMenu : MonoBehaviour
     public int newLayerIndex;
 
     private AudioManager audioManager; // Declare audioManager as a private field within the class
-
+ 
+    public Button[] buttons;
     private void Awake()
     {
+        int unlockedLevel = PlayerPrefs.GetInt("UnlockedLevel", 1);
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            buttons[i].interactable = false;
+        }
+        
+        for (int i = 0; i < unlockedLevel; i++)
+        {
+            buttons[i].interactable = true;
+        }
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 
@@ -37,9 +48,10 @@ public class LevelMenu : MonoBehaviour
         LevelPanelIntro();
     }
 
-    public void OpenLevel(string levelName)
+    public void OpenLevel(int levelId)
     {
         // Load the scene with the specified name
+        string levelName = "Level " + levelId;
         audioManager.PlaySFX(audioManager.buttonClick);
         SceneManager.LoadScene(levelName);
         Time.timeScale = 1;
@@ -74,4 +86,5 @@ public class LevelMenu : MonoBehaviour
         RectTransform rectTransform = canvasGroupToMove.GetComponent<RectTransform>();
         rectTransform.SetSiblingIndex(newLayerIndex);
     }
+    
 }
