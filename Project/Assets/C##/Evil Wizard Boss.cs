@@ -168,15 +168,23 @@ public class EvilWizardBoss : MonoBehaviour
         }
     }
 
-    private void HandleJumpingState()
-    {
-        if (canJump && isGrounded)
-        {
-            rb2D.velocity = new Vector2(rb2D.velocity.x, 0);
-            rb2D.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            animator.SetTrigger("Jump");
-            StartCoroutine(JumpCooldown());
-        }
+    private void HandleJumpingState()  
+    {  
+        if (canJump && isGrounded)  
+        {  
+            rb2D.velocity = new Vector2(rb2D.velocity.x, jumpForce);  
+            animator.SetTrigger("Jump");  
+            StartCoroutine(JumpCooldown());  
+        }  
+        else if (!isGrounded && rb2D.velocity.y > 0)  
+        {  
+            animator.SetBool("IsJumping", true);  
+        }  
+        else  
+        {  
+            animator.SetBool("IsJumping", false);  
+            TransitionToState(BossState.Falling);  
+        }  
     }
 
     private void HandleFallingState()
@@ -343,4 +351,6 @@ public class EvilWizardBoss : MonoBehaviour
         Vector2 rayDirection = facingRight ? Vector2.right : Vector2.left;
         Gizmos.DrawLine(rayOrigin, rayOrigin + rayDirection * 5f);
     }
+
+    
 }
