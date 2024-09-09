@@ -1,31 +1,38 @@
 using UnityEngine;  
 using UnityEngine.SceneManagement;  
-using System.Collections;  
+using System.Collections; // Ensure this is included  
 
 public class Teleporter : MonoBehaviour  
 {  
     public GameObject PLAYER;  
-    private Animator anim;
+    
+    private Animator anim;  
+    private Rigidbody2D rb;  
 
     void Start()  
     {  
-        //anim = GetComponent<Animator>();  
+        anim = GetComponent<Animator>();  
+        rb = GetComponent<Rigidbody2D>();  
     }  
 
     private void OnTriggerEnter2D(Collider2D other)  
-    {
-        Animator playerAnimator = other.gameObject.GetComponent<Animator>();  
-        if (playerAnimator != null)  
-        {  
-            
-        }  
-        if (other.gameObject.CompareTag("Player"))  
+    {  
+        if (other.gameObject.CompareTag("Player"))
         {      
-            Health playerHealth = other.GetComponent<Health>();
-                if (playerHealth != null)  
-                {  
-                    playerHealth.Takedamage(20);  
-                } 
+            Death();  
         }  
+    }  
+
+    private void Death()  
+    {  
+        rb.bodyType = RigidbodyType2D.Static;  
+        Destroy(PLAYER, 1f);  
+        StartCoroutine(Restart()); // Start the coroutine  
+    }  
+
+    private IEnumerator Restart() // Change to IEnumerator  
+    {  
+        yield return new WaitForSeconds(1f); // Wait for 1 second  
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);  
     }  
 }
