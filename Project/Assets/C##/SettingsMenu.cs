@@ -25,6 +25,9 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] float soundTweenDuration;
     [SerializeField] CanvasGroup soundCanvasGroup;
 
+    public GameObject canvasGroupToMove;
+    public int newLayerIndex;
+
     private AudioManager audioManager; // Declare audioManager as a private field within the class
 
     private void Awake()
@@ -37,6 +40,7 @@ public class SettingsMenu : MonoBehaviour
         settingsMenu.SetActive(true);
         audioManager.PlaySFX(audioManager.buttonClick);
         Time.timeScale = 0;
+        ChangeLayerOrder();
         SettingsPanelIntro();
     }
 
@@ -97,5 +101,11 @@ public class SettingsMenu : MonoBehaviour
     {
         soundCanvasGroup.DOFade(0, settingsTweenDuration).SetUpdate(true);
         await soundPanelRect.DOAnchorPosX(leftPosX, settingsTweenDuration).SetUpdate(true).AsyncWaitForCompletion();
+    }
+
+    void ChangeLayerOrder()
+    {
+        RectTransform rectTransform = canvasGroupToMove.GetComponent<RectTransform>();
+        rectTransform.SetSiblingIndex(newLayerIndex);
     }
 }
