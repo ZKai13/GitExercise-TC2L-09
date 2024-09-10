@@ -41,7 +41,7 @@ public class Mushroom : MonoBehaviour
 
         if (animator != null)  
         {  
-            animator.Play("goblin_Idle");  
+            animator.Play("Mushroom idle");  
         }  
     }  
 
@@ -189,7 +189,7 @@ public class Mushroom : MonoBehaviour
         if (animator != null)  
         {  
             AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);  
-            if (stateInfo.IsName("goblin_Die"))  
+            if (stateInfo.IsName("Mushroom_die"))  
             {  
                 float dieAnimationLength = stateInfo.length;  
                 Destroy(gameObject, dieAnimationLength);  
