@@ -7466,7 +7466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af56639f2028ce4499f88ed0d4e3f9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerHealth: {fileID: 0}
+  playerHealth: {fileID: 1422776077}
   totalhealthBar: {fileID: 764816837}
   currenthealthBar: {fileID: 9848532}
 --- !u!1 &596895409
@@ -10101,7 +10101,6 @@ MonoBehaviour:
   blockStaminaCost: 15
   staminaSystem: {fileID: 1646031865}
   healthSystem: {fileID: 0}
-  isBlocking: 0
   blockDuration: 2
   blockCooldown: 1
   successfulBlockDuration: 0.5
@@ -10181,6 +10180,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingHealth: 20
+  PLAYER: {fileID: 0}
+  staminaImage: {fileID: 0}
 --- !u!50 &1422776078
 Rigidbody2D:
   serializedVersion: 4
