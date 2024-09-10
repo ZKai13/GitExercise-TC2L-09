@@ -11,7 +11,6 @@ public class MenuController : MonoBehaviour
         SceneManager.LoadScene(currentSceneName);  
     }  
 
-    // 加载主菜单的方法  
     public void LoadMainMenu()  
     {  
         SceneManager.LoadScene("MainMenu");  
