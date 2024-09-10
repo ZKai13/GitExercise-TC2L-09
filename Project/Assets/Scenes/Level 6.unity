@@ -1697,6 +1697,9 @@ MonoBehaviour:
   SFXSource: {fileID: 1663064638}
   BGM: {fileID: 8300000, guid: ac5f8153eb758b54d92dce1284eaecc8, type: 3}
   buttonClick: {fileID: 8300000, guid: 614e4f354ac313340bee43074e482157, type: 3}
+  playButtonClick: {fileID: 0}
+  unlockChest: {fileID: 0}
+  coinCollect: {fileID: 0}
 --- !u!4 &563419937
 Transform:
   m_ObjectHideFlags: 0
@@ -14801,7 +14804,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
+  m_sendNavigationEvents: 0
   m_DragThreshold: 10
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
