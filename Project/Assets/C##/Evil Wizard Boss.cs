@@ -73,7 +73,7 @@ public class EvilWizardBoss : MonoBehaviour
 
         UpdateAnimatorParameters();
         CheckForStateTransitions();
-        HandleCurrentState();
+        HandleCurrentState();   
     }
 
     private void UpdateAnimatorParameters()
@@ -81,8 +81,6 @@ public class EvilWizardBoss : MonoBehaviour
         animator.SetBool("IsGrounded", isGrounded);
         animator.SetFloat("Speed", rb2D.velocity.magnitude);
         animator.SetFloat("VerticalSpeed", rb2D.velocity.y);
-        animator.SetBool("IsJumping", !isGrounded && rb2D.velocity.y > 0);
-        animator.SetBool("IsFalling", !isGrounded && rb2D.velocity.y < 0);
     }
 
     private void CheckForStateTransitions()
@@ -174,37 +172,43 @@ public class EvilWizardBoss : MonoBehaviour
         {  
             rb2D.velocity = new Vector2(rb2D.velocity.x, jumpForce);  
             animator.SetTrigger("Jump");  
+            animator.SetBool("IsJumping", true);  
+            animator.SetBool("IsGrounded", false); 
             StartCoroutine(JumpCooldown());  
         }  
-        else if (!isGrounded && rb2D.velocity.y > 0)  
+        else if (!isGrounded && rb2D.velocity.y <= 0)  
         {  
-            animator.SetBool("IsJumping", true);  
-        }  
-        else  
-        {  
-            animator.SetBool("IsJumping", false);  
             TransitionToState(BossState.Falling);  
         }  
     }
 
     private void HandleFallingState()
     {
+        animator.SetBool("IsFalling", true);  
+        animator.SetBool("IsJumping", false);  
+        
         if (isGrounded)
         {
-            animator.ResetTrigger("Fall");
-            TransitionToState(BossState.Idle);
+            animator.SetBool("IsJumping", false);
+            animator.SetBool("IsFalling", false);
+            StartCoroutine(FallToIdleTransition());
         }
-        else
-        {
-            animator.SetBool("IsFalling", true);
-        }
-    }
 
+    }
+    
+
+private IEnumerator FallToIdleTransition()
+{
+    yield return new WaitForSeconds(0.2f); // Adjust the delay as needed
+    TransitionToState(BossState.Idle);
+    
+}
     private void TransitionToState(BossState newState)
     {
         if (currentState == newState) return;
 
         currentState = newState;
+
         animator.ResetTrigger("Walk");
         animator.ResetTrigger("Jump");
         animator.ResetTrigger("Fall");
@@ -212,6 +216,8 @@ public class EvilWizardBoss : MonoBehaviour
         animator.ResetTrigger("HeavyAttack");
         animator.ResetTrigger("Hurt");
         animator.ResetTrigger("Die");
+        animator.SetBool("IsJumping", false);  
+        animator.SetBool("IsFalling", false);  
 
         switch (newState)
         {
@@ -222,7 +228,7 @@ public class EvilWizardBoss : MonoBehaviour
                 animator.SetTrigger("Jump");
                 break;
             case BossState.Falling:
-                animator.SetTrigger("Fall");
+                animator.SetTrigger("Fall"); 
                 break;
             case BossState.LightAttack:
                 animator.SetTrigger("LightAttack");
@@ -321,6 +327,7 @@ public class EvilWizardBoss : MonoBehaviour
             }
         }
     }
+    
 
     private IEnumerator AttackCooldown(float cooldownTime)
     {

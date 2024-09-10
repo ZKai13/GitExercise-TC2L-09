@@ -23,11 +23,17 @@ public class Enemy : MonoBehaviour
     public Health playerHealth;  
     public float cooldownTime = 0.75f;  
     private float nextAttackTime = 0f;  
+    private bool canBePushed = true;  
+    private float pushForce = 3f;  
+    private float pushCooldown = 1f;  
 
     void Start()  
     {  
+        playerCombat = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCombat>();  
+        playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();  
         currentHealth = maxHealth;  
-        target = GameObject.FindGameObjectWithTag("Player").transform;  
+        target = GameObject.FindGameObjectWithTag("Player").transform; 
+         
 
         animator = GetComponent<Animator>();  
         spriteRenderer = GetComponent<SpriteRenderer>();  
@@ -51,6 +57,7 @@ public class Enemy : MonoBehaviour
             FollowPlayer();  
         }  
     }  
+
 
     void FollowPlayer()  
     {  
@@ -79,8 +86,7 @@ public class Enemy : MonoBehaviour
         {  
             animator.SetBool("isWalking", false);  
         }  
-    }  
-
+    }
     void Attack()  
     {  
         if (isDead) return;  
@@ -114,12 +120,17 @@ public class Enemy : MonoBehaviour
         {  
             if (playerHealth != null)  
             {  
-                playerHealth.Takedamage(1);  
-                Debug.Log("Damage applied to player.");  
+                playerHealth.Takedamage(1);
+                Debug.Log("Applying damage to player");  
+                  
+            }  
+            else  
+            {  
+                Debug.LogError("playerHealth is null!");  
             }  
         }  
         isAttacking = false;  
-    }  
+    }
 
     public void Takedamage(int damage, bool isBlocking)  
     {  
@@ -135,6 +146,7 @@ public class Enemy : MonoBehaviour
         else  
         {  
             currentHealth -= damage;  
+            PushEnemy(true);  
 
             if (currentHealth <= 0)  
             {  
@@ -145,6 +157,23 @@ public class Enemy : MonoBehaviour
                 animator.SetTrigger("Hurt");  
             }  
         }  
+    }  
+
+    private void PushEnemy(bool shouldPush)  
+    {  
+        if (shouldPush && canBePushed)  
+        {  
+            Vector2 pushDirection = (transform.position - target.position).normalized;  
+            GetComponent<Rigidbody2D>().AddForce(pushDirection * pushForce, ForceMode2D.Impulse);  
+            StartCoroutine(PushCooldown());  
+        }  
+    }  
+
+    private IEnumerator PushCooldown()  
+    {  
+        canBePushed = false;  
+        yield return new WaitForSeconds(pushCooldown);  
+        canBePushed = true;  
     }  
 
     IEnumerator Stun()  
@@ -174,7 +203,7 @@ public class Enemy : MonoBehaviour
     {  
         isStunned = true;  
         animator.SetBool("Stunned", true);  
-        
+
         yield return new WaitForSeconds(stunDuration);  
 
         isStunned = false;  
@@ -203,14 +232,14 @@ public class Enemy : MonoBehaviour
     public void OnAttackFinished()  
     {  
         isAttacking = false;  
-    }
+    }  
 
     private void OnCollisionEnter2D(Collision2D collision)  
     {  
-        // 检查碰撞对象是否为你想要的碰撞体  
+        // Check if the colliding object is the desired collision object  
         if (collision.gameObject.CompareTag("DestroyCollider"))  
         {  
-            Destroy(gameObject); // 销毁敌人  
+            Destroy(gameObject); // Destroy the enemy  
         }  
     }  
 }
