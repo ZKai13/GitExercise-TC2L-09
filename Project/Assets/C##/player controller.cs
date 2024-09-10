@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
 
     public float moveX;
     //A float to store the player x axis input.
+    private Health health;
 
     private Vector3 originalScale;
     private bool jump = true; // Declare the jump variable
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rigi = GetComponent<Rigidbody2D>();
+        health = GetComponent<Health>();
         animator = GetComponent<Animator>();
         //Initializes the Animator and rigidbody2d
         originalScale = transform.localScale;
@@ -38,12 +40,15 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Movement();
+        if (health.currentHealth > 0)
+        {
+            Movement();
         //Handle the player movement input and animation
-        Direction();
+            Direction();
         //Manage the direction based on movement
-        Jump();
+            Jump();
         //Controls and check the jumping
+        }
     }
 
     private void Movement()
