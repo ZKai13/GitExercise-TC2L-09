@@ -8,6 +8,7 @@ TagManager:
   - Melon
   - Audio
   - MovingPlatform
+  - DE
   layers:
   - Default
   - TransparentFX

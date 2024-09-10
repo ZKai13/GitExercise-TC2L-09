@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour
 
     private Animator animator;  
     private SpriteRenderer spriteRenderer;  
-    public PlayerCombat playerCombat;  
+    public PlayerCombat playerCombat; 
 
     private bool isDead = false;  
     private bool isAttacking = false;  
@@ -205,12 +205,5 @@ public class Enemy : MonoBehaviour
         isAttacking = false;  
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)  
-    {  
-        // 检查碰撞对象是否为你想要的碰撞体  
-        if (collision.gameObject.CompareTag("DestroyCollider"))  
-        {  
-            Destroy(gameObject); // 销毁敌人  
-        }  
-    }  
+ 
 }

@@ -22,7 +22,7 @@ public class ItemCollect : MonoBehaviour
         {
             Destroy(collision.gameObject);
             Melon++;
-            Debug.Log("Collected Melon: " + Melon);
+            Debug.Log("Collected Coins: " + Melon);
 
             if (audioSource && collectSound)  
             {  
