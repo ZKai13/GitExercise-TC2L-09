@@ -9,6 +9,7 @@ TagManager:
   - Audio
   - MovingPlatform
   - DE
+  - MusicTrigger
   layers:
   - Default
   - TransparentFX
