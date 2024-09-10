@@ -217,7 +217,7 @@ public class PlayerCombat : MonoBehaviour
         return isBlocking;  
     }  
 
-    public void OnEnemyAttack(float damage)
+    public void OnEnemyAttack(Enemy enemy,float damage)
     {
         if (isBlocking && canBlockImpact)
         {
@@ -279,5 +279,16 @@ public class PlayerCombat : MonoBehaviour
         if (attackPoint == null) return;
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    }
+    public void IncreaseLightAttackDamage(int amount)
+    {
+        lightAttackDamage += amount;
+        Debug.Log("Light Attack Damage increased to: " + lightAttackDamage);
+    }
+
+    public void IncreaseHeavyAttackDamage(int amount)
+    {
+       heavyAttackDamage += amount;
+       Debug.Log("Heavy Attack Damage increased to: " + heavyAttackDamage);
     }
 }
