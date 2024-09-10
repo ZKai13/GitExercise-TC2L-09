@@ -1,17 +1,20 @@
+using System.Collections;
 using UnityEngine;  
 
 public class Treasure : MonoBehaviour  
 {  
-    public AudioClip openSound;
+    public AudioClip openSound;  
     private bool isOpen = false;  
     private Animator animator;  
-    private bool playerInRange = false; 
-    private AudioSource audioSource; 
+    private bool playerInRange = false;   
+    private AudioSource audioSource;   
+    private UIManager uiManager;
 
     private void Start()  
     {  
-        animator = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>();
+        animator = GetComponent<Animator>();  
+        audioSource = GetComponent<AudioSource>();  
+        uiManager = FindObjectOfType<UIManager>();
     }  
 
     private void Update()  
@@ -26,7 +29,7 @@ public class Treasure : MonoBehaviour
     {  
         if (collision.CompareTag("Player"))  
         {  
-            playerInRange = true;
+            playerInRange = true;  
         }  
     }  
 
@@ -34,14 +37,25 @@ public class Treasure : MonoBehaviour
     {  
         if (collision.CompareTag("Player"))  
         {  
-            playerInRange = false; // 玩家离开范围  
+            playerInRange = false;   
         }  
     }  
 
     private void OpenChest()  
     {  
         isOpen = true;  
-        animator.SetTrigger("Open");
-        audioSource.PlayOneShot(openSound);
+        animator.SetTrigger("Open");  
+        audioSource.PlayOneShot(openSound);  
+        StartCoroutine(ShowTreasureUIWithDelay());
+    }  
+
+    private IEnumerator ShowTreasureUIWithDelay()  
+    {   
+        yield return new WaitForSecondsRealtime(1f);   
+
+        
+        uiManager.ShowTreasureUI(); 
+        Time.timeScale = 0;    
+
     }  
 }

@@ -217,11 +217,67 @@ public class PlayerCombat : MonoBehaviour
         return isBlocking;  
     }  
 
-    private void OnDrawGizmosSelected()  
-    {  
-        if (attackPoint == null)  
-            return;  
+    public void OnEnemyAttack(float damage)
+    {
+        if (isBlocking && canBlockImpact)
+        {
+            Debug.Log("Successful block!");   
+            StartCoroutine(SuccessfulBlock());
+        }
+        else
+        {
+            if (healthSystem != null)
+            {
+                healthSystem.Takedamage(damage);
+                Debug.Log($"Player took {damage} damage. Current health: {healthSystem.currentHealth}");
+            }
+            else
+            {
+                Debug.LogError("Health component is not assigned to the player!");
+            }
+        }
+    }
 
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);  
-    }  
+    IEnumerator SuccessfulBlock()
+    {
+        canBlockImpact = false;
+        animator.SetTrigger("BlockImpact");
+
+        // Play block effect
+        PlayBlockEffect();
+
+        // Stun nearby enemies
+        StunNearbyEnemies();
+
+        yield return new WaitForSeconds(successfulBlockDuration);
+        canBlockImpact = true;
+    }
+
+    void PlayBlockEffect()
+    {
+        // Implement your block effect here
+        // For example:
+        // blockEffectParticleSystem.Play();
+        // audioSource.PlayOneShot(blockSoundEffect);
+    }
+
+    void StunNearbyEnemies()
+    {
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, attackRange, enemyLayers);
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            Enemy enemyScript = enemy.GetComponent<Enemy>();
+            if (enemyScript != null)
+            {
+                enemyScript.GetStunned();
+            }
+        }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (attackPoint == null) return;
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    }
 }
