@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 using System.Threading.Tasks;
+using UnityEngine.UI;
 
 
 
@@ -18,14 +19,27 @@ public class LevelMenu : MonoBehaviour
     [SerializeField] float levelTweenDuration;
     [SerializeField] CanvasGroup levelCanvasGroup;
 
+    public Image fadeImage; // add in the picture to fade (which is black)
+    public float fadeDuration = 1f;
     public GameObject canvasGroupToMove;
     public int newLayerIndex;
 
     private AudioManager audioManager; // Declare audioManager as a private field within the class
 
+    public Button[] buttons;
     private void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+
+        int unlockedLevel = PlayerPrefs.GetInt("UnlockedLevel", 1);
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            buttons[i].interactable = false;
+        }
+        for (int i = 0; i < unlockedLevel; i++)
+        {
+            buttons[i].interactable = true;
+        }
     }
 
     public void Level()
@@ -37,11 +51,11 @@ public class LevelMenu : MonoBehaviour
         LevelPanelIntro();
     }
 
-    public void OpenLevel(string levelName)
+    public void OpenLevel(int levelId)
     {
-        // Load the scene with the specified name
         audioManager.PlaySFX(audioManager.buttonClick);
-        SceneManager.LoadScene(levelName);
+        string levelName = "Level " + levelId;
+        StartCoroutine(FadeOut(levelName));
         Time.timeScale = 1;
         
     }
@@ -73,5 +87,33 @@ public class LevelMenu : MonoBehaviour
     {
         RectTransform rectTransform = canvasGroupToMove.GetComponent<RectTransform>();
         rectTransform.SetSiblingIndex(newLayerIndex);
+    }
+
+    private IEnumerator FadeIn()
+    {
+        float elapsedTime = 0f; 
+        Color color = fadeImage.color; 
+        while (elapsedTime < fadeDuration) //this is a loop, check if the fade duration is > the elapsed time
+        {
+            elapsedTime += Time.deltaTime;
+            color.a = 1f - Mathf.Clamp01(elapsedTime / fadeDuration); //when the color is fully solid, it turns back transparent
+            fadeImage.color = color;
+            yield return null;
+        }
+        fadeImage.color = new Color(color.r, color.g, color.b, 0f); 
+    }
+
+    private IEnumerator FadeOut(string levelName)
+    {
+        float elapsedTime = 0f;
+        Color color = fadeImage.color;
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            color.a = Mathf.Clamp01(elapsedTime / fadeDuration);
+            fadeImage.color = color;
+            yield return null;
+        }
+        SceneManager.LoadScene(levelName); //same as gotoscene function (changescene)
     }
 }
