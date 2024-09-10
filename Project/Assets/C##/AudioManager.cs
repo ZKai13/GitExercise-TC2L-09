@@ -12,6 +12,10 @@ public class AudioManager : MonoBehaviour
 
     public AudioClip BGM;
     public AudioClip buttonClick;
+    public AudioClip playButtonClick;
+    public AudioClip unlockChest;
+    public AudioClip coinCollect;
+
 
     private void Start()
     {

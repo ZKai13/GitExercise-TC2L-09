@@ -216,7 +216,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: SampleScene
+          m_StringArgument: Level 1
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &29190672
@@ -280,7 +280,7 @@ AudioSource:
   m_GameObject: {fileID: 29190669}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 6151338385004680782, guid: 695489f067c207640b5d5e272b027fb3, type: 2}
   m_audioClip: {fileID: 8300000, guid: b974f414f0cf7854e80a75aff8991bf8, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -1140,7 +1140,7 @@ MonoBehaviour:
   m_FillRect: {fileID: 1417597781}
   m_HandleRect: {fileID: 1451341367}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: 0.0001
   m_MaxValue: 1
   m_WholeNumbers: 0
   m_Value: 1
@@ -1670,8 +1670,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b1f75057b7453547af209d052087eb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myMixer: {fileID: 24100000, guid: 695489f067c207640b5d5e272b027fb3, type: 2}
   musicSlider: {fileID: 959793518}
+  sfxSlider: {fileID: 265239926}
+  myMixer: {fileID: 24100000, guid: 695489f067c207640b5d5e272b027fb3, type: 2}
 --- !u!1 &424495478
 GameObject:
   m_ObjectHideFlags: 0
@@ -5054,6 +5055,9 @@ MonoBehaviour:
   SFXSource: {fileID: 354465454}
   BGM: {fileID: 8300000, guid: f47738aabbd821e48802b174b6691521, type: 3}
   buttonClick: {fileID: 8300000, guid: 614e4f354ac313340bee43074e482157, type: 3}
+  playButtonClick: {fileID: 8300000, guid: b974f414f0cf7854e80a75aff8991bf8, type: 3}
+  unlockChest: {fileID: 0}
+  coinCollect: {fileID: 0}
 --- !u!4 &1384704129
 Transform:
   m_ObjectHideFlags: 0

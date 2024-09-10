@@ -122,12 +122,17 @@ public class PlayerController : MonoBehaviour
         }  
     }  
 
+
     private void OnCollisionExit2D(Collision2D collision)  
     {    
-        if (collision.gameObject.CompareTag("MovingPlatform"))  
-        {  
-            transform.parent = null; // 解除父物体  
-            Destroy(transform.parent.gameObject); // 删除空物体 
-        }  
+    if (collision.gameObject.CompareTag("MovingPlatform"))  
+    {  
+        if (transform.parent != null)  
+        {
+            Destroy(transform.parent.gameObject); // Delete the parent object only if it exists
+        }
+        
+        transform.parent = null; // Unparent the object
+    }  
     }  
 }

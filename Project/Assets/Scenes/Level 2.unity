@@ -139783,7 +139783,7 @@ AudioSource:
   m_GameObject: {fileID: 1110314173}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 6151338385004680782, guid: 695489f067c207640b5d5e272b027fb3, type: 2}
   m_audioClip: {fileID: 8300000, guid: 2492bc2049f818541bfafa7ac2a0f849, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.071
@@ -141306,7 +141306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathUI: {fileID: 1837433395}
-  afterDeathUI: {fileID: 0}
+  afterDeathUI: {fileID: 324246591}
 --- !u!4 &1420228329
 Transform:
   m_ObjectHideFlags: 0
@@ -142890,6 +142890,9 @@ MonoBehaviour:
   SFXSource: {fileID: 1447121477}
   BGM: {fileID: 8300000, guid: ef63839d740a9fa44994804b4e03ee27, type: 3}
   buttonClick: {fileID: 8300000, guid: 614e4f354ac313340bee43074e482157, type: 3}
+  playButtonClick: {fileID: 0}
+  unlockChest: {fileID: 0}
+  coinCollect: {fileID: 0}
 --- !u!4 &1665732983
 Transform:
   m_ObjectHideFlags: 0

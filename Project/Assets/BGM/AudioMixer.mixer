@@ -37,6 +37,8 @@ AudioMixerController:
   m_ExposedParameters:
   - guid: 24234af4a29cb5b4181f696a0022910e
     name: music
+  - guid: bd951a0f4e11cb040b6307be700d0941
+    name: sfx
   m_AudioMixerGroupViews:
   - guids:
     - b9730e9ee54053f48b01d53e536e3a1d
