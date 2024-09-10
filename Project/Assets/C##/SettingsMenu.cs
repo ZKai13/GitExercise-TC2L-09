@@ -25,6 +25,14 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] float soundTweenDuration;
     [SerializeField] CanvasGroup soundCanvasGroup;
 
+    //Graphics
+    [SerializeField] GameObject graphicsMenu;
+    [SerializeField] RectTransform graphicsPanelRect;
+    [SerializeField] float graphicsLeftPosX, graphicsMiddlePosX;
+    [SerializeField] float graphicsTweenDuration;
+    [SerializeField] CanvasGroup graphicsCanvasGroup;
+
+
     public GameObject canvasGroupToMove;
     public int newLayerIndex;
 
@@ -84,7 +92,7 @@ public class SettingsMenu : MonoBehaviour
     {
         audioManager.PlaySFX(audioManager.buttonClick);
         await SoundPanelOutro();
-        settingsMenu.SetActive(false);
+        soundMenu.SetActive(false);
         Time.timeScale = 1; 
         
     }
@@ -108,4 +116,40 @@ public class SettingsMenu : MonoBehaviour
         RectTransform rectTransform = canvasGroupToMove.GetComponent<RectTransform>();
         rectTransform.SetSiblingIndex(newLayerIndex);
     }
+
+    public async void Graphics()
+    {
+        audioManager.PlaySFX(audioManager.buttonClick);
+        await SettingsPanelOutro();
+        settingsMenu.SetActive(false);
+        GraphicsPanelIntro();
+        graphicsMenu.SetActive(true);
+        Time.timeScale = 0;
+        
+    }
+
+
+    public async void GraphicsBack()
+    {
+        audioManager.PlaySFX(audioManager.buttonClick);
+        await GraphicsPanelOutro();
+        graphicsMenu.SetActive(false);
+        Time.timeScale = 1; 
+        
+    }
+
+
+    void GraphicsPanelIntro()
+    {
+        graphicsCanvasGroup.DOFade(1, graphicsTweenDuration).SetUpdate(true);
+        graphicsPanelRect.DOAnchorPosX(middlePosX, graphicsTweenDuration).SetUpdate(true);
+    }
+
+
+    async Task GraphicsPanelOutro()
+    {
+        graphicsCanvasGroup.DOFade(0, graphicsTweenDuration).SetUpdate(true);
+        await graphicsPanelRect.DOAnchorPosX(leftPosX, graphicsTweenDuration).SetUpdate(true).AsyncWaitForCompletion();
+    }
+
 }
