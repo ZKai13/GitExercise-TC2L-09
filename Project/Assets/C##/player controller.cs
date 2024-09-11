@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rigi;
     //used for physics calculations.
     private Animator animator;
+    private Health health;
     
 
     float movesSpeed = 7f;
@@ -30,20 +31,24 @@ public class PlayerController : MonoBehaviour
         rigi = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         //Initializes the Animator and rigidbody2d
+        health = GetComponent<Health>();
         originalScale = transform.localScale;
         //Saves the player scale to handle character flipping.
     
     }
 
     // Update is called once per frame
-    void Update()
+     void Update()
     {
-        Movement();
+        if (health.currentHealth > 0)
+        {
+            Movement();
         //Handle the player movement input and animation
-        Direction();
+            Direction();
         //Manage the direction based on movement
-        Jump();
+            Jump();
         //Controls and check the jumping
+        }
     }
 
     private void Movement()

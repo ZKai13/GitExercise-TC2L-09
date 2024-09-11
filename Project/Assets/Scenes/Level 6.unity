@@ -1695,7 +1695,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSource: {fileID: 1686860025}
   SFXSource: {fileID: 1663064638}
-  BGM: {fileID: 8300000, guid: ac5f8153eb758b54d92dce1284eaecc8, type: 3}
+  BGM: {fileID: 8300000, guid: f8d1b962c16ff3b449f9874c83ad555a, type: 3}
   buttonClick: {fileID: 8300000, guid: 614e4f354ac313340bee43074e482157, type: 3}
   playButtonClick: {fileID: 0}
   unlockChest: {fileID: 0}
