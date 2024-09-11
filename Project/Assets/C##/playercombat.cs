@@ -308,39 +308,40 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
-    void LightAttack()
-    {
-        animator.SetBool("isHeavyAttack", false);
-        animator.SetTrigger("attack");
+    void LightAttack()  
+    {  
+        animator.SetBool("isHeavyAttack", false);  
+        animator.SetTrigger("attack");  
 
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);  
 
-        foreach (Collider2D enemy in hitEnemies)
-        {
-            Enemy enemyScript = enemy.GetComponent<Enemy>();
-            if (enemyScript != null)
-            {
-                enemyScript.Takedamage(lightAttackDamage, false);
-            }
-        }
-    }
+        foreach (Collider2D enemy in hitEnemies)  
+        {  
+            Mushroom mushroomScript = enemy.GetComponent<Mushroom>(); // Get the Mushroom script  
+            if (mushroomScript != null)  
+            {  
+                mushroomScript.Takedamage(lightAttackDamage, false); // Call Takedamage on Mushroom  
+            }  
+        }  
+    }  
 
-    void HeavyAttack()
-    {
-        animator.SetBool("isHeavyAttack", true);
-        animator.SetTrigger("attack");
+    void HeavyAttack()  
+    {  
+        animator.SetBool("isHeavyAttack", true);  
+        animator.SetTrigger("attack");  
 
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);  
 
-        foreach (Collider2D enemy in hitEnemies)
-        {
-            Enemy enemyScript = enemy.GetComponent<Enemy>();
-            if (enemyScript != null)
-            {
-                enemyScript.Takedamage(heavyAttackDamage, false);
-            }
-        }
-    }
+        foreach (Collider2D enemy in hitEnemies)  
+        {  
+            Mushroom mushroomScript = enemy.GetComponent<Mushroom>(); // Get the Mushroom script  
+            if (mushroomScript != null)  
+            {  
+                mushroomScript.Takedamage(heavyAttackDamage, false); // Call Takedamage on Mushroom  
+            }  
+        }  
+    }  
+    
 
     IEnumerator Block()
     {
