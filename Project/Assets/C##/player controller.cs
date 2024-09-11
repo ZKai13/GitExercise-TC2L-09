@@ -116,28 +116,24 @@ public class PlayerController : MonoBehaviour
         return Physics2D.Raycast(transform.position, Vector2.down, 0.1f);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)  
-    {  
-        if (collision.gameObject.CompareTag("MovingPlatform"))  
-        {    
-            GameObject parentObject = new GameObject("ParentObject");  
-            parentObject.transform.position = transform.position; // 设置位置  
-            transform.parent = parentObject.transform; // 设置角色的父物体  
-            parentObject.transform.parent = collision.transform;
-        }  
-    }  
-
-
-    private void OnCollisionExit2D(Collision2D collision)  
-    {    
-    if (collision.gameObject.CompareTag("MovingPlatform"))  
-    {  
-        if (transform.parent != null)  
+private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("MovingPlatform"))
         {
-            Destroy(transform.parent.gameObject); // Delete the parent object only if it exists
+            GameObject parentObject = new GameObject("ParentObject");
+            parentObject.transform.position = transform.position; // 设置位置
+            transform.parent = parentObject.transform; // 设置角色的父物体
+            parentObject.transform.parent = collision.transform;
         }
-        
-        transform.parent = null; // Unparent the object
-    }  
-    }  
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("MovingPlatform"))
+        {
+            transform.parent = null; // 解除父物体
+            Destroy(transform.parent.gameObject); // 删除空物体 
+        }
+    }
 }
+
