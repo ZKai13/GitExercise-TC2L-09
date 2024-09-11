@@ -432,4 +432,16 @@ public class PlayerCombat : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
+
+    public void IncreaseLightAttackDamage(int amount)
+    {
+        lightAttackDamage += amount;
+        Debug.Log("Light Attack Damage increased to: " + lightAttackDamage);
+    }
+
+    public void IncreaseHeavyAttackDamage(int amount)
+    {
+       heavyAttackDamage += amount;
+       Debug.Log("Heavy Attack Damage increased to: " + heavyAttackDamage);
+    }
 }
