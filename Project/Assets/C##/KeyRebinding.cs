@@ -13,6 +13,10 @@ public class KeyRebinding : MonoBehaviour
 
     private string currentKey;
 
+    public static KeyRebinding Instance { get; private set; }
+
+
+
     void Start()
     {
         // Load saved key bindings or use default ones
@@ -79,6 +83,28 @@ public class KeyRebinding : MonoBehaviour
 
             // Clear current key after assigning
             currentKey = null;
+        }
+    }
+
+    // Method to get the key for a specific action
+    public KeyCode GetKeyForAction(string action)
+    {
+        if (action == "MoveLeft")
+        {
+            return moveLeftKey;
+        }
+        else if (action == "MoveRight")
+        {
+            return moveRightKey;
+        }
+        else if (action == "Jump")
+        {
+            return jumpKey;
+        }
+        else
+        {
+            Debug.LogWarning("Unknown action: " + action);
+            return KeyCode.None;
         }
     }
 }
