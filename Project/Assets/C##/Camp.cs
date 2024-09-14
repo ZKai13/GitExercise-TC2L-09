@@ -10,7 +10,7 @@ public class Camp : MonoBehaviour
 
     void Update()  
     {  
-        if (isNearInteractable && Input.GetKeyDown(KeyCode.P))  
+        if (isNearInteractable && Input.GetKeyDown(KeyCode.F))  
         {  
             Interact();  
         }  

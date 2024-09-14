@@ -7,6 +7,8 @@ public class KeybindManager : MonoBehaviour
     public Button moveLeftButton;
     public Button moveRightButton;
     public Button jumpButton;
+    public Button attackButton;
+    public Button blockButton;
     public Text feedbackText; // Optional: to display which button is currently being rebound
 
     void Start()
@@ -14,6 +16,8 @@ public class KeybindManager : MonoBehaviour
         moveLeftButton.onClick.AddListener(() => StartRebinding("MoveLeft", moveLeftButton));
         moveRightButton.onClick.AddListener(() => StartRebinding("MoveRight", moveRightButton));
         jumpButton.onClick.AddListener(() => StartRebinding("Jump", jumpButton));
+        blockButton.onClick.AddListener(() => StartRebinding("Block", blockButton));
+        attackButton.onClick.AddListener(() => StartRebinding("Attack", attackButton));
     }
 
     private void StartRebinding(string action, Button button)

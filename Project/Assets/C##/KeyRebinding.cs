@@ -6,10 +6,14 @@ public class KeyRebinding : MonoBehaviour
     public Text moveLeftText;
     public Text moveRightText;
     public Text jumpText;
+    public Text attackText;
+    public Text blockText;
 
     private KeyCode moveLeftKey;
     private KeyCode moveRightKey;
     private KeyCode jumpKey;
+    private KeyCode attackKey;
+    private KeyCode blockKey;
 
     private string currentKey;
 
@@ -23,11 +27,16 @@ public class KeyRebinding : MonoBehaviour
         moveLeftKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("MoveLeftKey", KeyCode.A.ToString()));
         moveRightKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("MoveRightKey", KeyCode.D.ToString()));
         jumpKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("JumpKey", KeyCode.Space.ToString()));
+        attackKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("AttackKey", KeyCode.Space.ToString()));
+        blockKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("BlockKey", KeyCode.Space.ToString()));
 
         // Update UI text
         moveLeftText.text = moveLeftKey.ToString();
         moveRightText.text = moveRightKey.ToString();
         jumpText.text = jumpKey.ToString();
+        attackText.text = attackKey.ToString();
+        blockText.text = blockKey.ToString();
+
     }
 
     void Update()
@@ -46,6 +55,16 @@ public class KeyRebinding : MonoBehaviour
         if (Input.GetKeyDown(jumpKey))
         {
             Debug.Log("Jump");
+        }
+
+        if (Input.GetKeyDown(attackKey))
+        {
+            Debug.Log("Attack");
+        }
+
+        if (Input.GetKeyDown(blockKey))
+        {
+            Debug.Log("Block");
         }
     }
 
@@ -80,6 +99,20 @@ public class KeyRebinding : MonoBehaviour
                 jumpText.text = jumpKey.ToString();
                 PlayerPrefs.SetString("JumpKey", jumpKey.ToString());
             }
+            else if (currentKey == "Attack")
+            {
+                attackKey = e.keyCode;
+                attackText.text = attackKey.ToString();
+                PlayerPrefs.SetString("AttackKey", attackKey.ToString());
+            }
+            else if (currentKey == "Block")
+            {
+                blockKey = e.keyCode;
+                blockText.text = blockKey.ToString();
+                PlayerPrefs.SetString("BlockKey", blockKey.ToString());
+            }
+
+
 
             // Clear current key after assigning
             currentKey = null;
@@ -100,6 +133,14 @@ public class KeyRebinding : MonoBehaviour
         else if (action == "Jump")
         {
             return jumpKey;
+        }
+        else if (action == "Attack")
+        {
+            return attackKey;
+        }
+        else if (action == "Block")
+        {
+            return blockKey;
         }
         else
         {

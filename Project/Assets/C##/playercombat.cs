@@ -35,21 +35,32 @@ public class PlayerCombat : MonoBehaviour
     public float heavyAttackPushForce = 5f; // 重攻击击退力度  
     private bool isMoving = false; // 是否正在移动  
 
-    void Start()  
-    {  
-        animator = GetComponent<Animator>();  
-        staminaSystem = GetComponent<Staminasystem>();  
-        healthSystem = GetComponent<Health>();  
+    private KeyRebinding keyRebinding;
 
-        // 检查必要组件是否存在  
-        if (staminaSystem == null)  
-        {  
-            Debug.LogError("Staminasystem not found on this GameObject!");  
-        }  
-        if (healthSystem == null)  
-        {  
-            Debug.LogError("Health component not found on this GameObject!");  
-        }  
+    void Start()
+    {
+        animator = GetComponent<Animator>();
+        staminaSystem = GetComponent<Staminasystem>();
+        healthSystem = GetComponent<Health>();
+        keyRebinding = FindObjectOfType<KeyRebinding>(); 
+
+        if (animator == null)
+        {
+            Debug.LogError("Animator component not found on this GameObject!");
+        }
+        // Check necessary components
+        if (staminaSystem == null)
+        {
+            Debug.LogError("Staminasystem not found on this GameObject!");
+        }
+        if (healthSystem == null)
+        {
+            Debug.LogError("Health component not found on this GameObject!");
+        }
+        if (keyRebinding == null)
+        {
+            Debug.LogError("KeyRebinding component not found!");
+        }
     }  
 
     void Update()  
@@ -88,39 +99,44 @@ public class PlayerCombat : MonoBehaviour
         animator.SetBool("isAttacking", false);
     }  
 
-    void HandleAttackInput()  
-    {  
-        // 处理攻击输入  
-        if (Input.GetKeyDown(KeyCode.Q) && !isMoving)  
-        {  
-            if (!isAttacking)  
-            {  
-                holdTime = 0f;  
-                isAttacking = true;  
-                attackButtonHeld = true;  
-                isMoving = false;  
-                animator.SetBool("isAttacking", true);  
-                animator.SetTrigger("attack");  
-                OnAttackStart();  
-            }  
-        }  
+    void HandleAttackInput()
+    {
+        if (keyRebinding == null) 
+        {
+            Debug.LogError("KeyRebinding is not assigned!");
+            return;
+        }
 
-        if (attackButtonHeld)  
-        {  
-            holdTime += Time.deltaTime;  
-        }  
+        if (Input.GetKeyDown(keyRebinding.GetKeyForAction("Attack")) && !isMoving)
+        {
+            if (!isAttacking)
+            {
+                holdTime = 0f;
+                isAttacking = true;
+                attackButtonHeld = true;
+                isMoving = false;
+                animator.SetBool("isAttacking", true);
+                animator.SetTrigger("attack");
+                OnAttackStart();
+            }
+        }
 
-        if (Input.GetKeyUp(KeyCode.Q))  
-        {  
-            if (isAttacking)  
-            {  
-                PerformAttack(holdTime >= heavyAttackThreshold);  
-                attackButtonHeld = false;  
-                holdTime = 0f;  
-                isMoving = true;  
-                OnAttackEnd();  
-            }  
-        }  
+        if (attackButtonHeld)
+        {
+            holdTime += Time.deltaTime;
+        }
+
+        if (Input.GetKeyUp(keyRebinding.GetKeyForAction("Attack")))
+        {
+            if (isAttacking)
+            {
+                PerformAttack(holdTime >= heavyAttackThreshold);
+                attackButtonHeld = false;
+                holdTime = 0f;
+                isMoving = true;
+                OnAttackEnd();
+            }
+        }
     }  
 
     void PerformAttack(bool isHeavyAttack)  
@@ -176,8 +192,7 @@ public class PlayerCombat : MonoBehaviour
 
     void HandleBlockInput()  
     {  
-        // 处理格挡输入  
-        if (Input.GetKeyDown(KeyCode.E) && staminaSystem.ConsumeStamina(blockStaminaCost))  
+        if (Input.GetKeyDown(keyRebinding.GetKeyForAction("Block")) && staminaSystem.ConsumeStamina(blockStaminaCost))  
         {  
             StartCoroutine(Block());  
         }  
@@ -189,7 +204,7 @@ public class PlayerCombat : MonoBehaviour
         animator.SetBool("isBlocking", true);  
 
         float blockTimer = 0f;  
-        while (blockTimer < blockDuration && Input.GetKey(KeyCode.E))  
+        while (blockTimer < blockDuration && Input.GetKey(keyRebinding.GetKeyForAction("Block")))  
         {  
             blockTimer += Time.deltaTime;  
             yield return null;  
@@ -204,7 +219,6 @@ public class PlayerCombat : MonoBehaviour
 
     public void TriggerBlockImpact()  
     {  
-        // 触发格挡攻击  
         if (canBlockImpact)  
         {  
             canBlockImpact = false;  
@@ -226,7 +240,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void OnEnemyAttack(Enemy enemy, float damage)  
     {  
-        // 处理敌人的攻击  
+        // Check if the player is blocking and if blocking is allowed
         if (isBlocking && canBlockImpact)  
         {  
             Debug.Log("Successful block!");  
@@ -234,6 +248,7 @@ public class PlayerCombat : MonoBehaviour
         }  
         else  
         {  
+
             if (healthSystem != null)  
             {  
                 healthSystem.Takedamage(damage);  
@@ -266,8 +281,8 @@ public class PlayerCombat : MonoBehaviour
     {  
         // 实现格挡特效  
         // 例如:  
-        // blockEffectParticleSystem.Play();  
-        // audioSource.PlayOneShot(blockSoundEffect);  
+        //blockEffectParticleSystem.Play();  
+        //audioSource.PlayOneShot(blockSoundEffect);  
     }  
 
     void StunNearbyEnemies()  
