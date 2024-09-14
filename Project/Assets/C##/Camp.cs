@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class Camp : MonoBehaviour
 {  
-    private bool isNearInteractable = false;  
+    private bool isNearInteractable = false;
+    private bool hasInteracted = false;  
     public Health playerHealth;
-    public GameObject Square1;
+    public PotionScript potionScript;
 
     void Update()  
     {  
-        if (isNearInteractable && Input.GetKeyDown(KeyCode.F))  
+        if (isNearInteractable && Input.GetKeyDown(KeyCode.F) && !hasInteracted)  
         {  
             Interact();  
         }  
@@ -21,7 +22,8 @@ public class Camp : MonoBehaviour
         if (playerHealth != null)  
         {  
             playerHealth.Heal(20);
-            Destroy(Square1);
+            potionScript.ResetPotionCount();
+            hasInteracted = true;
         }  
     }  
 
