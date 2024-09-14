@@ -53,7 +53,20 @@ public class PlayerController : MonoBehaviour
 
     private void Movement()
     {
-        moveX = Input.GetAxis("Horizontal");
+        KeyRebinder keyRebinder = GetComponent<KeyRebinder>();
+
+        if (Input.GetKey(keyRebinder.GetKeyForAction("MoveLeft")))
+        {
+            moveX = -1f;
+        }
+        else if (Input.GetKey(keyRebinder.GetKeyForAction("MoveRight")))
+        {
+            moveX = 1f;
+        }
+        else
+        {
+            moveX = 0f;
+        }
         // X axis input (-1 to 1).
 
         rigi.velocity = new Vector2(moveX * movesSpeed, rigi.velocity.y);
@@ -91,15 +104,11 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && jump)
-        //Get Key dowm is to check the space key is pressed
+        if (Input.GetKeyDown(keyRebinder.GetKeyForAction("Jump")) && jump)
         {
             rigi.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-            //applies a upward force to make player jump
             animator.SetTrigger("jump");
-            //check the player jump or not
             jump = false; 
-            // Disable jumping until player lands the ground
         }
 
         // Reset jumping ability when the player is on the ground
