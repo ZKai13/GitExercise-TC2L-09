@@ -27,8 +27,8 @@ public class KeyRebinding : MonoBehaviour
         moveLeftKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("MoveLeftKey", KeyCode.A.ToString()));
         moveRightKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("MoveRightKey", KeyCode.D.ToString()));
         jumpKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("JumpKey", KeyCode.Space.ToString()));
-        attackKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("AttackKey", KeyCode.Space.ToString()));
-        blockKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("BlockKey", KeyCode.Space.ToString()));
+        attackKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("AttackKey", KeyCode.Q.ToString()));
+        blockKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("BlockKey", KeyCode.E.ToString()));
 
         // Update UI text
         moveLeftText.text = moveLeftKey.ToString();
