@@ -22,18 +22,18 @@ public class AchievementsMenu : MonoBehaviour
     public Button intoTheDungeonButton;
     public Button firstTreasureButton;
     public Button theMissingCoinButton;
-    // public Button theWitherButton;
-    // public Button heroKnightButton;
-    // public Button ahYesButton;
+    public Button theGoblinButton;
+     public Button heroKnightButton;
+    public Button ahYesButton;
 
     void Start()
     {
         intoTheDungeonButton.gameObject.SetActive(false);
         firstTreasureButton.gameObject.SetActive(false);
         theMissingCoinButton.gameObject.SetActive(false);
-        // theWitherButton.gameObject.SetActive(false);
-        // heroKnightButton.gameObject.SetActive(false);
-        // ahYesButton.gameObject.SetActive(false);
+        theGoblinButton.gameObject.SetActive(false);
+        heroKnightButton.gameObject.SetActive(false);
+        ahYesButton.gameObject.SetActive(false);
 
         if (PlayerPrefs.GetInt("UnlockedLevel", 1) >= 2)
         {
@@ -50,14 +50,20 @@ public class AchievementsMenu : MonoBehaviour
             theMissingCoinButton.gameObject.SetActive(true);
         }
 
-        // if (PlayerPrefs.HasKey("TheWither"))
-        //     theWitherButton.gameObject.SetActive(true);
+        if (PlayerPrefs.GetInt("TheGoblin", 0) >= 1)
+        {
+            theGoblinButton.gameObject.SetActive(true);
+        }
+
+        if (PlayerPrefs.GetInt("AhhYes", 0) >= 1)
+        {
+            ahYesButton.gameObject.SetActive(true);
+        }
 
         // if (PlayerPrefs.HasKey("HeroKnight"))
         //     heroKnightButton.gameObject.SetActive(true);
 
-        // if (PlayerPrefs.HasKey("AhYes"))
-        //     ahYesButton.gameObject.SetActive(true);
+    
     }
 
 

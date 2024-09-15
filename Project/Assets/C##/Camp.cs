@@ -13,7 +13,14 @@ public class Camp : MonoBehaviour
     {  
         if (isNearInteractable && Input.GetKeyDown(KeyCode.F) && !hasInteracted)  
         {  
-            Interact();  
+            Interact();
+            if (!PlayerPrefs.HasKey("AhhYes"))
+            {
+                PlayerPrefs.SetInt("AhhYes", PlayerPrefs.GetInt("AhhYes", 0) + 1); // Achievement unlocked
+                PlayerPrefs.Save(); // Ensure changes are saved
+                Debug.Log("Achievement Unlocked: Ahh..Yes, The campfire");
+            }
+              
         }  
     }
 

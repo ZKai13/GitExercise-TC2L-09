@@ -166,7 +166,13 @@ public class Enemy : MonoBehaviour
     void Die()  
     {  
         isDead = true;  
-        animator.SetTrigger("Die");  
+        animator.SetTrigger("Die");
+        if (!PlayerPrefs.HasKey("TheGoblin"))
+        {
+            PlayerPrefs.SetInt("TheGoblin", PlayerPrefs.GetInt("TheGoblin", 0) + 1); // Achievement unlocked
+            PlayerPrefs.Save(); // Ensure changes are saved
+            Debug.Log("Achievement Unlocked: The Goblin");
+        }  
         StartCoroutine(DestroyAfterAnimation());  
     }  
 
