@@ -10,7 +10,6 @@ public class Finish : MonoBehaviour
     public AchievementsMenu achievementsMenu;
     private bool levelCompleted = false;
 
-    private bool intoTheDungeon = false;
 
     // This method will be triggered when the player reaches the finish point
     private void OnTriggerEnter2D(Collider2D collision)
@@ -46,7 +45,7 @@ public class Finish : MonoBehaviour
 
             if (PlayerPrefs.GetInt("UnlockedLevel", 1) == 2)
             {
-                intoTheDungeon = true;
+                Debug.Log("Achievement Unlocked: Into The Dungeon");
             }
         }
     }

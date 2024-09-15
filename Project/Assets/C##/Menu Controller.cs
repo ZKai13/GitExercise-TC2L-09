@@ -9,6 +9,7 @@ public class MenuController : MonoBehaviour
     {   
         string currentSceneName = SceneManager.GetActiveScene().name;  
         SceneManager.LoadScene(currentSceneName);  
+        Time.timeScale = 1;
     }  
 
     // 加载主菜单的方法  

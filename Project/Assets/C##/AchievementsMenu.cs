@@ -19,44 +19,81 @@ public class AchievementsMenu : MonoBehaviour
     [SerializeField] float achievementsTweenDuration;
     [SerializeField] CanvasGroup achievementsCanvasGroup;
 
-    // public GameObject toTheDungeonAchievementUI;
-    // public GameObject firstKillAchievementUI;
-    // public GameObject completeLevel1AchievementUI;
-    // public GameObject collect10CoinsAchievementUI;
+    public Button intoTheDungeonButton;
+    public Button firstTreasureButton;
+    public Button theMissingCoinButton;
+    // public Button theWitherButton;
+    // public Button heroKnightButton;
+    // public Button ahYesButton;
 
-    // public enum Achievement
-    // {
-    //     ToTheDungeon,
-    //     FirstKill,
-    //     CompleteLevel1,
-    //     Collect10Coins
-    // }
+    void Start()
+    {
+        intoTheDungeonButton.gameObject.SetActive(false);
+        firstTreasureButton.gameObject.SetActive(false);
+        theMissingCoinButton.gameObject.SetActive(false);
+        // theWitherButton.gameObject.SetActive(false);
+        // heroKnightButton.gameObject.SetActive(false);
+        // ahYesButton.gameObject.SetActive(false);
+
+        if (PlayerPrefs.GetInt("UnlockedLevel", 1) >= 2)
+        {
+            intoTheDungeonButton.gameObject.SetActive(true);
+        }
+
+        if (PlayerPrefs.GetInt("FirstTreasure", 0) == 1)
+        {
+            firstTreasureButton.gameObject.SetActive(true);
+        }
+
+        if (PlayerPrefs.GetInt("TheMissingCoin", 0) == 3)
+        {
+            theMissingCoinButton.gameObject.SetActive(true);
+        }
+
+        // if (PlayerPrefs.HasKey("TheWither"))
+        //     theWitherButton.gameObject.SetActive(true);
+
+        // if (PlayerPrefs.HasKey("HeroKnight"))
+        //     heroKnightButton.gameObject.SetActive(true);
+
+        // if (PlayerPrefs.HasKey("AhYes"))
+        //     ahYesButton.gameObject.SetActive(true);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public GameObject canvasGroupToMove;
     public int newLayerIndex;
 
     private AudioManager audioManager; // Declare audioManager as a private field within the class
 
-    // private void Start()
-    // {
-    //     UpdateAchievementsUI();
-    // }
     private void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
 
     }
     
-    // public static void UnlockAchievement(Achievement achievement)
-    // {
-    //     if (!IsAchievementUnlocked(achievement))
-    //     {
-    //         PlayerPrefs.SetInt(achievement.ToString(), 1);
-    //         PlayerPrefs.Save();
-    //         // Optionally notify the player about the achievement
-    //         Debug.Log("Achievement Unlocked: " + achievement.ToString());
-    //     }
-    // }
 
     public void Achievements()
     {
@@ -88,73 +125,6 @@ public class AchievementsMenu : MonoBehaviour
         achievementsCanvasGroup.DOFade(0, achievementsTweenDuration).SetUpdate(true);
         await achievementsPanelRect.DOAnchorPosY(leftPosY, achievementsTweenDuration).SetUpdate(true).AsyncWaitForCompletion();
     }
-
-//Achievements Mechanics
-    // public static bool IsAchievementUnlocked(Achievement achievement)
-    // {
-    //     return PlayerPrefs.GetInt(achievement.ToString(), 0) == 1;
-    // }
-
-
-    // public void CheckAchievements(bool level1Completed, int coinsCollected)
-    // {
-    //     if (level1Completed)
-    //     {
-    //         if (!IsAchievementUnlocked(Achievement.CompleteLevel1))
-    //         {
-    //             UnlockAchievement(Achievement.CompleteLevel1);
-    //         }
-    //     }
-
-    //     if (coinsCollected >= 10)
-    //     {
-    //         if (!IsAchievementUnlocked(Achievement.Collect10Coins))
-    //         {
-    //             UnlockAchievement(Achievement.Collect10Coins);
-    //         }
-    //     }
-
-    //     // Update the UI after checking achievements
-    //     UpdateAchievementsUI();
-    // }
-
-    // private void UpdateAchievementsUI()
-    // {
-    //     if (IsAchievementUnlocked(Achievement.ToTheDungeon))
-    //     {
-    //         toTheDungeonAchievementUI.SetActive(true);
-    //     }
-    //     else
-    //     {
-    //         toTheDungeonAchievementUI.SetActive(false);
-    //     }
-    //     if (IsAchievementUnlocked(Achievement.FirstKill))
-    //     {
-    //         firstKillAchievementUI.SetActive(true);
-    //     }
-    //     else
-    //     {
-    //         firstKillAchievementUI.SetActive(false);
-    //     }
-
-    //     if (IsAchievementUnlocked(Achievement.CompleteLevel1))
-    //     {
-    //         completeLevel1AchievementUI.SetActive(true);
-    //     }
-    //     else
-    //     {
-    //         completeLevel1AchievementUI.SetActive(false);
-    //     }
-
-    //     if (IsAchievementUnlocked(Achievement.Collect10Coins))
-    //     {
-    //         collect10CoinsAchievementUI.SetActive(true);
-    //     }
-    //     else
-    //     {
-    //         collect10CoinsAchievementUI.SetActive(false);
-    //     }
-    // }
 
 
 //Layer Problem
