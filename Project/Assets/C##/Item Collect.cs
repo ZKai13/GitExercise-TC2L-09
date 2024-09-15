@@ -38,6 +38,13 @@ public class ItemCollect : MonoBehaviour
 
     private void HandleThreeMelonsCollected()  
     {  
+       if (!PlayerPrefs.HasKey("TheMissingCoin"))
+        {
+            PlayerPrefs.SetInt("TheMissingCoin", 3); // Achievement unlocked
+            PlayerPrefs.Save(); // Ensure changes are saved
+            Debug.Log("Achievement Unlocked: The Missing Coin");
+        }
+
        Debug.Log("Collected three Coins!");  
        Destroy(box2);
     }  

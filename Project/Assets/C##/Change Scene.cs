@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
+    
 public class Finish : MonoBehaviour
 {
+    public AchievementsMenu achievementsMenu;
     private bool levelCompleted = false;
+
 
     // This method will be triggered when the player reaches the finish point
     private void OnTriggerEnter2D(Collider2D collision)
@@ -35,8 +39,14 @@ public class Finish : MonoBehaviour
             // Unlock the next level by incrementing the unlocked level count
             PlayerPrefs.SetInt("UnlockedLevel", PlayerPrefs.GetInt("UnlockedLevel", 1) + 1);
             
+            
             // Save the PlayerPrefs changes
             PlayerPrefs.Save();
+
+            if (PlayerPrefs.GetInt("UnlockedLevel", 1) == 2)
+            {
+                Debug.Log("Achievement Unlocked: Into The Dungeon");
+            }
         }
     }
 }

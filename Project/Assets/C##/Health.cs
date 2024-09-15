@@ -11,11 +11,14 @@ public class Health : MonoBehaviour
     public GameObject PLAYER;   
     private GameManager gameManager;  
     public Image staminaImage; 
+    private PotionScript potionScript;
+    public CanvasGroup PotionsCanvasGroup;
 
     void Start()  
     {  
         anim = GetComponent<Animator>();  
-        gameManager = FindObjectOfType<GameManager>();  
+        gameManager = FindObjectOfType<GameManager>(); 
+        potionScript = FindObjectOfType<PotionScript>();  
     }  
 
     private void Awake()  
@@ -34,8 +37,11 @@ public class Health : MonoBehaviour
         else   
         {  
             anim.SetTrigger("Die");
-            staminaImage.fillAmount = 0; 
-            StartCoroutine(HandleDeath());  
+            staminaImage.fillAmount = 0;
+            ResetPotionCount();
+            HidePotionUI();
+            StartCoroutine(HandleDeath());
+
         }  
     }  
 
@@ -57,5 +63,23 @@ public class Health : MonoBehaviour
     private void Update()  
     {  
    
-    }  
+    } 
+
+    public void ResetPotionCount()
+    {
+        if (potionScript != null)
+        {
+            potionScript.ResetPotionCount();
+            Debug.Log("Player potion count has been reset.");
+        }
+        else
+        {
+            Debug.LogError("PotionScript component is not assigned!");
+        }
+    }
+
+    public void HidePotionUI()  
+    {  
+        PotionsCanvasGroup.alpha = 0; 
+    } 
 }

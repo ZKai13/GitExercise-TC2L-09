@@ -760,3 +760,12 @@ public class EvilWizardBoss : MonoBehaviour
         Gizmos.DrawLine(rayOrigin, rayOrigin + rayDirection * 5f);
     }
 }
+
+
+//If u done coding theboss  Die() part, please help me add the code below 
+//             if (!PlayerPrefs.HasKey("HeroKnight"))
+//             {
+//                 PlayerPrefs.SetInt("HeroKnight", PlayerPrefs.GetInt("HeroKnight", 0) + 1); // Achievement unlocked
+//                 PlayerPrefs.Save(); // Ensure changes are saved
+//                 Debug.Log("Achievement Unlocked: Game Over");
+//             }

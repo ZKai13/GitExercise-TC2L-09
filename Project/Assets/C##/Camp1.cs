@@ -10,9 +10,15 @@ public class Camp1 : MonoBehaviour
 
     void Update()  
     {  
-        if (isNearInteractable && Input.GetKeyDown(KeyCode.P) && !used)  
+        if (isNearInteractable && Input.GetKeyDown(KeyCode.F) && !used)  
         {  
-            Interact();  
+            Interact();
+            if (!PlayerPrefs.HasKey("AhhYes"))
+            {
+                PlayerPrefs.SetInt("AhhYes", PlayerPrefs.GetInt("AhhYes", 0) + 1); // Achievement unlocked
+                PlayerPrefs.Save(); // Ensure changes are saved
+                Debug.Log("Achievement Unlocked: Ahh..Yes, The campfire");
+            }  
         }  
     }
 

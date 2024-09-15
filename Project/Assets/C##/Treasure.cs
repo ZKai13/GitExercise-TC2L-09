@@ -47,6 +47,13 @@ public class Treasure : MonoBehaviour
         animator.SetTrigger("Open");  
         audioSource.PlayOneShot(openSound);  
         StartCoroutine(ShowTreasureUIWithDelay());
+
+        if (!PlayerPrefs.HasKey("FirstTreasure"))
+        {
+            PlayerPrefs.SetInt("FirstTreasure", 1); // Achievement unlocked
+            PlayerPrefs.Save(); // Ensure changes are saved
+            Debug.Log("Achievement Unlocked: First Treasure");
+        }
     }  
 
     private IEnumerator ShowTreasureUIWithDelay()  
