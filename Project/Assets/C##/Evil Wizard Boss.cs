@@ -1,771 +1,326 @@
+using UnityEngine;  
+using System.Collections;  
 
-// using UnityEngine;  
-// using System.Collections;  
+public class EvilWizardBoss : MonoBehaviour  
+{  
+    [Header("Boss Stats")]  
+    public int health = 100;  
+    public int maxHealth = 100;  
+    public float attackRange = 5f;  
+    public float heavyAttackThreshold = 30f;  
+    public float fallThreshold = -5f;  
+    public float walkSpeed = 3f;  
 
-// // 定义Boss的状态  
-// public enum BossState  
-// {  
-//     Idle, // 待机  
-//     Walking, // 行走  
-//     Jumping, // 跳跃  
-//     Falling, // 下落  
-//     LightAttack, // 轻攻击  
-//     HeavyAttack, // 重攻击  
-//     Hurt, // 受伤  
-//     Dying // 死亡  
-// }  
+    [Header("References")]  
+    public Transform player;  
+    public BossHealthBar bossHealthBar;  
 
-// public class EvilWizardBoss : MonoBehaviour  
-// {  
-//     [Header("Boss Stats")]  
-//     public int health = 100; // Boss的生命值  
-//     public float attackRange = 5f; // 攻击范围  
-//     public float heavyAttackThreshold = 30f; // 重攻击阈值  
-//     public float fallThreshold = -5f; // 下落阈值  
-//     public float walkSpeed = 3f; // 行走速度  
+    [Header("Combat Settings")]  
+    public float lightAttackCooldown = 2f;  
+    public float heavyAttackCooldown = 4f;  
+    public float jumpForce = 10f;  
+    public float jumpCooldown = 3f;  
+    public float lightAttackDamage = 10f;  
+    public float heavyAttackDamage = 20f;  
+    public float bossDamageReductionFactor = 0.75f;  
 
-//     [Header("References")]  
-//     public Transform player; // 玩家的Transform  
+    [Header("Ground Check")]  
+    public Transform groundCheck;  
+    public float groundCheckRadius = 0.2f;  
+    public LayerMask groundLayer;  
 
-//     [Header("Combat Settings")]  
-//     public float lightAttackCooldown = 2f; // 轻攻击冷却时间  
-//     public float heavyAttackCooldown = 4f; // 重攻击冷却时间  
-//     public float jumpForce = 10f; // 跳跃力度  
-//     public float jumpCooldown = 3f; // 跳跃冷却时间  
-//     public float lightAttackDamage = 10f; // 轻攻击伤害  
-//     public float heavyAttackDamage = 20f; // 重攻击伤害  
+    private Animator animator;  
+    private Rigidbody2D rb2D;  
+    private bool canAttack = true;  
+    private bool canJump = true;  
+    private bool isGrounded;  
+    private bool facingRight = true;  
+    private PlayerCombat playerCombat; 
+    [Header("Jump Check")]  
+    public LayerMask jumpTriggerLayer;  
+    public float jumpCheckDistance = 1f;   
+    private bool isHurt = false;  
+    private bool isInvulnerable = false;  
+    private float invulnerabilityDuration = 1f;
+    private bool isStunned = false;  
 
-//     [Header("Ground Check")]  
-//     public Transform groundCheck; // 地面检测点  
-//     public float groundCheckRadius = 0.2f; // 地面检测半径  
-//     public LayerMask playerLayer; // 玩家所在的层  
+    private void Start()  
+    {  
+        health = maxHealth;  
+        animator = GetComponent<Animator>();  
+        rb2D = GetComponent<Rigidbody2D>();  
 
-//     private BossState currentState; // 当前状态  
-//     private Animator animator; // 动画控制器  
-//     private Rigidbody2D rb2D; // 刚体组件  
-//     private bool canAttack = true; // 是否可以攻击  
-//     private bool canJump = true; // 是否可以跳跃  
-//     private bool facingRight = true; // 朝向  
-//     private bool isGrounded; // 是否在地面上  
-//     private PlayerCombat playerCombat; // 玩家的战斗组件  
-//     [Header("Jump Trigger Check")]  
-//     public LayerMask jumpTriggerLayer; 
-//     public GameObject jumpCheck;  
-//     [Header("Boss Stats")]  
-//     public int health = 100; // Boss的生命值  
-//     public int maxHealth = 100; 
+        if (animator == null || rb2D == null)  
+        {  
+            Debug.LogError("EvilWizardBoss is missing required components!");  
+            enabled = false;  
+            return;  
+        }  
 
-//     private void Start()  
-//     {  
-//         currentState = BossState.Idle; // 初始状态为待机  
-//         animator = GetComponent<Animator>();  
-//         rb2D = GetComponent<Rigidbody2D>();  
+        if (player == null)  
+        {  
+            player = GameObject.FindGameObjectWithTag("Player")?.transform;  
+            if (player == null)  
+            {  
+                Debug.LogError("Player not found!");  
+                enabled = false;  
+                return;  
+            }  
+        }  
 
-//         // 检查必要组件是否存在  
-//         if (animator == null || rb2D == null)  
-//         {  
-//             Debug.LogError("EvilWizardBoss is missing required components!");  
-//             enabled = false;  
-//             return;  
-//         }  
+        playerCombat = player.GetComponent<PlayerCombat>();  
+        if (playerCombat == null)  
+        {  
+            Debug.LogError("PlayerCombat component not found on the player!");  
+        }  
 
-//         playerCombat = player.GetComponent<PlayerCombat>();  
-//         if (playerCombat == null)  
-//         {  
-//             Debug.LogError("PlayerCombat component not found on the player!");  
-//         }  
-//     }  
+        if (bossHealthBar == null)  
+        {  
+            Debug.LogWarning("BossHealthBar is not assigned!");  
+        }  
+    }  
 
-//     private void Update()  
-//     {  
-//         // 检测是否在地面上  
-//         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, LayerMask.GetMask("groundLayer","Enemy"));  
+    private void Update()  
+    {  
+        if (!isStunned)  
+        {  
+            UpdateAnimatorParameters();  
+            HandleMovement();  
+            CheckForAttack();  
+            CheckForJump();  
+        }  
+    }  
 
-//         // 更新动画参数  
-//         UpdateAnimatorParameters();  
-//         // 检查状态转换  
-//         CheckForStateTransitions();  
-//         // 处理当前状态  
-//         HandleCurrentState();  
-//     }  
+    private void UpdateAnimatorParameters()  
+    {  
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);  
+        animator.SetBool("IsGrounded", isGrounded);  
+        animator.SetFloat("Speed", Mathf.Abs(rb2D.velocity.x));  
+        animator.SetFloat("VerticalSpeed", rb2D.velocity.y);  
+        animator.SetBool("IsJumping", !isGrounded && rb2D.velocity.y > 0);  
+        animator.SetBool("IsFalling", !isGrounded && rb2D.velocity.y < fallThreshold);  
+    }  
 
-//     private void UpdateAnimatorParameters()  
-//     {  
-//         // 更新动画参数  
-//         animator.SetBool("IsGrounded", isGrounded);  
-//         animator.SetFloat("Speed", rb2D.velocity.magnitude);  
-//         animator.SetFloat("VerticalSpeed", rb2D.velocity.y);  
-//     }  
+    private void HandleMovement()  
+    {  
+        if (player != null)  
+        {  
+            float distanceToPlayer = player.position.x - transform.position.x;  
+            float moveDirection = Mathf.Sign(distanceToPlayer);  
 
-//     private void CheckForStateTransitions()  
-//     {  
-//         // 检查状态转换条件  
-//         if (health <= 0)  
-//         {  
-//             TransitionToState(BossState.Dying);  
-//             return;  
-//         }  
+            if (Mathf.Abs(distanceToPlayer) > attackRange)  
+            {  
+                rb2D.velocity = new Vector2(moveDirection * walkSpeed, rb2D.velocity.y);  
+                animator.SetTrigger("Walk");  
+            }  
+            else  
+            {  
+                rb2D.velocity = new Vector2(0, rb2D.velocity.y);  
+                animator.SetFloat("Speed", 0);
+            }  
 
-//         float distanceToPlayer = Vector2.Distance(transform.position, player.position);  
+            if ((moveDirection > 0 && !facingRight) || (moveDirection < 0 && facingRight))  
+            {  
+                Flip();  
+            }  
+        }  
+    }  
 
-//         if (!isGrounded && rb2D.velocity.y < fallThreshold && currentState != BossState.Falling)  
-//         {  
-//             TransitionToState(BossState.Falling);  
-//         }  
-//         else if (isGrounded && canAttack && distanceToPlayer < attackRange)  
-//         {  
-//             if (health < heavyAttackThreshold)  
-//             {  
-//                 TransitionToState(BossState.HeavyAttack);  
-//             }  
-//             else  
-//             {  
-//                 TransitionToState(BossState.LightAttack);  
-//             }  
-//         }  
-//         else if (isGrounded && canJump && ShouldJump())  
-//         {  
-//             TransitionToState(BossState.Jumping);  
-//         }  
-//         else if (distanceToPlayer > attackRange && currentState != BossState.Walking)  
-//         {  
-//             TransitionToState(BossState.Walking);  
-//         }  
-//         else if (isGrounded && rb2D.velocity.magnitude < 0.1f && currentState != BossState.Idle)  
-//         {  
-//             TransitionToState(BossState.Idle);  
-//         }  
-//     }  
+    private void Flip()  
+    {  
+        facingRight = !facingRight;  
+        Vector3 scale = transform.localScale;  
+        scale.x *= -1;  
+        transform.localScale = scale;  
+    }  
 
-//     private bool ShouldJump()  
-//     {  
-//         if (jumpCheck == null || jumpCheck.GetComponent<BoxCollider2D>() == null)  
-//         {  
-//             Debug.LogError("jumpCheck game object or BoxCollider2D component is missing!");  
-//             return false;  
-//         }  
+    private void CheckForAttack()  
+    {  
+        if (canAttack && player != null)  
+        {  
+            float distanceToPlayer = Vector2.Distance(transform.position, player.position);  
+            if (distanceToPlayer <= attackRange)  
+            {  
+                if (health < heavyAttackThreshold)  
+                {  
+                    PerformHeavyAttack();  
+                }  
+                else  
+                {  
+                    PerformLightAttack();  
+                }  
+            }  
+        }  
+    }  
 
-//         Collider2D jumpTrigger = Physics2D.OverlapBox(jumpCheck.transform.position, jumpCheck.GetComponent<BoxCollider2D>().size, 0f, LayerMask.GetMask("Isonjump"));  
-//         RaycastHit2D ground = Physics2D.Raycast(transform.position, Vector2.down, groundCheckRadius, LayerMask.GetMask("groundLayer", "Enemy"));  
+    private void CheckForJump()  
+    {  
+        if (canJump && isGrounded && ShouldJump())  
+        {  
+            StartCoroutine(PerformJump());  
+        }  
+    }  
 
-//         Debug.DrawLine(transform.position, transform.position + Vector3.down * groundCheckRadius, Color.green);  
+    private bool ShouldJump()  
+    {  
+        // Check for obstacles  
+        RaycastHit2D obstacleHit = Physics2D.Raycast(transform.position, facingRight ? Vector2.right : Vector2.left, jumpCheckDistance, groundLayer);  
+        
+        // Check for jump trigger  
+        RaycastHit2D jumpTriggerHit = Physics2D.Raycast(transform.position, facingRight ? Vector2.right : Vector2.left, jumpCheckDistance, jumpTriggerLayer);  
 
-//         return jumpTrigger != null && ground.collider != null;  
-//     }
-//             private void HandleCurrentState()  
-//     {  
-//         // 根据当前状态处理相应的逻辑  
-//         switch (currentState)  
-//         {  
-//             case BossState.Idle:  
-//                 HandleIdleState();  
-//                 break;  
-//             case BossState.Walking:  
-//                 HandleWalkingState();  
-//                 break;  
-//             case BossState.Jumping:  
-//                 HandleJumpingState();  
-//                 break;  
-//             case BossState.Falling:  
-//                 HandleFallingState();  
-//                 break;  
-//             case BossState.LightAttack:  
-//                 HandleLightAttackState();  
-//                 break;  
-//             case BossState.HeavyAttack:  
-//                 HandleHeavyAttackState();  
-//                 break;  
-//             case BossState.Hurt:  
-//                 HandleHurtState();  
-//                 break;  
-//             case BossState.Dying:  
-//                 HandleDyingState();  
-//                 break;  
-//         }  
-//     }  
+        // Draw debug rays  
+        Debug.DrawRay(transform.position, (facingRight ? Vector2.right : Vector2.left) * jumpCheckDistance, Color.red);  
 
-//     private void HandleJumpingState()  
-//     {  
-//         // 处理跳跃状态  
-//         if (canJump && isGrounded)  
-//         {  
-//             rb2D.velocity = new Vector2(rb2D.velocity.x, jumpForce);  
-//             animator.SetTrigger("Jump");  
-//             animator.SetBool("IsJumping", true);  
-//             animator.SetBool("IsGrounded", false);  
-//             StartCoroutine(JumpCooldown());  
-//         }  
-//         else if (!isGrounded && rb2D.velocity.y <= 0)  
-//         {  
-//             TransitionToState(BossState.Falling);  
-//         }  
-//     }  
+        return obstacleHit.collider != null || jumpTriggerHit.collider != null;  
+    }  
 
-//     private void HandleFallingState()  
-//     {  
-//         // 处理下落状态  
-//         animator.SetBool("IsFalling", true);  
-//         animator.SetBool("IsJumping", false);  
+    private IEnumerator PerformJump()  
+    {  
+        canJump = false;  
+        animator.SetTrigger("Jump");  
+        rb2D.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);  
+        yield return new WaitForSeconds(jumpCooldown);  
+        canJump = true;  
+    }  
 
-//         if (isGrounded)  
-//         {  
-//             animator.SetBool("IsJumping", false);  
-//             animator.SetBool("IsFalling", false);  
-//             StartCoroutine(FallToIdleTransition());  
-//         }  
-//     }  
+    private void PerformLightAttack()  
+    {  
+        Debug.Log("Performing Light Attack");  
+        animator.SetTrigger("LightAttack");  
+        StartCoroutine(AttackCoroutine(lightAttackDamage, lightAttackCooldown));  
+    }  
 
-//     private IEnumerator FallToIdleTransition()  
-//     {  
-//         // 从下落状态过渡到待机状态  
-//         yield return new WaitForSeconds(0.2f); // 调整延迟时间  
-//         TransitionToState(BossState.Idle);  
-//     }  
+    private void PerformHeavyAttack()  
+    {  
+        Debug.Log("Performing Heavy Attack");  
+        animator.SetTrigger("HeavyAttack");  
+        StartCoroutine(AttackCoroutine(heavyAttackDamage, heavyAttackCooldown));  
+    }  
 
-//     private void TransitionToState(BossState newState)  
-//     {  
-//         // 转换到新的状态  
-//         if (currentState == newState) return;  
+    private IEnumerator AttackCoroutine(float damage, float cooldown)  
+    {  
+        canAttack = false;  
+        yield return new WaitForSeconds(0.5f);  
+        AttackPlayer(damage);  
+        yield return new WaitForSeconds(cooldown - 0.5f);  
+        canAttack = true;  
+        Debug.Log("Boss can attack again");  
+    }  
 
-//         currentState = newState;  
+    private void AttackPlayer(float damage)  
+    {  
+        if (playerCombat != null && player != null)  
+        {  
+            float distanceToPlayer = Vector2.Distance(transform.position, player.position);  
+            if (distanceToPlayer <= attackRange)  
+            {  
+                float reducedDamage = damage * bossDamageReductionFactor;  
+                Debug.Log($"Boss attacking player. Base damage: {damage}, Reduced damage: {reducedDamage}");  
+                playerCombat.ReceiveAttack(this, reducedDamage);  
+            }  
+            else  
+            {  
+                Debug.Log($"Player out of range. Distance: {distanceToPlayer}, Attack Range: {attackRange}");  
+            }  
+        }  
+        else  
+        {  
+            Debug.LogError("PlayerCombat or player reference is null!");  
+        }  
+    }  
 
-//         // 重置动画触发器  
-//         animator.ResetTrigger("Walk");  
-//         animator.ResetTrigger("Jump");  
-//         animator.ResetTrigger("Fall");  
-//         animator.ResetTrigger("LightAttack");  
-//         animator.ResetTrigger("HeavyAttack");  
-//         animator.ResetTrigger("Hurt");  
-//         animator.ResetTrigger("Die");  
-//         animator.SetBool("IsJumping", false);  
-//         animator.SetBool("IsFalling", false);  
+    public void TakeDamage(int damage)  
+    {  
+        if (isStunned) return;  
 
-//         // 根据新状态设置动画触发器  
-//         switch (newState)  
-//         {  
-//             case BossState.Walking:  
-//                 animator.SetTrigger("Walk");  
-//                 break;  
-//             case BossState.Jumping:  
-//                 animator.SetTrigger("Jump");  
-//                 break;  
-//             case BossState.Falling:  
-//                 animator.SetTrigger("Fall");  
-//                 break;  
-//             case BossState.LightAttack:  
-//                 animator.SetTrigger("LightAttack");  
-//                 break;  
-//             case BossState.HeavyAttack:  
-//                 animator.SetTrigger("HeavyAttack");  
-//                 break;  
-//             case BossState.Hurt:  
-//                 animator.SetTrigger("Hurt");  
-//                 break;  
-//             case BossState.Dying:  
-//                 animator.SetTrigger("Die");  
-//                 break;  
-//         }  
-//     }  
+        health = Mathf.Max(0, health - damage);  
+        Debug.Log($"Boss took {damage} damage. Current health: {health}");  
+        
+        if (bossHealthBar != null)  
+        {  
+            bossHealthBar.UpdateHealth(health, maxHealth);  
+        }  
 
-//     private void HandleIdleState()  
-//     {  
-//         // 处理待机状态  
-//         rb2D.velocity = Vector2.zero;  
-//     }  
+        StartCoroutine(HitReaction());  
 
-//     private void HandleWalkingState()  
-//     {  
-//         // 处理行走状态  
-//         Vector2 direction = (player.position - transform.position).normalized;  
-//         rb2D.velocity = new Vector2(direction.x * walkSpeed, rb2D.velocity.y);  
+        if (health <= 0)  
+        {  
+            Die();  
+        }  
+    }  
+    private IEnumerator HitReaction()  
+    {  
+        isInvulnerable = true;  
+        animator.SetTrigger("Hurt");
+        animator.SetBool("Stunned", true);   
 
-//         // 根据移动方向翻转Boss的朝向  
-//         if (direction.x > 0 && !facingRight)  
-//         {  
-//             Flip();  
-//         }  
-//         else if (direction.x < 0 && facingRight)  
-//         {  
-//             Flip();  
-//         }  
-//     }  
+        // Apply a small knockback  
+        float knockbackForce = 5f;  
+        Vector2 knockbackDirection = (player.position.x > transform.position.x) ? Vector2.left : Vector2.right;  
+        rb2D.velocity = Vector2.zero;  
+        rb2D.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);  
 
-//     private void HandleLightAttackState()  
-//     {  
-//         // 处理轻攻击状态  
-//         if (canAttack)  
-//         {  
-//             Debug.Log("Performing Light Attack");  
-//             AttackPlayer(lightAttackDamage);  
-//             StartCoroutine(AttackCooldown(lightAttackCooldown));  
-//         }  
-//     }  
+        yield return new WaitForSeconds(0.5f);  // Short stun duration  
 
-//     private void HandleHeavyAttackState()  
-//     {  
-//         // 处理重攻击状态  
-//         if (canAttack)  
-//         {  
-//             Debug.Log("Performing Heavy Attack");  
-//             AttackPlayer(heavyAttackDamage);  
-//             StartCoroutine(AttackCooldown(heavyAttackCooldown));  
-//         }  
-//     }  
+        // Force the boss back to the ground  
+        rb2D.velocity = Vector2.zero;  
+        yield return new WaitForSeconds(0.1f);  
 
-//     private void HandleHurtState()  
-//     {  
-//         // 处理受伤状态  
-//         // 在这里添加受伤状态的逻辑  
-//     }  
+        animator.SetBool("Stunned", false);  
+        animator.SetBool("IsJumping", false);  
+        animator.SetBool("IsFalling", false);  
+        animator.SetFloat("VerticalSpeed", 0);  
+        animator.SetFloat("Speed", 0);  
 
-//     private void HandleDyingState()  
-//     {   
-//         // 处理死亡状态  
-//         Destroy(gameObject, 2f);  
-//     }  
+        isStunned = false; 
+    } 
 
-//     private void Flip()  
-//     {  
-//         // 翻转Boss的朝向  
-//         facingRight = !facingRight;  
-//         Vector3 scale = transform.localScale;  
-//         scale.x *= -1;  
-//         transform.localScale = scale;  
-//     }  
 
-//     public void TakeDamage(int damage)  
-//     {  
-//         // 受到伤害  
-//         health -= damage;  
-//         if (health > 0)  
-//         {  
-//             TransitionToState(BossState.Hurt);  
-//         }  
-//         else  
-//         {  
-//             TransitionToState(BossState.Dying);  
-//         }  
-//     }  
+    private IEnumerator HurtRoutine()  
+    {  
+        isHurt = true;  
+        rb2D.velocity = new Vector2(0, rb2D.velocity.y); // Stop horizontal movement  
+        yield return new WaitForSeconds(0.5f); // Adjust this time based on your hurt animation length  
+        isHurt = false;  
+        ResetState();  
+    }  
+    private void ResetState()  
+    {  
+        animator.SetBool("IsJumping", false);  
+        animator.SetBool("IsFalling", false);  
+        animator.SetFloat("Speed", 0);  
+        animator.SetFloat("VerticalSpeed", 0);  
+    }  
+    private void OnCollisionEnter2D(Collision2D collision)  
+    {  
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))  
+        {  
+            animator.SetBool("IsGrounded", true);  
+            animator.SetBool("IsJumping", false);  
+            animator.SetBool("IsFalling", false);  
+            animator.SetFloat("VerticalSpeed", 0);  
+        }  
+    } 
 
-//     private void AttackPlayer(float damage)  
-//     {  
-//         // 攻击玩家  
-//         if (playerCombat != null)  
-//         {  
-//             float distanceToPlayer = Vector2.Distance(transform.position, player.position);  
-//             if (distanceToPlayer <= attackRange)  
-//             {  
-//                 playerCombat.OnEnemyAttack(damage);  
-//             }  
-//         }  
-//     }  
+    private void Die()  
+    {  
+        Debug.Log("Boss is dying");  
+        animator.SetTrigger("Die");  
+        enabled = false;  
+    }  
 
-//     private IEnumerator AttackCooldown(float cooldownTime)  
-//     {  
-//         // 攻击冷却  
-//         canAttack = false;  
-//         yield return new WaitForSeconds(cooldownTime);  
-//         canAttack = true;  
-//     }  
+    private void OnDrawGizmosSelected()  
+    {  
+        Gizmos.color = Color.red;  
+        Gizmos.DrawWireSphere(transform.position, attackRange);  
 
-//     private IEnumerator JumpCooldown()  
-//     {  
-//         // 跳跃冷却  
-//         canJump = false;  
-//         yield return new WaitForSeconds(jumpCooldown);  
-//         canJump = true;  
-//     }  
-
-//     private void OnDrawGizmosSelected()  
-//     {  
-//         // 在编辑器中绘制调试图形  
-//         Gizmos.color = Color.red;  
-//         Gizmos.DrawWireSphere(transform.position, attackRange);  
-
-//         if (groundCheck != null)  
-//         {  
-//             Gizmos.color = Color.green;  
-//             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);  
-//         }  
-//         Gizmos.color = Color.blue;  
-//         Vector2 rayOrigin = new Vector2(transform.position.x, transform.position.y - 0.5f);  
-//         Vector2 rayDirection = facingRight ? Vector2.right : Vector2.left;  
-//         Gizmos.DrawLine(rayOrigin, rayOrigin + rayDirection * 5f);  
-//     }  
-// }
-
-using UnityEngine;
-using System.Collections;
-
-public enum BossState
-{
-    Idle,
-    Walking,
-    Jumping,
-    Falling,
-    LightAttack,
-    HeavyAttack,
-    Hurt,
-    Dying
+        if (groundCheck != null)  
+        {  
+            Gizmos.color = Color.green;  
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);  
+        }  
+        Gizmos.color = Color.blue;  
+        Gizmos.DrawRay(transform.position, (facingRight ? Vector2.right : Vector2.left) * jumpCheckDistance);  
+    }  
 }
-
-public class EvilWizardBoss : MonoBehaviour
-{
-    [Header("Boss Stats")]
-    public int health = 100;
-    public int maxHealth = 100;
-    public float attackRange = 5f;
-    public float heavyAttackThreshold = 30f;
-    public float fallThreshold = -5f;
-    public float walkSpeed = 3f;
-
-    [Header("References")]
-    public Transform player;
-
-    [Header("Combat Settings")]
-    public float lightAttackCooldown = 2f;
-    public float heavyAttackCooldown = 4f;
-    public float jumpForce = 10f;
-    public float jumpCooldown = 3f;
-    public float lightAttackDamage = 10f;
-    public float heavyAttackDamage = 20f;
-
-    [Header("Ground Check")]
-    public Transform groundCheck;
-    public float groundCheckRadius = 0.2f;
-    public LayerMask playerLayer;
-
-    [Header("Jump Trigger Check")]
-    public LayerMask jumpTriggerLayer;
-    public GameObject jumpCheck;
-
-    private BossState currentState;
-    private Animator animator;
-    private Rigidbody2D rb2D;
-    private bool canAttack = true;
-    private bool canJump = true;
-    private bool facingRight = true;
-    private bool isGrounded;
-    private PlayerCombat playerCombat;
-
-    private void Start()
-    {
-        health = maxHealth;
-        currentState = BossState.Idle;
-        animator = GetComponent<Animator>();
-        rb2D = GetComponent<Rigidbody2D>();
-
-        if (animator == null || rb2D == null)
-        {
-            Debug.LogError("EvilWizardBoss is missing required components!");
-            enabled = false;
-            return;
-        }
-
-        playerCombat = player.GetComponent<PlayerCombat>();
-        if (playerCombat == null)
-        {
-            Debug.LogError("PlayerCombat component not found on the player!");
-        }
-    }
-
-    private void Update()
-    {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, LayerMask.GetMask("groundLayer", "Enemy"));
-        UpdateAnimatorParameters();
-        CheckForStateTransitions();
-        HandleCurrentState();
-    }
-
-    private void UpdateAnimatorParameters()
-    {
-        animator.SetBool("IsGrounded", isGrounded);
-        animator.SetFloat("Speed", rb2D.velocity.magnitude);
-        animator.SetFloat("VerticalSpeed", rb2D.velocity.y);
-    }
-
-    private void CheckForStateTransitions()
-    {
-        if (health <= 0)
-        {
-            TransitionToState(BossState.Dying);
-            return;
-        }
-
-        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-
-        if (!isGrounded && rb2D.velocity.y < fallThreshold && currentState != BossState.Falling)
-        {
-            TransitionToState(BossState.Falling);
-        }
-        else if (isGrounded && canAttack && distanceToPlayer < attackRange)
-        {
-            if (health < heavyAttackThreshold)
-            {
-                TransitionToState(BossState.HeavyAttack);
-            }
-            else
-            {
-                TransitionToState(BossState.LightAttack);
-            }
-        }
-        else if (isGrounded && canJump && ShouldJump())
-        {
-            TransitionToState(BossState.Jumping);
-        }
-        else if (distanceToPlayer > attackRange && currentState != BossState.Walking)
-        {
-            TransitionToState(BossState.Walking);
-        }
-        else if (isGrounded && rb2D.velocity.magnitude < 0.1f && currentState != BossState.Idle)
-        {
-            TransitionToState(BossState.Idle);
-        }
-    }
-
-    private bool ShouldJump()
-    {
-        if (jumpCheck == null || jumpCheck.GetComponent<BoxCollider2D>() == null)
-        {
-            Debug.LogError("jumpCheck game object or BoxCollider2D component is missing!");
-            return false;
-        }
-
-        Collider2D jumpTrigger = Physics2D.OverlapBox(jumpCheck.transform.position, jumpCheck.GetComponent<BoxCollider2D>().size, 0f, LayerMask.GetMask("Isonjump"));
-        RaycastHit2D ground = Physics2D.Raycast(transform.position, Vector2.down, groundCheckRadius, LayerMask.GetMask("groundLayer", "Enemy"));
-
-        Debug.DrawLine(transform.position, transform.position + Vector3.down * groundCheckRadius, Color.green);
-
-        return jumpTrigger != null && ground.collider != null;
-    }
-
-    private void HandleCurrentState()
-    {
-        switch (currentState)
-        {
-            case BossState.Idle:
-                HandleIdleState();
-                break;
-            case BossState.Walking:
-                HandleWalkingState();
-                break;
-            case BossState.Jumping:
-                HandleJumpingState();
-                break;
-            case BossState.Falling:
-                HandleFallingState();
-                break;
-            case BossState.LightAttack:
-                HandleLightAttackState();
-                break;
-            case BossState.HeavyAttack:
-                HandleHeavyAttackState();
-                break;
-            case BossState.Hurt:
-                HandleHurtState();
-                break;
-            case BossState.Dying:
-                HandleDyingState();
-                break;
-        }
-    }
-
-    private void HandleJumpingState()
-    {
-        if (canJump && isGrounded)
-        {
-            rb2D.velocity = new Vector2(rb2D.velocity.x, jumpForce);
-            animator.SetTrigger("Jump");
-            animator.SetBool("IsJumping", true);
-            animator.SetBool("IsGrounded", false);
-            StartCoroutine(JumpCooldown());
-        }
-        else if (!isGrounded && rb2D.velocity.y <= 0)
-        {
-            TransitionToState(BossState.Falling);
-        }
-    }
-
-    private void HandleFallingState()
-    {
-        animator.SetBool("IsFalling", true);
-        animator.SetBool("IsJumping", false);
-
-        if (isGrounded)
-        {
-            animator.SetBool("IsJumping", false);
-            animator.SetBool("IsFalling", false);
-            StartCoroutine(FallToIdleTransition());
-        }
-    }
-
-    private IEnumerator FallToIdleTransition()
-    {
-        yield return new WaitForSeconds(0.2f);
-        TransitionToState(BossState.Idle);
-    }
-
-    private void TransitionToState(BossState newState)
-    {
-        if (currentState == newState) return;
-
-        currentState = newState;
-
-        animator.ResetTrigger("Walk");
-        animator.ResetTrigger("Jump");
-        animator.ResetTrigger("Fall");
-        animator.ResetTrigger("LightAttack");
-        animator.ResetTrigger("HeavyAttack");
-        animator.ResetTrigger("Hurt");
-        animator.ResetTrigger("Die");
-        animator.SetBool("IsJumping", false);
-        animator.SetBool("IsFalling", false);
-
-        switch (newState)
-        {
-            case BossState.Walking:
-                animator.SetTrigger("Walk");
-                break;
-            case BossState.Jumping:
-                animator.SetTrigger("Jump");
-                break;
-            case BossState.Falling:
-                animator.SetTrigger("Fall");
-                break;
-            case BossState.LightAttack:
-                animator.SetTrigger("LightAttack");
-                break;
-            case BossState.HeavyAttack:
-                animator.SetTrigger("HeavyAttack");
-                break;
-            case BossState.Hurt:
-                animator.SetTrigger("Hurt");
-                break;
-            case BossState.Dying:
-                animator.SetTrigger("Die");
-                break;
-        }
-    }
-
-    private void HandleIdleState()
-    {
-        rb2D.velocity = Vector2.zero;
-    }
-
-    private void HandleWalkingState()
-    {
-        Vector2 direction = (player.position - transform.position).normalized;
-        rb2D.velocity = new Vector2(direction.x * walkSpeed, rb2D.velocity.y);
-
-        if (direction.x > 0 && !facingRight)
-        {
-            Flip();
-        }
-        else if (direction.x < 0 && facingRight)
-        {
-            Flip();
-        }
-    }
-
-    private void HandleLightAttackState()
-    {
-        if (canAttack)
-        {
-            Debug.Log("Performing Light Attack");
-            AttackPlayer(lightAttackDamage);
-            StartCoroutine(AttackCooldown(lightAttackCooldown));
-        }
-    }
-
-    private void HandleHeavyAttackState()
-    {
-        if (canAttack)
-        {
-            Debug.Log("Performing Heavy Attack");
-            AttackPlayer(heavyAttackDamage);
-            StartCoroutine(AttackCooldown(heavyAttackCooldown));
-        }
-    }
-
-    private void HandleHurtState()
-    {
-        // Add hurt state logic here
-    }
-
-    private void HandleDyingState()
-    {
-        Destroy(gameObject, 2f);
-    }
-
-    private void Flip()
-    {
-        facingRight = !facingRight;
-        Vector3 scale = transform.localScale;
-        scale.x *= -1;
-        transform.localScale = scale;
-    }
-
-    public void TakeDamage(int damage)
-    {
-        health = Mathf.Max(0, health - damage);
-        if (health > 0)
-        {
-            TransitionToState(BossState.Hurt);
-        }
-        else
-        {
-            TransitionToState(BossState.Dying);
-        }
-    }
-
-    private void AttackPlayer(float damage)
-    {
-        if (playerCombat != null)
-        {
-            float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-            if (distanceToPlayer <= attackRange)
-            {
-                playerCombat.OnEnemyAttack(damage);
-            }
-        }
-    }
-
-    private IEnumerator AttackCooldown(float cooldownTime)
-    {
-        canAttack = false;
-        yield return new WaitForSeconds(cooldownTime);
-        canAttack = true;
-    }
-
-    private IEnumerator JumpCooldown()
-    {
-        canJump = false;
-        yield return new WaitForSeconds(jumpCooldown);
-        canJump = true;
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
-
-        if (groundCheck != null)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
-        }
-        Gizmos.color = Color.blue;
-        Vector2 rayOrigin = new Vector2(transform.position.x, transform.position.y - 0.5f);
-        Vector2 rayDirection = facingRight ? Vector2.right : Vector2.left;
-        Gizmos.DrawLine(rayOrigin, rayOrigin + rayDirection * 5f);
-    }
-}
-
-
-//If u done coding theboss  Die() part, please help me add the code below 
-//             if (!PlayerPrefs.HasKey("HeroKnight"))
-//             {
-//                 PlayerPrefs.SetInt("HeroKnight", PlayerPrefs.GetInt("HeroKnight", 0) + 1); // Achievement unlocked
-//                 PlayerPrefs.Save(); // Ensure changes are saved
-//                 Debug.Log("Achievement Unlocked: Game Over");
-//             }

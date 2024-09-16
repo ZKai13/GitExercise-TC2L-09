@@ -802,8 +802,16 @@ public class Enemy : MonoBehaviour
 
     void Die()  
     {  
-        isDead = true;  
+        Debug.Log($"Enemy {gameObject.name} died!");  
         animator.SetTrigger("Die");  
+        
+        // Disable components  
+        GetComponent<Collider2D>().enabled = false;  
+        this.enabled = false;  
+        rb.velocity = Vector2.zero;  
+        rb.isKinematic = true;  
+
+        // Destroy the enemy object after animation  
         StartCoroutine(DestroyAfterAnimation());  
     }  
 

@@ -46,4 +46,10 @@ public class BossHealthBar : MonoBehaviour
         
         OnHealthPercentChanged?.Invoke(healthPercentage);
     }
+        public void UpdateHealth(int currentHealth, int maxHealth)  
+    {  
+        CurrentHealth = currentHealth;  
+        this.maxHealth = maxHealth;  
+        UpdateHealthBar();  
+    }  
 }
