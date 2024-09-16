@@ -403,17 +403,7 @@ public class PlayerCombat : MonoBehaviour
         heavyAttackDamage = PlayerPrefs.GetInt("HeavyAttackDamage", heavyAttackDamage);  
     } 
 
-    public void ResetAttackDamage()  
-    {  
-         
-        lightAttackDamage = 20;
-        heavyAttackDamage = 60;
-
-    
-        SavePlayerPrefs();  
-
-        Debug.Log("Attack damage has been reset to default values.");  
-    }
+   
 
 
 }

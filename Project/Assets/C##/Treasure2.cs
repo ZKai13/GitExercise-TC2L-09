@@ -1,22 +1,22 @@
 using System.Collections;
 using UnityEngine;  
 
-public class Treasure : MonoBehaviour  
+public class Treasure2 : MonoBehaviour  
 {  
     public AudioClip openSound;  
     private bool isOpen = false;  
     private Animator animator;  
     private bool playerInRange = false;   
     private AudioSource audioSource;   
-    private UIManager uiManager;
+    private UIManager1 uiManager;
 
     private void Start()  
     {  
         animator = GetComponent<Animator>();  
         audioSource = GetComponent<AudioSource>();  
-        uiManager = FindObjectOfType<UIManager>();
+        uiManager = FindObjectOfType<UIManager1>();
 
-        if (PlayerPrefs.GetInt("ChestOpened", 0) == 1)
+        if (PlayerPrefs.GetInt("Chest2Opened", 0) == 1)
         {
             gameObject.SetActive(false);
         }
@@ -53,14 +53,7 @@ public class Treasure : MonoBehaviour
         audioSource.PlayOneShot(openSound);  
         StartCoroutine(ShowTreasureUIWithDelay());
         
-        PlayerPrefs.SetInt("ChestOpened", 1);  
-
-        if (!PlayerPrefs.HasKey("FirstTreasure"))
-        {
-            PlayerPrefs.SetInt("FirstTreasure", 1); // Achievement unlocked
-            PlayerPrefs.Save(); // Ensure changes are saved
-            Debug.Log("Achievement Unlocked: First Treasure");
-        }
+        PlayerPrefs.SetInt("Chest2Opened", 1);  
         
     }  
 

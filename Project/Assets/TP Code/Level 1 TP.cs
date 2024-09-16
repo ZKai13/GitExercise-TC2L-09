@@ -36,23 +36,9 @@ public class Teleporter : MonoBehaviour
             }  
 
              
-            ResetPlayerAttackDamage();
             
         }  
     }  
-
-    public void ResetPlayerAttackDamage()  
-    {  
-        if (playercombat != null)  
-        {  
-            playercombat.ResetAttackDamage();  
-            Debug.Log("Player attack damage has been reset.");  
-        }  
-        else  
-        {  
-            Debug.LogError("PlayerCombat component is not assigned!");  
-        }  
-    } 
 
 
 }
