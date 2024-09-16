@@ -4,12 +4,19 @@ using System.Collections;
 public class EvilWizardBoss : MonoBehaviour  
 {  
     [Header("Boss Stats")]  
-    public int health = 100;  
+    public int health = 100;
+    public float currentHealth;  
     public int maxHealth = 100;  
     public float attackRange = 5f;  
     public float heavyAttackThreshold = 30f;  
     public float fallThreshold = -5f;  
-    public float walkSpeed = 3f;  
+    public float walkSpeed = 3f;
+    public GameObject Border1;
+    public GameObject Border2;
+    public GameObject HealthUI;
+    public GameObject audioManager;
+    private AudioSource audioSource;
+    public AudioClip deathClip;
 
     [Header("References")]  
     public Transform player;  
@@ -46,7 +53,8 @@ public class EvilWizardBoss : MonoBehaviour
 
     private void Start()  
     {  
-        health = maxHealth;  
+        health = maxHealth;
+        currentHealth = maxHealth;  
         animator = GetComponent<Animator>();  
         rb2D = GetComponent<Rigidbody2D>();  
 
@@ -77,7 +85,16 @@ public class EvilWizardBoss : MonoBehaviour
         if (bossHealthBar == null)  
         {  
             Debug.LogWarning("BossHealthBar is not assigned!");  
-        }  
+        } 
+
+        if (audioManager != null)
+        {
+            audioSource = audioManager.GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                Debug.LogError("在 AudioManager GameObject 上未找到 AudioSource 组件。");
+            }
+        }
     }  
 
     private void Update()  
@@ -235,11 +252,12 @@ public class EvilWizardBoss : MonoBehaviour
         if (isStunned) return;  
 
         health = Mathf.Max(0, health - damage);  
-        Debug.Log($"Boss took {damage} damage. Current health: {health}");  
+        Debug.Log($"Boss took {damage} damage. Current health: {health}");
+        currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);  
         
         if (bossHealthBar != null)  
         {  
-            bossHealthBar.UpdateHealth(health, maxHealth);  
+            //bossHealthBar.UpdateHealth(health, maxHealth);  
         }  
 
         StartCoroutine(HitReaction());  
@@ -307,7 +325,16 @@ public class EvilWizardBoss : MonoBehaviour
     {  
         Debug.Log("Boss is dying");  
         animator.SetTrigger("Die");  
-        enabled = false;  
+        enabled = false;
+        Destroy(Border1);
+        Destroy(Border2);
+        Destroy(HealthUI);
+
+        if (audioSource != null && deathClip != null)
+        {
+            audioSource.clip = deathClip;
+            audioSource.Play();
+        }
     }  
 
     private void OnDrawGizmosSelected()  

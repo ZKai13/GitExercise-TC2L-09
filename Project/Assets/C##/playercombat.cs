@@ -1,79 +1,82 @@
-using UnityEngine;
-using System.Collections;
+using System.Collections;  
+using System.Collections.Generic;  
+using UnityEngine;  
 
-public class PlayerCombat : MonoBehaviour
-{
-    // Public variables
-    public Animator animator; // Animation controller
-    public Transform attackPoint; // Attack point
-    public float attackRange = 2.5f; // Attack range
-    public LayerMask enemyLayers; // Enemy layers
-    public int lightAttackDamage = 20; // Light attack damage
-    public int heavyAttackDamage = 40; // Heavy attack damage
-    public float heavyAttackThreshold = 1f; // Heavy attack hold time threshold
-    public float attackAnimationDuration = 0.5f; // Attack animation duration
+public class PlayerCombat : MonoBehaviour  
+{  
+    // 公共变量  
+    public Animator animator;  
+    public Transform attackPoint;  
+    public float attackRange = 2.5f;  
+    public LayerMask enemyLayers;  
+    public int lightAttackDamage = 20;  
+    public int heavyAttackDamage = 40;  
+    public float heavyAttackThreshold = 1f;  
+    public float attackAnimationDuration = 0.5f;  
 
-    public float lightAttackStaminaCost = 10f; // Light attack stamina cost
-    public float heavyAttackStaminaCost = 25f; // Heavy attack stamina cost
-    public float blockStaminaCost = 15f; // Block stamina cost
+    public float lightAttackStaminaCost = 10f;  
+    public float heavyAttackStaminaCost = 25f;  
+    public float blockStaminaCost = 15f;  
 
-    public Staminasystem staminaSystem; // Stamina system
-    public Health healthSystem; // Health system
+    public Staminasystem staminaSystem;  
+    public Health healthSystem;  
 
-    public float blockDuration = 2f; // Block duration
-    public float blockCooldown = 1f; // Block cooldown
-    public float successfulBlockDuration = 0.5f; // Successful block duration
+    public float blockDuration = 2f;  
+    public float blockCooldown = 1f;  
+    public float successfulBlockDuration = 0.5f;  
 
-    // Private variables
-    private float holdTime = 0f; // Key hold time
-    public bool isAttacking = false; // Is attacking
-    private bool attackButtonHeld = false; // Is attack button held
-    private bool isBlocking = false; // Is blocking
-    private bool canBlockImpact = true; // Can block impact
-    public float lightAttackPushForce = 3f; // Light attack push force
-    public float heavyAttackPushForce = 5f; // Heavy attack push force
-    private bool isMoving = false; // Is moving
+    // 私有变量  
+    private float holdTime = 0f;  
+    public bool isAttacking = false;  
+    private bool attackButtonHeld = false;  
+    private bool isBlocking = false;  
+    private bool canBlockImpact = true;  
+    public float lightAttackPushForce = 3f;  
+    public float heavyAttackPushForce = 5f;  
+    private bool isMoving = false;  
     public int maxHealth = 100;  
     private int currentHealth;  
     public float hurtForce = 10f;  
     public float invincibilityDuration = 0.5f;
     private bool isStunned = false;  
-    private float stunDuration = 0f;  
+    private float stunDuration = 0f;
 
     private Rigidbody2D rb; 
+    public EvilWizardBoss evilWizardBoss;
+    private KeyRebinding keyRebinding;  
 
-    public EvilWizardBoss evilWizardBoss;   
+    void Start()  
+    {  
+        animator = GetComponent<Animator>();  
+        staminaSystem = GetComponent<Staminasystem>();  
+        healthSystem = GetComponent<Health>();  
+        keyRebinding = FindObjectOfType<KeyRebinding>();  
 
- 
-    void Start()
-    {
-        currentHealth = maxHealth;  
-        animator = GetComponent<Animator>(); 
-        animator = GetComponent<Animator>();
-        staminaSystem = GetComponent<Staminasystem>();
-        healthSystem = GetComponent<Health>();
-        rb = GetComponent<Rigidbody2D>(); 
+        if (animator == null) Debug.LogError("Animator component not found on this GameObject!");  
+        if (staminaSystem == null) Debug.LogError("Staminasystem not found on this GameObject!");  
+        if (healthSystem == null) Debug.LogError("Health component not found on this GameObject!");  
+        if (keyRebinding == null) Debug.LogError("KeyRebinding component not found!");  
 
-        // Check for necessary components
-        if (staminaSystem == null)
-        {
-            Debug.LogError("Staminasystem not found on this GameObject!");
-        }
-        if (healthSystem == null)
-        {
-            Debug.LogError("Health component not found on this GameObject!");
-        }
-    }
+        LoadPlayerPrefs();  
+    }  
 
-    void Update()
-    {
-        if (!isAttacking)
-        {
-            // Handle movement
-            float moveHorizontal = Input.GetAxisRaw("Horizontal");
-            float moveVertical = Input.GetAxisRaw("Vertical");
-            // Add movement logic here
-        }
+    private void OnApplicationQuit()  
+    {  
+        SavePlayerPrefs();  
+    }  
+
+    private void OnDisable()   
+    {  
+        SavePlayerPrefs();  
+    }  
+
+    void Update()  
+    {  
+        if (!isAttacking)  
+        {  
+            float moveHorizontal = Input.GetAxisRaw("Horizontal");  
+            float moveVertical = Input.GetAxisRaw("Vertical");  
+        }  
         if (isStunned)  
         {  
             stunDuration -= Time.deltaTime;  
@@ -84,65 +87,72 @@ public class PlayerCombat : MonoBehaviour
             }  
             return; // Skip other updates while stunned  
         }  
-        
-        HandleAttackInput(); // Handle attack input
-        HandleBlockInput(); // Handle block input
+        HandleAttackInput();  
+        HandleBlockInput();  
 
-        // Set isMoving based on player input
-        isMoving = (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) && !isAttacking;
-    }
+        isMoving = (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) && !isAttacking;  
+    }  
 
+    public void OnEnemyAttack(float damage)  
+    {  
+        healthSystem.Takedamage((int)damage);  
+    }  
 
-    public void OnAttackStart()
-    {
-        isAttacking = true;
-        animator.SetBool("isAttacking", true);
-        animator.SetTrigger("attack");
-    }
+    public void OnAttackStart()  
+    {  
+        isAttacking = true;  
+        animator.SetBool("isAttacking", true);  
+        animator.SetTrigger("attack");  
+    }  
 
-    public void OnAttackEnd()
-    {
-        isAttacking = false;
-        animator.SetBool("isAttacking", false);
-    }
+    public void OnAttackEnd()  
+    {  
+        isAttacking = false;  
+        animator.SetBool("isAttacking", false);  
+    }  
 
-    void HandleAttackInput()
-    {
-        // Handle attack input
-        if (Input.GetKeyDown(KeyCode.Q) && !isMoving)
-        {
-            if (!isAttacking)
-            {
-                holdTime = 0f;
-                isAttacking = true;
-                attackButtonHeld = true;
-                isMoving = false;
-                animator.SetBool("isAttacking", true);
-                animator.SetTrigger("attack");
-                OnAttackStart();
-            }
-        }
+    void HandleAttackInput()  
+    {  
+        if (keyRebinding == null)  
+        {  
+            Debug.LogError("KeyRebinding is not assigned!");  
+            return;  
+        }  
 
-        if (attackButtonHeld)
-        {
-            holdTime += Time.deltaTime;
-        }
+        if (Input.GetKeyDown(keyRebinding.GetKeyForAction("Attack")) && !isMoving)  
+        {  
+            if (!isAttacking)  
+            {  
+                holdTime = 0f;  
+                isAttacking = true;  
+                attackButtonHeld = true;  
+                isMoving = false;  
+                animator.SetBool("isAttacking", true);  
+                animator.SetTrigger("attack");  
+                OnAttackStart();  
+            }  
+        }  
 
-        if (Input.GetKeyUp(KeyCode.Q))
-        {
-            if (isAttacking)
-            {
-                PerformAttack(holdTime >= heavyAttackThreshold);
-                attackButtonHeld = false;
-                holdTime = 0f;
-                isMoving = true;
-                OnAttackEnd();
-            }
-        }
-    }
+        if (attackButtonHeld)  
+        {  
+            holdTime += Time.deltaTime;  
+        }  
 
-    void PerformAttack(bool isHeavyAttack)
-    {
+        if (Input.GetKeyUp(keyRebinding.GetKeyForAction("Attack")))  
+        {  
+            if (isAttacking)  
+            {  
+                PerformAttack(holdTime >= heavyAttackThreshold);  
+                attackButtonHeld = false;  
+                holdTime = 0f;  
+                isMoving = true;  
+                OnAttackEnd();  
+            }  
+        }  
+    }  
+
+    void PerformAttack(bool isHeavyAttack)  
+    {  
         isAttacking = true;
         Debug.Log("Performing Attack: " + (isHeavyAttack ? "Heavy" : "Light"));
         if (isHeavyAttack && staminaSystem.ConsumeStamina(heavyAttackStaminaCost))
@@ -158,43 +168,7 @@ public class PlayerCombat : MonoBehaviour
             NewLightAttack();
         }
         animator.SetBool("isAttacking", true);
-        StartCoroutine(ResetAttackState());
-    }
-    private void GetHurt(Vector3 attackerPosition, float damage)
-    {
-        healthSystem.Takedamage(damage);
-        Debug.Log($"Player took {damage} damage. Current health: {healthSystem.currentHealth}");
-
-        // Calculate direction from attacker to player
-        Vector2 hurtDirection = (transform.position - attackerPosition).normalized;
-
-        // Apply backward force
-        rb.AddForce(hurtDirection * hurtForce, ForceMode2D.Impulse);
-
-        // Trigger hurt animation
-        animator.SetTrigger("Hurt");
-
-        // Optional: Add invincibility frames
-        StartCoroutine(InvincibilityFrames());
-    }
-    // NEW: Added InvincibilityFrames coroutine
-    private IEnumerator InvincibilityFrames()
-    {
-        // Disable player's collider or set a flag to prevent further damage
-        GetComponent<Collider2D>().enabled = false;
-
-        // Wait for a short duration (e.g., 0.5 seconds)
-        yield return new WaitForSeconds(0.5f);
-
-        // Re-enable player's collider or reset the flag
-        GetComponent<Collider2D>().enabled = true;
-    }
-    public void GetStunned(float duration)  
-    {  
-        isStunned = true;  
-        stunDuration = duration;  
-        animator.SetTrigger("Stunned"); // Assuming you have a "Stunned" animation  
-        Debug.Log($"Boss stunned for {duration} seconds");  
+        StartCoroutine(ResetAttackState());  
     }  
 
     void NewLightAttack()  
@@ -212,7 +186,7 @@ public class PlayerCombat : MonoBehaviour
                 hit.rigidbody.AddForce((hit.transform.position - transform.position).normalized * lightAttackPushForce, ForceMode2D.Impulse);  
             }  
         }  
-    }  
+    }    
 
     void NewHeavyAttack()  
     {  
@@ -230,6 +204,7 @@ public class PlayerCombat : MonoBehaviour
             }  
         }  
     }  
+
     public void Takedamage(int damage)  
     {  
         if (healthSystem != null)  
@@ -250,7 +225,7 @@ public class PlayerCombat : MonoBehaviour
         {  
             Die();  
         }  
-    }  
+    }
 
     private void Die()  
     {  
@@ -262,67 +237,62 @@ public class PlayerCombat : MonoBehaviour
         GetComponent<Collider2D>().enabled = false;  
         this.enabled = false;  
     }
-    
+    IEnumerator ResetAttackState()  
+    {  
+        yield return new WaitForSeconds(attackAnimationDuration);  
+        animator.SetBool("isAttacking", false);  
+        animator.SetBool("isHeavyAttack", false);  
+        animator.SetBool("isLightAttack", false);
+        isAttacking = false;   
+    }  
 
-    IEnumerator ResetAttackState()
-    {
-    yield return new WaitForSeconds(attackAnimationDuration);  
-    Debug.Log("Resetting attack state");  
-    animator.SetBool("isAttacking", false);  
-    animator.SetBool("isHeavyAttack", false);  
-    animator.SetBool("isLightAttack", false);  
-    isAttacking = false;  
-    }
+    void HandleBlockInput()  
+    {  
+        if (Input.GetKeyDown(keyRebinding.GetKeyForAction("Block")) && staminaSystem.ConsumeStamina(blockStaminaCost))  
+        {  
+            StartCoroutine(Block());  
+        }  
+    }  
 
-    void HandleBlockInput()
-    {
-        // Handle block input
-        if (Input.GetKeyDown(KeyCode.E) && staminaSystem.ConsumeStamina(blockStaminaCost))
-        {
-            StartCoroutine(Block());
-        }
-    }
+    IEnumerator Block()  
+    {  
+        isBlocking = true;  
+        animator.SetBool("isBlocking", true);  
 
-    IEnumerator Block()
-    {
-        isBlocking = true;
-        animator.SetBool("isBlocking", true);
+        float blockTimer = 0f;  
+        while (blockTimer < blockDuration && Input.GetKey(keyRebinding.GetKeyForAction("Block")))  
+        {  
+            blockTimer += Time.deltaTime;  
+            yield return null;  
+        }  
 
-        float blockTimer = 0f;
-        while (blockTimer < blockDuration && Input.GetKey(KeyCode.E))
-        {
-            blockTimer += Time.deltaTime;
-            yield return null;
-        }
+        isBlocking = false;  
+        animator.SetBool("isBlocking", false);  
 
-        isBlocking = false;
-        animator.SetBool("isBlocking", false);
+        yield return new WaitForSeconds(blockCooldown);  
+        canBlockImpact = true;  
+    }  
 
-        yield return new WaitForSeconds(blockCooldown);
-        canBlockImpact = true;
-    }
+    public void TriggerBlockImpact()  
+    {  
+        if (canBlockImpact)  
+        {  
+            canBlockImpact = false;  
+            staminaSystem.ConsumeStamina(blockStaminaCost);  
+            StartCoroutine(BlockImpactCooldown());  
+        }  
+    }  
 
-    public void TriggerBlockImpact()
-    {
-        // Trigger block impact
-        if (canBlockImpact)
-        {
-            canBlockImpact = false;
-            staminaSystem.ConsumeStamina(blockStaminaCost);
-            StartCoroutine(BlockImpactCooldown());
-        }
-    }
+    IEnumerator BlockImpactCooldown()  
+    {  
+        yield return new WaitForSeconds(successfulBlockDuration);  
+        canBlockImpact = true;  
+    }  
 
-    IEnumerator BlockImpactCooldown()
-    {
-        yield return new WaitForSeconds(successfulBlockDuration);
-        canBlockImpact = true;
-    }
-
-    public bool IsBlocking()
-    {
-        return isBlocking;
-    }
+    public bool IsBlocking()  
+    {  
+        return isBlocking;  
+    }  
 
     public void ReceiveAttack(MonoBehaviour attacker, float damage)  
     {  
@@ -364,56 +334,47 @@ public class PlayerCombat : MonoBehaviour
 
     IEnumerator SuccessfulBlock()  
     {  
-        // Handle successful block  
         canBlockImpact = false;  
         animator.SetTrigger("BlockImpact");  
-
-        // Play block effect  
         PlayBlockEffect();  
-
-        // Stun nearby enemies  
         StunNearbyEnemies();  
 
-        // Stun the boss  
         if (evilWizardBoss != null)  
         {  
             evilWizardBoss.TakeDamage(0); // Deal 0 damage to trigger the boss's hurt state  
             Debug.Log("Boss stunned (simulated)"); 
-        }  
+        }
 
         yield return new WaitForSeconds(successfulBlockDuration);  
         canBlockImpact = true;  
-    }
+    }  
 
-    void PlayBlockEffect()
-    {
-        // Implement block effect
-        // Example:
-        // blockEffectParticleSystem.Play();
-        // audioSource.PlayOneShot(blockSoundEffect);
-    }
+    void PlayBlockEffect()  
+    {  
+        // 实现格挡特效  
+        //blockEffectParticleSystem.Play();  
+        //audioSource.PlayOneShot(blockSoundEffect);  
+    }  
 
-    void StunNearbyEnemies()
-    {
-        // Stun nearby enemies
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, attackRange, enemyLayers);
-        foreach (Collider2D enemy in hitEnemies)
-        {
-            Enemy enemyScript = enemy.GetComponent<Enemy>();
-            if (enemyScript != null)
-            {
-                enemyScript.GetStunned();
-            }
-        }
-    }
+    void StunNearbyEnemies()  
+    {  
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, attackRange, enemyLayers);  
+        foreach (Collider2D enemy in hitEnemies)  
+        {  
+            Enemy enemyScript = enemy.GetComponent<Enemy>();  
+            if (enemyScript != null)  
+            {  
+                enemyScript.GetStunned();  
+            }  
+        }  
+    }  
 
-    void OnDrawGizmosSelected()
-    {
-        // Draw attack range in editor
-        if (attackPoint == null) return;
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
-    }
+    void OnDrawGizmosSelected()  
+    {  
+        if (attackPoint == null) return;  
+        Gizmos.color = Color.red;  
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);  
+    }  
 
     public void IncreaseLightAttackDamage(int amount)  
     {  
@@ -436,14 +397,23 @@ public class PlayerCombat : MonoBehaviour
         PlayerPrefs.Save();  
     }  
 
+    private void LoadPlayerPrefs()  
+    {  
+        lightAttackDamage = PlayerPrefs.GetInt("LightAttackDamage", lightAttackDamage);  
+        heavyAttackDamage = PlayerPrefs.GetInt("HeavyAttackDamage", heavyAttackDamage);  
+    } 
+
     public void ResetAttackDamage()  
     {  
-        // Reset the light and heavy attack damage to their default values  
-        lightAttackDamage = 20;  
-        heavyAttackDamage = 40;  
-        Debug.Log("Player attack damage has been reset.");  
-    }  
+         
+        lightAttackDamage = 20;
+        heavyAttackDamage = 60;
+
+    
+        SavePlayerPrefs();  
+
+        Debug.Log("Attack damage has been reset to default values.");  
+    }
+
+
 }
-
-
-

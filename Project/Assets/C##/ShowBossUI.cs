@@ -10,7 +10,8 @@ public class ShowBossUI : MonoBehaviour
     {  
         if (other.CompareTag("Player"))   
         {  
-            ShowHealthUI();   
+            ShowHealthUI();
+            Destroy(gameObject);   
         }  
     }  
 

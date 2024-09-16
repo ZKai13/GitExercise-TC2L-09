@@ -5,51 +5,16 @@ using System;
 
 public class BossHealthBar : MonoBehaviour
 {
-    [SerializeField] private int maxHealth = 100;
-    [SerializeField] private Image healthBarImage;
-    [SerializeField] private Text healthText;
-
-    private int currentHealth;
-
-    public event Action<float> OnHealthPercentChanged;
-
-    public int CurrentHealth
-    {
-        get => currentHealth;
-        private set
-        {
-            currentHealth = Mathf.Clamp(value, 0, maxHealth);
-            UpdateHealthBar();
-        }
-    }
-
+    [SerializeField] private EvilWizardBoss WizardHealth;
+    [SerializeField] private Image totalhealthBar;
+    [SerializeField] private Image currenthealthBar;
+    
     private void Start()
     {
-        CurrentHealth = maxHealth;
+        totalhealthBar.fillAmount = WizardHealth.currentHealth /100;
     }
-
-    public void TakeDamage(int damage)
+    private void Update()
     {
-        CurrentHealth -= damage;
+       currenthealthBar.fillAmount = WizardHealth.currentHealth /100;
     }
-
-    public void Heal(int amount)
-    {
-        CurrentHealth += amount;
-    }
-
-    private void UpdateHealthBar()
-    {
-        float healthPercentage = (float)CurrentHealth / maxHealth;
-        healthBarImage.fillAmount = healthPercentage;
-        healthText.text = $"{CurrentHealth} / {maxHealth}";
-        
-        OnHealthPercentChanged?.Invoke(healthPercentage);
-    }
-        public void UpdateHealth(int currentHealth, int maxHealth)  
-    {  
-        CurrentHealth = currentHealth;  
-        this.maxHealth = maxHealth;  
-        UpdateHealthBar();  
-    }  
 }
