@@ -456,6 +456,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae0746336e9b45448bc97beab33b5e88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  achievementsMenu: {fileID: 0}
 --- !u!212 &95268226
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10503,6 +10504,12 @@ MonoBehaviour:
   isAttacking: 0
   lightAttackPushForce: 3
   heavyAttackPushForce: 5
+  maxHealth: 100
+  hurtForce: 10
+  invincibilityDuration: 0.5
+  evilWizardBoss: {fileID: 0}
+  lightAttackSound: {fileID: 8300000, guid: 57e76b485327aec408993ca7f024b7f3, type: 3}
+  heavyAttackSound: {fileID: 8300000, guid: 91022e900b3437048a9ba7f1562905fa, type: 3}
 --- !u!114 &1422776074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10581,6 +10588,7 @@ MonoBehaviour:
   startingHealth: 20
   PLAYER: {fileID: 0}
   staminaImage: {fileID: 0}
+  PotionsCanvasGroup: {fileID: 0}
 --- !u!50 &1422776078
 Rigidbody2D:
   serializedVersion: 4

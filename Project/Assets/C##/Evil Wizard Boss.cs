@@ -50,14 +50,16 @@ public class EvilWizardBoss : MonoBehaviour
     private bool isHurt = false;  
     private bool isInvulnerable = false;  
     private float invulnerabilityDuration = 1f;
-    private bool isStunned = false;  
+    private bool isStunned = false;
+    private BossDeathUI uiManager;  
 
     private void Start()  
     {  
         health = maxHealth;
         currentHealth = maxHealth;  
         animator = GetComponent<Animator>();  
-        rb2D = GetComponent<Rigidbody2D>();  
+        rb2D = GetComponent<Rigidbody2D>(); 
+        uiManager = FindObjectOfType<BossDeathUI>(); 
 
         if (animator == null || rb2D == null)  
         {  
@@ -331,13 +333,25 @@ public class EvilWizardBoss : MonoBehaviour
         Destroy(Border1);
         Destroy(Border2);
         Destroy(HealthUI);
+        StartCoroutine(ShowAndHideUIWithDelay());
+
+        
+    }  
+
+    private IEnumerator ShowAndHideUIWithDelay()
+    {
+        yield return new WaitForSeconds(3f);
+        uiManager.ShowBossUI();
+        yield return new WaitForSeconds(3f);
+        uiManager.HideBossUI();
+        Destroy(gameObject);
 
         if (audioSource != null && deathClip != null)
         {
             audioSource.clip = deathClip;
             audioSource.Play();
         }
-    }  
+    }
 
     private void OnDrawGizmosSelected()  
     {  

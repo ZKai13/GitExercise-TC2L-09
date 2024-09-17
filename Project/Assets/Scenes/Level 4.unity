@@ -1291,6 +1291,8 @@ MonoBehaviour:
   hurtForce: 10
   invincibilityDuration: 0.5
   evilWizardBoss: {fileID: 2086847747}
+  lightAttackSound: {fileID: 8300000, guid: 57e76b485327aec408993ca7f024b7f3, type: 3}
+  heavyAttackSound: {fileID: 8300000, guid: 91022e900b3437048a9ba7f1562905fa, type: 3}
 --- !u!114 &189458684
 MonoBehaviour:
   m_ObjectHideFlags: 0

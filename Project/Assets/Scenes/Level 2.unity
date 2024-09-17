@@ -140608,7 +140608,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingHealth: 20
   PLAYER: {fileID: 1110314173}
-  HealthImage: {fileID: 1597521424}
+  staminaImage: {fileID: 0}
+  PotionsCanvasGroup: {fileID: 0}
 --- !u!114 &1110314182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140654,12 +140655,15 @@ MonoBehaviour:
   blockDuration: 2
   blockCooldown: 1
   successfulBlockDuration: 0.5
+  isAttacking: 0
   lightAttackPushForce: 3
   heavyAttackPushForce: 5
   maxHealth: 100
   hurtForce: 10
   invincibilityDuration: 0.5
   evilWizardBoss: {fileID: 0}
+  lightAttackSound: {fileID: 8300000, guid: 57e76b485327aec408993ca7f024b7f3, type: 3}
+  heavyAttackSound: {fileID: 8300000, guid: 91022e900b3437048a9ba7f1562905fa, type: 3}
 --- !u!114 &1110314184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146578,11 +146582,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+  currentHealth: 0
   maxHealth: 100
   attackRange: 4.12
   heavyAttackThreshold: 30
   fallThreshold: -0.5
   walkSpeed: 5
+  Border1: {fileID: 0}
+  Border2: {fileID: 0}
+  HealthUI: {fileID: 0}
+  audioManager: {fileID: 0}
+  deathClip: {fileID: 0}
   player: {fileID: 1110314179}
   bossHealthBar: {fileID: 0}
   lightAttackCooldown: 2
