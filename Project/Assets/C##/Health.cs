@@ -10,9 +10,13 @@ public class Health : MonoBehaviour
     private Animator anim;  
     public GameObject PLAYER;   
     private GameManager gameManager;  
+<<<<<<< Updated upstream
     public Image staminaImage;
     private PotionScript potionScript;
     public CanvasGroup PotionsCanvasGroup;
+=======
+    public Image HealthImage; 
+>>>>>>> Stashed changes
 
     void Start()  
     {  
@@ -37,9 +41,13 @@ public class Health : MonoBehaviour
         else   
         {  
             anim.SetTrigger("Die");
+<<<<<<< Updated upstream
             staminaImage.fillAmount = 0;
             ResetPotionCount();
             HidePotionUI(); 
+=======
+            HealthImage.fillAmount = 0; 
+>>>>>>> Stashed changes
             StartCoroutine(HandleDeath());  
         }  
     }  
@@ -49,7 +57,7 @@ public class Health : MonoBehaviour
         yield return new WaitForSeconds(1f);   
         gameManager.ShowDeathUI();  
         
-        staminaImage.fillAmount = 0; 
+        HealthImage.fillAmount = 0; 
         this.enabled = false;
         GetComponent<Rigidbody2D>().simulated = false;   
     }   

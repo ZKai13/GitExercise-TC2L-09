@@ -43,6 +43,7 @@ public class EvilWizardBoss : MonoBehaviour
     private bool isGrounded;  
     private bool facingRight = true;  
     private PlayerCombat playerCombat; 
+    
     [Header("Jump Check")]  
     public LayerMask jumpTriggerLayer;  
     public float jumpCheckDistance = 1f;   
@@ -233,8 +234,10 @@ public class EvilWizardBoss : MonoBehaviour
             if (distanceToPlayer <= attackRange)  
             {  
                 float reducedDamage = damage * bossDamageReductionFactor;  
-                Debug.Log($"Boss attacking player. Base damage: {damage}, Reduced damage: {reducedDamage}");  
-                playerCombat.ReceiveAttack(this, reducedDamage);  
+                bool isHeavyAttack = damage == heavyAttackDamage; // Determine if it's a heavy attack  
+                int roundedDamage = Mathf.RoundToInt(reducedDamage); // Convert float to int  
+                Debug.Log($"Boss attacking player. Base damage: {damage}, Reduced damage: {reducedDamage}, Rounded damage: {roundedDamage}, Is Heavy Attack: {isHeavyAttack}");  
+                playerCombat.ReceiveAttack(this, roundedDamage, isHeavyAttack);  
             }  
             else  
             {  
@@ -245,8 +248,7 @@ public class EvilWizardBoss : MonoBehaviour
         {  
             Debug.LogError("PlayerCombat or player reference is null!");  
         }  
-    }  
-
+    }
     public void TakeDamage(int damage)  
     {  
         if (isStunned) return;  

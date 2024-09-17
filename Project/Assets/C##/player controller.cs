@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private Health health;
 
-    float movesSpeed = 7f;
+    float movesSpeed = 7f;  
     float jumpForce = 5f;
     private int moveChangesAni;
 

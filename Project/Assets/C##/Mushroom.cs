@@ -1,199 +1,3 @@
-
-// using System.Collections;  
-// using System.Collections.Generic;  
-// using UnityEngine;  
-
-// public class Mushroom : MonoBehaviour  
-// {  
-//     public int maxHealth = 100;  
-//     private int currentHealth;  
-//     private Transform target;  
-
-//     public float enemyMoveSpeed = 2f;  
-//     public float followDistance = 10f;  
-//     public float stunDuration = 2f;  
-
-//     private Animator animator;  
-//     private SpriteRenderer spriteRenderer;  
-//     public PlayerCombat playerCombat;  
-
-//     private bool isDead = false;  
-//     private bool isAttacking = false;  
-//     private bool isStunned = false;  
-
-//     public Health playerHealth;  
-//     public float cooldownTime = 0.75f;  
-//     private float nextAttackTime = 0f;  
-//     private MushroomHealth mushroomHealth;  
-
-//     void Start()  
-//     {  
-//         currentHealth = maxHealth;  
-//         target = GameObject.FindGameObjectWithTag("Player").transform;  
-//         mushroomHealth = GetComponent<MushroomHealth>();  
-//         if (mushroomHealth == null)  
-//         {  
-//             Debug.LogError("MushroomHealth component is missing from this game object.");  
-//         }  
-
-//         animator = GetComponent<Animator>();  
-//         spriteRenderer = GetComponent<SpriteRenderer>();  
-//         playerCombat = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCombat>();  
-
-//         if (spriteRenderer == null)  
-//         {  
-//             Debug.LogError("SpriteRenderer component is missing from this game object.");  
-//         }  
-
-//         if (animator != null)  
-//         {  
-//             animator.Play("Mushroom idle");  
-//         }  
-//     }  
-
-//     void Update()  
-//     {  
-//         if (!isDead && !isAttacking && !isStunned)  
-//         {  
-//             FollowPlayer();  
-//         }  
-//     }  
-
-//     void FollowPlayer()  
-//     {  
-//         float distanceToPlayer = Vector2.Distance(transform.position, target.position);  
-
-//         if (distanceToPlayer < followDistance)  
-//         {  
-//             Vector2 direction = (target.position - transform.position).normalized;  
-//             transform.position = Vector2.MoveTowards(transform.position, target.position, enemyMoveSpeed * Time.deltaTime);  
-
-//             if (spriteRenderer != null)  
-//             {  
-//                 spriteRenderer.flipX = direction.x < 0;  
-//             }  
-
-//             if (distanceToPlayer <= 1.5f)  
-//             {  
-//                 Attack();  
-//             }  
-//             else  
-//             {  
-//                 animator.SetBool("isWalking", true);  
-//             }  
-//         }  
-//         else  
-//         {  
-//             animator.SetBool("isWalking", false);  
-//         }  
-//     }  
-
-//     void Attack()  
-//     {  
-//         if (isDead || Time.time < nextAttackTime) return;  
-
-//         isAttacking = true;  
-//         animator.SetBool("isWalking", false);  
-//         animator.SetTrigger("attack");  
-
-//         nextAttackTime = Time.time + cooldownTime;  
-//         CheckPlayerBlocking();  
-//     }  
-
-//     void CheckPlayerBlocking()  
-//     {  
-//         bool isBlocking = playerCombat != null && playerCombat.IsBlocking();  
-//         ApplyDamageToPlayer(isBlocking);  
-//     }  
-
-//     void ApplyDamageToPlayer(bool isBlocking)  
-//     {  
-//         if (isBlocking)  
-//         {  
-//             if (playerCombat != null)  
-//             {  
-//                 playerCombat.TriggerBlockImpact();  
-//                 StartCoroutine(Stun());  
-//             }  
-//             Debug.Log("Player blocked the attack!");  
-//         }  
-//         else  
-//         {  
-//             if (playerHealth != null)  
-//             {  
-//                 playerHealth.Takedamage(1); // Damage amount can be adjusted  
-//                 Debug.Log("Damage applied to player.");  
-//             }  
-//         }  
-//         isAttacking = false;  
-//     }  
-
-//     public void Takedamage(int damage, bool isBlocking)  
-//     {  
-//         Debug.Log($"Takedamage called with damage: {damage}, isBlocking: {isBlocking}");  
-
-//         if (isDead) return;  
-
-//         if (isBlocking)  
-//         {  
-//             Debug.Log("Enemy is stunned due to block.");  
-//             StartCoroutine(Stun());  
-//         }  
-//         else  
-//         {  
-//             currentHealth -= damage; // Update current health  
-//             mushroomHealth.TakeDamage(damage); // Call TakeDamage on MushroomHealth  
-
-//             if (currentHealth <= 0)  
-//             {  
-//                 Die();  
-//             }  
-//             else  
-//             {  
-//                 animator.SetTrigger("Hurt");  
-//             }  
-//         }  
-//     }  
-
-//     IEnumerator Stun()  
-//     {  
-//         isStunned = true;  
-//         animator.SetTrigger("Stunned");  
-//         yield return new WaitForSeconds(stunDuration);  
-//         isStunned = false;  
-//     }  
-
-//     void Die()  
-//     {  
-//         isDead = true;  
-//         animator.SetTrigger("Die");  
-//         StartCoroutine(DestroyAfterAnimation());  
-//     }  
-
-//     IEnumerator DestroyAfterAnimation()  
-//     {  
-//         yield return new WaitForEndOfFrame();  
-
-//         if (animator != null)  
-//         {  
-//             AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);  
-//             if (stateInfo.IsName("Mushroom_die"))  
-//             {  
-//                 float dieAnimationLength = stateInfo.length;  
-//                 Destroy(gameObject, dieAnimationLength);  
-//             }  
-//             else  
-//             {  
-//                 Destroy(gameObject, 1f);  
-//             }  
-//         }  
-//     }  
-
-//     public void OnAttackFinished()  
-//     {  
-//         isAttacking = false;  
-//     }  
-// }
 using System.Collections;  
 using System.Collections.Generic;  
 using UnityEngine;  
@@ -217,39 +21,35 @@ public class Mushroom : MonoBehaviour
     private bool isStunned = false;  
 
     public Health playerHealth;  
-    public float cooldownTime = 0.75f;  
-    private float nextAttackTime = 0f;  
-    private float heavyAttackCooldown = 3f; // Cooldown for heavy attack  
-    private float nextHeavyAttackTime = 0f; // Time for the next heavy attack  
+    public float cooldownTime = 1f;  
+    private float nextAttackTime = 1f;  
+    private float heavyAttackCooldown = 5f;  
+    private float nextHeavyAttackTime = 1f; 
+     
     private MushroomHealth mushroomHealth;  
 
-    public int heavyAttackDamage = 20; // Damage for heavy attack  
-    public int normalAttackDamage = 10; // Damage for normal attack  
-    public float normalAttackRange = 1.5f; // Range for normal attack  
-    public float heavyAttackRange = 3.5f; // Range for heavy attack  
+    [SerializeField] private int heavyAttackDamage = 5;  
+    [SerializeField] private int normalAttackDamage = 3;  
+    public float normalAttackRange = 1.5f;  
+    public float heavyAttackRange = 3.5f;  
+    public float heavyAttackKnockbackForce = 5f;  
+
+    public BoxCollider2D lightAttackCollider;  
 
     void Start()  
     {  
         currentHealth = maxHealth;  
         target = GameObject.FindGameObjectWithTag("Player").transform;  
         mushroomHealth = GetComponent<MushroomHealth>();  
-        if (mushroomHealth == null)  
-        {  
-            Debug.LogError("MushroomHealth component is missing from this game object.");  
-        }  
-
         animator = GetComponent<Animator>();  
         spriteRenderer = GetComponent<SpriteRenderer>();  
         playerCombat = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCombat>();  
+        playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();  
+        
 
-        if (spriteRenderer == null)  
+        if (mushroomHealth == null || animator == null || spriteRenderer == null || playerCombat == null || playerHealth == null)  
         {  
-            Debug.LogError("SpriteRenderer component is missing from this game object.");  
-        }  
-
-        if (animator != null)  
-        {  
-            animator.Play("Mushroom idle");  
+            Debug.LogError("One or more required components are missing!");  
         }  
     }  
 
@@ -258,6 +58,34 @@ public class Mushroom : MonoBehaviour
         if (!isDead && !isAttacking && !isStunned)  
         {  
             FollowPlayer();  
+            CheckForAttacks();  
+        }  
+    }  
+
+    void CheckForAttacks()  
+    {  
+        if (target == null)  
+        {  
+            Debug.LogError("Target (player) is null!");  
+            return;  
+        }  
+
+        float distanceToPlayer = Vector2.Distance(transform.position, target.position);  
+        Debug.Log($"Distance to player: {distanceToPlayer}");  
+        
+        if (distanceToPlayer <= heavyAttackRange && Time.time >= nextHeavyAttackTime)  
+        {  
+            Debug.Log("Attempting Heavy Attack");  
+            HeavyAttack();  
+        }  
+        else if (distanceToPlayer <= normalAttackRange && Time.time >= nextAttackTime)  
+        {  
+            Debug.Log("Attempting Normal Attack");  
+            Attack();  
+        }  
+        else  
+        {  
+            Debug.Log("Player not in range or attack on cooldown");  
         }  
     }  
 
@@ -283,32 +111,39 @@ public class Mushroom : MonoBehaviour
         }  
     }  
 
-    void OnTriggerEnter2D(Collider2D other)  
-    {  
-        if (other.CompareTag("Player"))  
-        {  
-            // Check if the player is within the heavy attack range  
-            if (Vector2.Distance(transform.position, other.transform.position) <= heavyAttackRange && Time.time >= nextHeavyAttackTime)  
-            {  
-                HeavyAttack();  
-            }  
-            // Check if the player is within the normal attack range  
-            else if (Vector2.Distance(transform.position, other.transform.position) <= normalAttackRange && Time.time >= nextAttackTime)  
-            {  
-                Attack();  
-            }  
-        }  
-    }  
-
     void Attack()  
     {  
-        if (isDead) return;  
+        Debug.Log("Attack method called");  
+        if (isDead)   
+        {  
+            Debug.Log("Attack cancelled: Mushroom is dead");  
+            return;  
+        }  
 
         isAttacking = true;  
-        animator.SetBool("isWalking", false);  
-        animator.SetTrigger("attack");  
+        if (animator != null)  
+        {  
+            animator.SetBool("isWalking", false);  
+            animator.SetTrigger("attack");  
+            Debug.Log("Attack animation triggered");  
+        }  
+        else  
+        {  
+            Debug.LogError("Animator is null!");  
+        }  
 
         nextAttackTime = Time.time + cooldownTime;  
+
+        if (lightAttackCollider != null)  
+        {  
+            StartCoroutine(EnableColliderForDuration(lightAttackCollider, 0.2f));  
+            Debug.Log("Light attack collider enabled");  
+        }  
+        else  
+        {  
+            Debug.LogError("Light Attack Collider is not assigned!");  
+        }  
+
         CheckPlayerBlocking();  
     }  
 
@@ -318,7 +153,7 @@ public class Mushroom : MonoBehaviour
 
         isAttacking = true;  
         animator.SetBool("isWalking", false);  
-        animator.SetTrigger("heavyAttack"); // Trigger heavy attack animation  
+        animator.SetTrigger("heavyAttack");  
 
         nextHeavyAttackTime = Time.time + heavyAttackCooldown;  
         CheckPlayerBlockingHeavy();  
@@ -326,36 +161,69 @@ public class Mushroom : MonoBehaviour
 
     void CheckPlayerBlocking()  
     {  
-        bool isBlocking = playerCombat != null && playerCombat.IsBlocking();  
-        ApplyDamageToPlayer(isBlocking, normalAttackDamage); // Regular attack damage  
+        if (playerCombat == null)  
+        {  
+            Debug.LogError("playerCombat is null!");  
+            return;  
+        }  
+
+        bool isBlocking = playerCombat.IsBlocking();  
+        Debug.Log($"Player blocking status: {isBlocking}");  
+        ApplyDamageToPlayer(isBlocking, normalAttackDamage, false);  
     }  
 
     void CheckPlayerBlockingHeavy()  
     {  
         bool isBlocking = playerCombat != null && playerCombat.IsBlocking();  
-        ApplyDamageToPlayer(isBlocking, heavyAttackDamage); // Heavy attack damage  
+        ApplyDamageToPlayer(isBlocking, heavyAttackDamage, true);  
     }  
 
-    void ApplyDamageToPlayer(bool isBlocking, int damage)  
+    void ApplyDamageToPlayer(bool isBlocking, int damage, bool isHeavyAttack)  
     {  
         if (isBlocking)  
         {  
+            Debug.Log("Player blocked the attack!");  
             if (playerCombat != null)  
             {  
+                if (isHeavyAttack)  
+                {  
+                    // Heavy attack: apply knockback  
+                    ApplyKnockbackToPlayer();  
+                }  
+                else  
+                {  
+                    // Light attack: stun the mushroom  
+                    StartCoroutine(Stun());  
+                }  
                 playerCombat.TriggerBlockImpact();  
-                StartCoroutine(Stun());  
             }  
-            Debug.Log("Player blocked the attack!");  
         }  
         else  
         {  
             if (playerHealth != null)  
             {  
                 playerHealth.Takedamage(damage);  
-                Debug.Log("Damage applied to player.");  
+                Debug.Log($"Damage applied to player: {damage}");  
+            }  
+            else  
+            {  
+                Debug.LogError("playerHealth is null!");  
             }  
         }  
         isAttacking = false;  
+    }
+    void ApplyKnockbackToPlayer()  
+    {  
+        if (playerCombat != null && playerCombat.GetComponent<Rigidbody2D>() != null)  
+        {  
+            Vector2 knockbackDirection = (playerCombat.transform.position - transform.position).normalized;  
+            playerCombat.GetComponent<Rigidbody2D>().AddForce(knockbackDirection * heavyAttackKnockbackForce, ForceMode2D.Impulse);  
+            Debug.Log("Knockback applied to player");  
+        }  
+        else  
+        {  
+            Debug.LogError("Player Rigidbody2D not found!");  
+        }  
     }  
 
     public void Takedamage(int damage, bool isBlocking)  
@@ -374,11 +242,11 @@ public class Mushroom : MonoBehaviour
             if (mushroomHealth == null)  
             {  
                 Debug.LogError("MushroomHealth is null at the time of taking damage.");  
-                return; // Exit early if mushroomHealth is null  
+                return;  
             }  
 
-            currentHealth -= damage; // Update current health  
-            mushroomHealth.TakeDamage(damage); // Call TakeDamage on MushroomHealth  
+            currentHealth -= damage;  
+            mushroomHealth.TakeDamage(damage);  
 
             if (currentHealth <= 0)  
             {  
@@ -423,6 +291,13 @@ public class Mushroom : MonoBehaviour
                 Destroy(gameObject, 1f);  
             }  
         }  
+    }  
+
+    IEnumerator EnableColliderForDuration(Collider2D collider, float duration)  
+    {  
+        collider.enabled = true;  
+        yield return new WaitForSeconds(duration);  
+        collider.enabled = false;  
     }  
 
     public void OnAttackFinished()  

@@ -1281,6 +1281,8 @@ MonoBehaviour:
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
+  canPerformHeavyAttack: 0
+  heavyAttackDamage: 20
 --- !u!95 &261012965
 Animator:
   serializedVersion: 5
@@ -1387,6 +1389,8 @@ MonoBehaviour:
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
+  canPerformHeavyAttack: 0
+  heavyAttackDamage: 20
 --- !u!95 &327044188
 Animator:
   serializedVersion: 5
@@ -1736,6 +1740,8 @@ MonoBehaviour:
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
+  canPerformHeavyAttack: 0
+  heavyAttackDamage: 20
 --- !u!95 &345733485
 Animator:
   serializedVersion: 5
@@ -2129,6 +2135,8 @@ MonoBehaviour:
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
+  canPerformHeavyAttack: 0
+  heavyAttackDamage: 20
 --- !u!95 &372375460
 Animator:
   serializedVersion: 5
@@ -77919,6 +77927,8 @@ MonoBehaviour:
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
+  canPerformHeavyAttack: 0
+  heavyAttackDamage: 20
 --- !u!95 &828899157
 Animator:
   serializedVersion: 5
@@ -78109,6 +78119,8 @@ MonoBehaviour:
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
+  canPerformHeavyAttack: 0
+  heavyAttackDamage: 20
 --- !u!95 &850827148
 Animator:
   serializedVersion: 5
@@ -79259,6 +79271,8 @@ MonoBehaviour:
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
+  canPerformHeavyAttack: 0
+  heavyAttackDamage: 20
 --- !u!95 &1017478122
 Animator:
   serializedVersion: 5
@@ -140594,8 +140608,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingHealth: 20
   PLAYER: {fileID: 1110314173}
-  staminaImage: {fileID: 363537372}
-  PotionsCanvasGroup: {fileID: 927892976}
+  HealthImage: {fileID: 1597521424}
 --- !u!114 &1110314182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140641,12 +140654,12 @@ MonoBehaviour:
   blockDuration: 2
   blockCooldown: 1
   successfulBlockDuration: 0.5
-  isAttacking: 0
   lightAttackPushForce: 3
   heavyAttackPushForce: 5
   maxHealth: 100
   hurtForce: 10
   invincibilityDuration: 0.5
+  evilWizardBoss: {fileID: 0}
 --- !u!114 &1110314184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141836,6 +141849,8 @@ MonoBehaviour:
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
+  canPerformHeavyAttack: 0
+  heavyAttackDamage: 20
 --- !u!95 &1328404641
 Animator:
   serializedVersion: 5
@@ -143133,6 +143148,8 @@ MonoBehaviour:
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
+  canPerformHeavyAttack: 0
+  heavyAttackDamage: 20
 --- !u!95 &1502491398
 Animator:
   serializedVersion: 5
@@ -145899,6 +145916,8 @@ MonoBehaviour:
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
+  canPerformHeavyAttack: 0
+  heavyAttackDamage: 20
 --- !u!95 &1978071872
 Animator:
   serializedVersion: 5
@@ -146565,21 +146584,23 @@ MonoBehaviour:
   fallThreshold: -0.5
   walkSpeed: 5
   player: {fileID: 1110314179}
+  bossHealthBar: {fileID: 0}
   lightAttackCooldown: 2
   heavyAttackCooldown: 4
   jumpForce: 7
   jumpCooldown: 3
   lightAttackDamage: 10
   heavyAttackDamage: 20
+  bossDamageReductionFactor: 0.75
   groundCheck: {fileID: 1757190426}
   groundCheckRadius: 0.69
-  playerLayer:
+  groundLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 0
   jumpTriggerLayer:
     serializedVersion: 2
     m_Bits: 2048
-  jumpCheck: {fileID: 514867290}
+  jumpCheckDistance: 1
 --- !u!95 &2072648185
 Animator:
   serializedVersion: 5
@@ -146974,6 +146995,8 @@ MonoBehaviour:
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
+  canPerformHeavyAttack: 0
+  heavyAttackDamage: 20
 --- !u!95 &2127195847
 Animator:
   serializedVersion: 5
