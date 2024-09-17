@@ -37599,6 +37599,8 @@ MonoBehaviour:
   hurtForce: 10
   invincibilityDuration: 0.5
   evilWizardBoss: {fileID: 0}
+  lightAttackSound: {fileID: 8300000, guid: 57e76b485327aec408993ca7f024b7f3, type: 3}
+  heavyAttackSound: {fileID: 8300000, guid: 91022e900b3437048a9ba7f1562905fa, type: 3}
 --- !u!114 &1179138654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38261,6 +38263,8 @@ MonoBehaviour:
   normalAttackDamage: 10
   normalAttackRange: 1.5
   heavyAttackRange: 3.5
+  heavyAttackKnockbackForce: 5
+  lightAttackCollider: {fileID: 0}
 --- !u!70 &1280417443
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -41024,6 +41028,8 @@ MonoBehaviour:
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
+  canPerformHeavyAttack: 0
+  heavyAttackDamage: 20
 --- !u!95 &1936523929
 Animator:
   serializedVersion: 5

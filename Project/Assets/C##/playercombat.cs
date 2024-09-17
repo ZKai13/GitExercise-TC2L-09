@@ -722,14 +722,19 @@ public class PlayerCombat : MonoBehaviour
 
     private Rigidbody2D rb; 
     public EvilWizardBoss evilWizardBoss;
-    private KeyRebinding keyRebinding;  
+    private KeyRebinding keyRebinding; 
+
+    private AudioSource audioSource; 
+    public AudioClip lightAttackSound;
+    public AudioClip heavyAttackSound;
 
     void Start()  
     {  
         animator = GetComponent<Animator>();  
         staminaSystem = GetComponent<Staminasystem>();  
         healthSystem = GetComponent<Health>();  
-        keyRebinding = FindObjectOfType<KeyRebinding>();  
+        keyRebinding = FindObjectOfType<KeyRebinding>();
+        audioSource = GetComponent<AudioSource>();  
 
         if (animator == null) Debug.LogError("Animator component not found on this GameObject!");  
         if (staminaSystem == null) Debug.LogError("Staminasystem not found on this GameObject!");  
@@ -851,7 +856,12 @@ public class PlayerCombat : MonoBehaviour
     }  
 
     void NewLightAttack()  
-    {  
+    {
+        if (audioSource != null && lightAttackSound != null)
+        {
+            audioSource.PlayOneShot(lightAttackSound);
+        }
+
         // Raycast-based attack detection  
         RaycastHit2D hit = Physics2D.Raycast(attackPoint.position, transform.right, attackRange, enemyLayers);  
         if (hit.collider != null)  
@@ -868,7 +878,11 @@ public class PlayerCombat : MonoBehaviour
     }    
 
     void NewHeavyAttack()  
-    {  
+    {
+        if (audioSource != null && heavyAttackSound != null)
+        {
+            audioSource.PlayOneShot(heavyAttackSound);
+        } 
         // Raycast-based attack detection  
         RaycastHit2D hit = Physics2D.Raycast(attackPoint.position, transform.right, attackRange, enemyLayers);  
         if (hit.collider != null)  
@@ -1082,17 +1096,6 @@ public class PlayerCombat : MonoBehaviour
         heavyAttackDamage = PlayerPrefs.GetInt("HeavyAttackDamage", heavyAttackDamage);  
     } 
 
-    public void ResetAttackDamage()  
-    {  
-         
-        lightAttackDamage = 20;
-        heavyAttackDamage = 60;
-
-    
-        SavePlayerPrefs();  
-
-        Debug.Log("Attack damage has been reset to default values.");  
-    }
 
 
 }
