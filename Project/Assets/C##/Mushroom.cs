@@ -151,16 +151,19 @@ public class Mushroom : MonoBehaviour
     {  
         if (isDead) return;  
 
-        isAttacking = true;  
+        isAttacking = true; 
+        // 触发重攻击动画  
         animator.SetBool("isWalking", false);  
-        animator.SetTrigger("heavyAttack");  
-
-        nextHeavyAttackTime = Time.time + heavyAttackCooldown;  
+        animator.SetTrigger("heavyAttack");
+        //设置下一次重攻击的时间    
+        nextHeavyAttackTime = Time.time + heavyAttackCooldown;
+        // 检查玩家是否格挡了重攻击  
         CheckPlayerBlockingHeavy();  
     }  
 
     void CheckPlayerBlocking()  
     {  
+        // 检查玩家是否正在格挡 
         if (playerCombat == null)  
         {  
             Debug.LogError("playerCombat is null!");  
@@ -174,6 +177,7 @@ public class Mushroom : MonoBehaviour
 
     void CheckPlayerBlockingHeavy()  
     {  
+        // 检查玩家是否正在格挡 
         bool isBlocking = playerCombat != null && playerCombat.IsBlocking();  
         ApplyDamageToPlayer(isBlocking, heavyAttackDamage, true);  
     }  
@@ -185,6 +189,7 @@ public class Mushroom : MonoBehaviour
             Debug.Log("Player blocked the attack!");  
             if (playerCombat != null)  
             {  
+                // 如果是重攻击,则对玩家施加击退效果  
                 if (isHeavyAttack)  
                 {  
                     // Heavy attack: apply knockback  

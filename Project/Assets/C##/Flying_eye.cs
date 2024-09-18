@@ -12,6 +12,7 @@ public class FlyingEye : MonoBehaviour
     public int lightAttackDamage = 10;  
     public int heavyAttackDamage = 25;  
 
+// 敌人的旋转速度和角度范围
     public float rotationSpeed = 100f;  
     public float rotationChangeInterval = 2f;  
     public float maxRotationAngle = 30f;  
@@ -101,12 +102,13 @@ public class FlyingEye : MonoBehaviour
 
         Vector2 directionToPlayer = player.position - transform.position;  
         float distanceToPlayer = directionToPlayer.magnitude;  
-
+        // 检查玩家是否在普通攻击和重攻击范围内
         bool playerInLightAttackRange = distanceToPlayer <= lightAttackRange;  
         bool playerInHeavyAttackRange = distanceToPlayer <= heavyAttackRange;  
 
         Debug.Log($"Distance: {distanceToPlayer}, Light Range: {playerInLightAttackRange}, Heavy Range: {playerInHeavyAttackRange}, Can Light: {canLightAttack}, Can Heavy: {canHeavyAttack}");  
-
+        // 如果玩家在重攻击范围内且可以执行重攻击,则执行重攻击  
+        
         if (playerInHeavyAttackRange && canHeavyAttack && !isPerformingHeavyAttack)  
         {  
             Debug.Log("Initiating Heavy Attack");  
