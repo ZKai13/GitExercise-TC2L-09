@@ -6552,6 +6552,7 @@ GameObject:
   - component: {fileID: 1224230707}
   - component: {fileID: 1224230706}
   - component: {fileID: 1224230705}
+  - component: {fileID: 1224230712}
   m_Layer: 8
   m_Name: Evil Wizard
   m_TagString: Untagged
@@ -6574,6 +6575,7 @@ MonoBehaviour:
   WizardHealth: {fileID: 1224230706}
   totalhealthBar: {fileID: 1310112235}
   currenthealthBar: {fileID: 1280217644}
+  fillImage: {fileID: 0}
 --- !u!114 &1224230706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6598,8 +6600,8 @@ MonoBehaviour:
   HealthUI: {fileID: 223294426}
   audioManager: {fileID: 861567299}
   deathClip: {fileID: 8300000, guid: f8d1b962c16ff3b449f9874c83ad555a, type: 3}
-  player: {fileID: 0}
-  bossHealthBar: {fileID: 0}
+  player: {fileID: 831939874}
+  bossHealthBar: {fileID: 1224230705}
   lightAttackCooldown: 2
   heavyAttackCooldown: 4
   jumpForce: 10
@@ -6767,6 +6769,21 @@ Transform:
   - {fileID: 1862139712}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1224230712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224230704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16ec68eedf47a5742bec594d89256c2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flyingHeight: 3
+  flyingSpeed: 2
+  circleRadius: 5
 --- !u!1 &1264895093
 GameObject:
   m_ObjectHideFlags: 0

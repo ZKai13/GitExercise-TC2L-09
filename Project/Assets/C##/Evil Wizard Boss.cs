@@ -52,9 +52,12 @@ public class EvilWizardBoss : MonoBehaviour
     private float invulnerabilityDuration = 1f;
     private bool isStunned = false;
     private BossDeathUI uiManager;  
+    private Evil_wizard_fly flyScript;  
+    private bool canFly = true;  
 
     private void Start()  
     {  
+        flyScript = GetComponent<Evil_wizard_fly>(); 
         health = maxHealth;
         currentHealth = maxHealth;  
         animator = GetComponent<Animator>();  
@@ -98,6 +101,11 @@ public class EvilWizardBoss : MonoBehaviour
                 Debug.LogError("在 AudioManager GameObject 上未找到 AudioSource 组件。");
             }
         }
+        flyScript = GetComponent<Evil_wizard_fly>();
+        if (flyScript == null)
+        {
+            Debug.LogError("Evil_wizard_fly component not found on the boss!");
+        }
     }  
 
     private void Update()  
@@ -108,8 +116,26 @@ public class EvilWizardBoss : MonoBehaviour
             HandleMovement();  
             CheckForAttack();  
             CheckForJump();  
+            TryStartFlyingIfNeeded();  
         }  
+        
     }  
+    private void TryStartFlyingIfNeeded()
+    {
+        if (flyScript != null && canFly && currentHealth < maxHealth / 2)
+        {
+            Debug.Log($"Trying to start flying. Current health: {currentHealth}, Max health: {maxHealth}");
+            flyScript.TryStartFlying();
+            canFly = false;
+            StartCoroutine(ResetFlyingCooldown());
+        }
+    }
+    private IEnumerator ResetFlyingCooldown()
+    {
+        yield return new WaitForSeconds(5f); // Adjust this cooldown as needed
+        canFly = true;
+    }
+      
 
     private void UpdateAnimatorParameters()  
     {  
@@ -255,13 +281,14 @@ public class EvilWizardBoss : MonoBehaviour
     {  
         if (isStunned) return;  
 
-        health = Mathf.Max(0, health - damage);  
-        Debug.Log($"Boss took {damage} damage. Current health: {health}");
-        currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);  
+        currentHealth = Mathf.Max(0, currentHealth - damage);
+        health = (int)currentHealth; // Update the 'health' variable to match 'currentHealth'
+        Debug.Log($"Boss took {damage} damage. Current health: {currentHealth}");
         
         if (bossHealthBar != null)  
         {  
-            //bossHealthBar.UpdateHealth(health, maxHealth);  
+            float healthPercentage = (float)currentHealth / maxHealth;
+            bossHealthBar.SetHealth(healthPercentage);
         }  
 
         StartCoroutine(HitReaction());  
