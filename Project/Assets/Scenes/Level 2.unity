@@ -140610,8 +140610,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingHealth: 20
   PLAYER: {fileID: 1110314173}
-  staminaImage: {fileID: 0}
-  PotionsCanvasGroup: {fileID: 0}
+  staminaImage: {fileID: 1597521424}
+  PotionsCanvasGroup: {fileID: 927892976}
 --- !u!114 &1110314182
 MonoBehaviour:
   m_ObjectHideFlags: 0
