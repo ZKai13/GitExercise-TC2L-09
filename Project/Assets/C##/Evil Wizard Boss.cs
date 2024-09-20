@@ -53,7 +53,10 @@ public class EvilWizardBoss : MonoBehaviour
     private bool isStunned = false;
     private BossDeathUI uiManager;  
     private Evil_wizard_fly flyScript;  
-    private bool canFly = true;  
+    private bool canFly = true;
+    public GameObject magicBallPrefab; // Reference to the MagicBall prefab  
+    public float magicBallSpeed = 5f; 
+    public int magicBallDamage = 2; 
 
     private void Start()  
     {  
@@ -79,7 +82,7 @@ public class EvilWizardBoss : MonoBehaviour
                 Debug.LogError("Player not found!");  
                 enabled = false;  
                 return;  
-            }  
+            }     
         }  
 
         playerCombat = player.GetComponent<PlayerCombat>();  
@@ -105,6 +108,11 @@ public class EvilWizardBoss : MonoBehaviour
         if (flyScript == null)
         {
             Debug.LogError("Evil_wizard_fly component not found on the boss!");
+        }
+        
+        if (magicBallPrefab == null)  
+        {  
+            Debug.LogError("MagicBallPrefab is not assigned in the EvilWizardBoss script!");  
         }
     }  
 
@@ -195,6 +203,31 @@ public class EvilWizardBoss : MonoBehaviour
                 {  
                     PerformLightAttack();  
                 }  
+                ShootMagicBall(); 
+            }  
+        }  
+    }  
+    private void ShootMagicBall()  
+    {  
+        MagicBallPool magicBallPool = FindObjectOfType<MagicBallPool>();  
+        if (magicBallPool != null)  
+        {  
+            GameObject magicBall = magicBallPool.GetMagicBall();  
+            if (magicBall != null)  
+            {  
+                // Set the position to the boss  
+                magicBall.transform.position = transform.position;  
+
+                // Determine the direction the boss is facing  
+                Vector2 shootDirection = facingRight ? Vector2.right : Vector2.left;  
+
+                // Initialize the magic ball with the direction and damage  
+                MagicBall ballScript = magicBall.GetComponent<MagicBall>();  
+                ballScript.Initialize(shootDirection);  
+                ballScript.damage = magicBallDamage; // Set the damage here  
+
+                // Set it active  
+                magicBall.SetActive(true);  
             }  
         }  
     }  
