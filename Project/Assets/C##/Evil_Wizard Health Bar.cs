@@ -22,7 +22,7 @@ public class BossHealthBar : MonoBehaviour
     {
         if (fillImage != null)
         {
-            fillImage.fillAmount = healthPercentage;
+            fillImage.fillAmount = healthPercentage;    
         }
         else
         {

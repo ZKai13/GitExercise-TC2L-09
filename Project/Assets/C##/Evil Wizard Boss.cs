@@ -56,16 +56,37 @@ public class EvilWizardBoss : MonoBehaviour
     private bool canFly = true;
     public GameObject magicBallPrefab; // Reference to the MagicBall prefab  
     public float magicBallSpeed = 5f; 
-    public int magicBallDamage = 2; 
+    public int magicBallDamage = 2;  
+    [SerializeField] private GameObject laserBeam1;  
+    [SerializeField] private GameObject laserBeam2;  
+    [SerializeField] private GameObject laserBeam3;
+    [SerializeField] private GameObject laserBeam4;    
+    [SerializeField] private LaserBehavior laserBehavior1;  
+    [SerializeField] private LaserBehavior laserBehavior2;  
+    [SerializeField] private LaserBehavior laserBehavior3;
+    [SerializeField] private LaserBehavior laserBehavior4;
+    [SerializeField] private GameObject laserBeam;  
+    [SerializeField] private LaserBehavior laserBehavior;     
+ 
 
     private void Start()  
     {  
-        flyScript = GetComponent<Evil_wizard_fly>(); 
-        health = maxHealth;
-        currentHealth = maxHealth;  
+        flyScript = GetComponent<Evil_wizard_fly>();   
         animator = GetComponent<Animator>();  
         rb2D = GetComponent<Rigidbody2D>(); 
         uiManager = FindObjectOfType<BossDeathUI>(); 
+        currentHealth = maxHealth;  
+        laserBehavior1 = laserBeam1.GetComponent<LaserBehavior>();  
+        laserBehavior2 = laserBeam2.GetComponent<LaserBehavior>();  
+        laserBehavior3 = laserBeam3.GetComponent<LaserBehavior>(); 
+        laserBehavior4 = laserBeam4.GetComponent<LaserBehavior>(); 
+        HideLaserBeams();  // Set it to maximum at the start (this should be checked in the Unity Inspector)  
+        if (bossHealthBar != null)  
+        {  
+            float healthPercentage = currentHealth / maxHealth; // Use this for health bar update  
+            bossHealthBar.SetHealth(healthPercentage); // Initialize the health bar  
+        }  
+        HideLaserBeams();  // Ensure lasers are hidden initially  
 
         if (animator == null || rb2D == null)  
         {  
@@ -114,20 +135,65 @@ public class EvilWizardBoss : MonoBehaviour
         {  
             Debug.LogError("MagicBallPrefab is not assigned in the EvilWizardBoss script!");  
         }
+
+        laserBehavior = laserBeam.GetComponent<LaserBehavior>();  
+        if (laserBehavior == null)  
+        {  
+            Debug.LogError("LaserBehavior component not found on the laser beam!");  
+        }  
+        HideLaserBeams();
+
     }  
 
     private void Update()  
     {  
-        if (!isStunned)  
+     if (!isStunned)  
+    {  
+        UpdateAnimatorParameters();  
+        HandleMovement();  
+        CheckForAttack();  
+        CheckForJump();  
+        TryStartFlyingIfNeeded();  
+
+        // Check if the boss's health is at or below half  
+        if (currentHealth <= maxHealth / 2 && currentHealth > maxHealth / 4)    
         {  
-            UpdateAnimatorParameters();  
-            HandleMovement();  
-            CheckForAttack();  
-            CheckForJump();  
-            TryStartFlyingIfNeeded();  
+            ShowLaserBeams();  
         }  
-        
-    }  
+        else  
+        {  
+            HideLaserBeams();  
+        }  
+
+        // Check if the boss's health is at or below a quarter  
+        if (currentHealth <= maxHealth / 4)  
+        {  
+            ShootMagicBall();  
+        }  
+    }   
+    } 
+    private void ShowLaserBeams()  
+    {  
+        if (laserBehavior1 != null)  
+            laserBehavior1.ShowLaserBeam();  
+        if (laserBehavior2 != null)  
+            laserBehavior2.ShowLaserBeam();  
+        if (laserBehavior3 != null)  
+            laserBehavior3.ShowLaserBeam();  
+        if (laserBehavior4 != null)  
+            laserBehavior4.ShowLaserBeam();  
+    }
+    private void HideLaserBeams()  
+    {  
+        if (laserBehavior1 != null)  
+            laserBehavior1.HideLaserBeam();  
+        if (laserBehavior2 != null)  
+            laserBehavior2.HideLaserBeam();  
+        if (laserBehavior3 != null)  
+            laserBehavior3.HideLaserBeam();  
+        if (laserBehavior4 != null)  
+            laserBehavior4.HideLaserBeam();  
+    }
     private void TryStartFlyingIfNeeded()
     {
         if (flyScript != null && canFly && currentHealth < maxHealth / 2)
