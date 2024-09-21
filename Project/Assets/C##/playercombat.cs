@@ -49,6 +49,7 @@ public class PlayerCombat : MonoBehaviour
     private AudioSource audioSource; 
     public AudioClip lightAttackSound;
     public AudioClip heavyAttackSound;
+    private PlayerController playerMovement;
 
     void Start()  
     {  
@@ -57,6 +58,7 @@ public class PlayerCombat : MonoBehaviour
         healthSystem = GetComponent<Health>();  
         keyRebinding = FindObjectOfType<KeyRebinding>();
         audioSource = GetComponent<AudioSource>();  
+        playerMovement = GetComponent<PlayerController>();
 
         if (animator == null) Debug.LogError("Animator component not found on this GameObject!");  
         if (staminaSystem == null) Debug.LogError("Staminasystem not found on this GameObject!");  
@@ -277,7 +279,7 @@ public class PlayerCombat : MonoBehaviour
         animator.SetTrigger("Die");  
         
         // Disable the player  
-        GetComponent<Collider2D>().enabled = false;  
+        //GetComponent<Collider2D>().enabled = false;  
         this.enabled = false;  
     }
     IEnumerator ResetAttackState()  
@@ -300,7 +302,9 @@ public class PlayerCombat : MonoBehaviour
     IEnumerator Block()  
     {  
         isBlocking = true;  
-        animator.SetBool("isBlocking", true);  
+        animator.SetBool("isBlocking", true); 
+
+        playerMovement.enabled = false; 
 
         float blockTimer = 0f;  
         while (blockTimer < blockDuration && Input.GetKey(keyRebinding.GetKeyForAction("Block")))  
@@ -310,7 +314,9 @@ public class PlayerCombat : MonoBehaviour
         }  
 
         isBlocking = false;  
-        animator.SetBool("isBlocking", false);  
+        animator.SetBool("isBlocking", false); 
+
+        playerMovement.enabled = true; 
 
         yield return new WaitForSeconds(blockCooldown);  
         canBlockImpact = true;  

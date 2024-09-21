@@ -1220,7 +1220,7 @@ Transform:
   m_GameObject: {fileID: 261012955}
   serializedVersion: 2
   m_LocalRotation: {x: 0.020732023, y: -0.027908592, z: 0.0026202858, w: 0.99939203}
-  m_LocalPosition: {x: 5.6, y: -0.33, z: 0.0000000034033514}
+  m_LocalPosition: {x: -20.13, y: -2.44, z: 0.0000000034033514}
   m_LocalScale: {x: 4.901579, y: 3.8204713, z: 0.9916604}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1277,7 +1277,7 @@ MonoBehaviour:
   moveSpeed: 3
   attackRange: 1.5
   attackCooldown: 2
-  attackDamage: 20
+  attackDamage: 10
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
@@ -140606,9 +140606,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 298523b3e6ad0d14eb63103686d73855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 20
-  staminaImage: {fileID: 0}
-  PotionsCanvasGroup: {fileID: 0}
+  startingHealth: 100
+  staminaImage: {fileID: 363537372}
+  PotionsCanvasGroup: {fileID: 927892976}
 --- !u!114 &1110314182
 MonoBehaviour:
   m_ObjectHideFlags: 0

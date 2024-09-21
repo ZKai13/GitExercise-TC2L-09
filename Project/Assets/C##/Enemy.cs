@@ -138,10 +138,17 @@ public class Enemy : MonoBehaviour
         StartCoroutine(ResetHurtState());  
 
         if (currentHealth <= 0)  
-        {  
-            Die();  
+        {
+            Die(); 
+            StartCoroutine(TriggerDeathAnimation()); 
         }  
-    }  
+    } 
+
+    IEnumerator TriggerDeathAnimation()
+    {
+        yield return new WaitForEndOfFrame();
+        animator.SetTrigger("Die"); 
+    }
 
     IEnumerator ResetHurtState()  
     {  
@@ -151,8 +158,9 @@ public class Enemy : MonoBehaviour
 
     void Die()  
     {  
-        Debug.Log($"Enemy {gameObject.name} died!");  
-        animator.SetTrigger("Die");  
+        Debug.Log($"Enemy {gameObject.name} died!"); 
+        
+         
 
         // Disable components  
         GetComponent<Collider2D>().enabled = false;  
@@ -167,7 +175,7 @@ public class Enemy : MonoBehaviour
     IEnumerator DestroyAfterAnimation()  
     {  
         // Wait for the death animation to finish  
-        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);  
+        yield return new WaitForSeconds(2f);  
         Destroy(gameObject);  
     }  
 
