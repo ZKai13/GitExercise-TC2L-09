@@ -376,7 +376,7 @@ public class EvilWizardBoss : MonoBehaviour
             Debug.LogError("PlayerCombat or player reference is null!");  
         }  
     }
-    public void TakeDamage(int damage)  
+    public void Takedamage(int damage)  
     {  
         if (isStunned) return;  
 

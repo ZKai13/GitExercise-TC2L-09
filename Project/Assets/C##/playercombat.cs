@@ -1,3 +1,4 @@
+using System;
 using System.Collections;  
 using System.Collections.Generic;  
 using UnityEngine;  
@@ -12,7 +13,7 @@ public class PlayerCombat : MonoBehaviour
     public int lightAttackDamage = 20;  
     public int heavyAttackDamage = 40;  
     public float heavyAttackThreshold = 1f;  
-    public float attackAnimationDuration = 0.5f;  
+    public float attackAnimationDuration = 0.25f;  
 
     public float lightAttackStaminaCost = 10f;  
     public float heavyAttackStaminaCost = 25f;  
@@ -183,6 +184,20 @@ public class PlayerCombat : MonoBehaviour
             audioSource.PlayOneShot(lightAttackSound);
         }
 
+        animator.SetBool("isHeavyAttack", false);  
+        animator.SetTrigger("attack");  
+
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);  
+
+        foreach (Collider2D enemy in hitEnemies)  
+        {  
+            Enemy enemyScript = enemy.GetComponent<Enemy>();  
+            if (enemyScript != null)  
+            {  
+                enemyScript.Takedamage(lightAttackDamage, false);  
+            }  
+        } 
+
         // Raycast-based attack detection  
         RaycastHit2D hit = Physics2D.Raycast(attackPoint.position, transform.right, attackRange, enemyLayers);  
         if (hit.collider != null)  
@@ -192,7 +207,7 @@ public class PlayerCombat : MonoBehaviour
             {  
                 // Apply damage reduction factor  
                 float reducedDamage = lightAttackDamage * bossScript.bossDamageReductionFactor;  
-                bossScript.TakeDamage((int)reducedDamage);  
+                bossScript.Takedamage((int)reducedDamage);  
                 hit.rigidbody.AddForce((hit.transform.position - transform.position).normalized * lightAttackPushForce, ForceMode2D.Impulse);  
             }  
         }  
@@ -204,6 +219,20 @@ public class PlayerCombat : MonoBehaviour
         {
             audioSource.PlayOneShot(heavyAttackSound);
         } 
+
+        animator.SetBool("isHeavyAttack", true);  
+        animator.SetTrigger("attack");  
+
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);  
+
+        foreach (Collider2D enemy in hitEnemies)  
+        {  
+            Enemy enemyScript = enemy.GetComponent<Enemy>();  
+            if (enemyScript != null)  
+            {  
+                enemyScript.Takedamage(heavyAttackDamage, false); 
+            }  
+        }
         // Raycast-based attack detection  
         RaycastHit2D hit = Physics2D.Raycast(attackPoint.position, transform.right, attackRange, enemyLayers);  
         if (hit.collider != null)  
@@ -213,13 +242,13 @@ public class PlayerCombat : MonoBehaviour
             {  
                 // Apply damage reduction factor  
                 float reducedDamage = heavyAttackDamage * bossScript.bossDamageReductionFactor;  
-                bossScript.TakeDamage((int)reducedDamage);  
+                bossScript.Takedamage((int)reducedDamage);  
                 hit.rigidbody.AddForce((hit.transform.position - transform.position).normalized * heavyAttackPushForce, ForceMode2D.Impulse);  
             }  
         }  
     }  
 
-    public void Takedamage(int damage)  
+    public void Takedamage(int damage, bool someFlag)  
     {  
         if (healthSystem != null)  
         {  
@@ -355,7 +384,7 @@ public class PlayerCombat : MonoBehaviour
 
         if (evilWizardBoss != null)  
         {  
-            evilWizardBoss.TakeDamage(0); // Deal 0 damage to trigger the boss's hurt state  
+            evilWizardBoss.Takedamage(0); // Deal 0 damage to trigger the boss's hurt state  
             Debug.Log("Boss stunned (simulated)"); 
         }
 
@@ -415,10 +444,12 @@ public class PlayerCombat : MonoBehaviour
     {  
         lightAttackDamage = PlayerPrefs.GetInt("LightAttackDamage", lightAttackDamage);  
         heavyAttackDamage = PlayerPrefs.GetInt("HeavyAttackDamage", heavyAttackDamage);  
-    } 
+    }
 
-
-
+    internal void ReceiveAttack(Enemy enemy, int damageToApply)
+    {
+        throw new NotImplementedException();
+    }
 }
 
 

@@ -1277,7 +1277,7 @@ MonoBehaviour:
   moveSpeed: 3
   attackRange: 1.5
   attackCooldown: 2
-  attackDamage: 1
+  attackDamage: 20
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
@@ -1385,7 +1385,7 @@ MonoBehaviour:
   moveSpeed: 3
   attackRange: 1.5
   attackCooldown: 2
-  attackDamage: 1
+  attackDamage: 10
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
@@ -1736,7 +1736,7 @@ MonoBehaviour:
   moveSpeed: 3
   attackRange: 1.5
   attackCooldown: 2
-  attackDamage: 1
+  attackDamage: 10
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
@@ -2131,7 +2131,7 @@ MonoBehaviour:
   moveSpeed: 3
   attackRange: 1.5
   attackCooldown: 2
-  attackDamage: 1
+  attackDamage: 10
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
@@ -77923,7 +77923,7 @@ MonoBehaviour:
   moveSpeed: 3
   attackRange: 1.5
   attackCooldown: 2
-  attackDamage: 1
+  attackDamage: 10
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
@@ -78115,7 +78115,7 @@ MonoBehaviour:
   moveSpeed: 3
   attackRange: 1.5
   attackCooldown: 2
-  attackDamage: 1
+  attackDamage: 10
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
@@ -79267,7 +79267,7 @@ MonoBehaviour:
   moveSpeed: 3
   attackRange: 1.5
   attackCooldown: 2
-  attackDamage: 1
+  attackDamage: 10
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
@@ -140607,7 +140607,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingHealth: 20
-  PLAYER: {fileID: 1110314173}
   staminaImage: {fileID: 0}
   PotionsCanvasGroup: {fileID: 0}
 --- !u!114 &1110314182
@@ -140662,8 +140661,8 @@ MonoBehaviour:
   hurtForce: 10
   invincibilityDuration: 0.5
   evilWizardBoss: {fileID: 0}
-  lightAttackSound: {fileID: 8300000, guid: 57e76b485327aec408993ca7f024b7f3, type: 3}
-  heavyAttackSound: {fileID: 8300000, guid: 91022e900b3437048a9ba7f1562905fa, type: 3}
+  lightAttackSound: {fileID: 0}
+  heavyAttackSound: {fileID: 0}
 --- !u!114 &1110314184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141849,7 +141848,7 @@ MonoBehaviour:
   moveSpeed: 3
   attackRange: 1.5
   attackCooldown: 2
-  attackDamage: 1
+  attackDamage: 10
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
@@ -143148,7 +143147,7 @@ MonoBehaviour:
   moveSpeed: 3
   attackRange: 1.5
   attackCooldown: 2
-  attackDamage: 1
+  attackDamage: 10
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
@@ -145485,7 +145484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 1110314181}
-  potionScript: {fileID: 1110314186}
+  potionScript: {fileID: 0}
 --- !u!61 &1917088933
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -145916,7 +145915,7 @@ MonoBehaviour:
   moveSpeed: 3
   attackRange: 1.5
   attackCooldown: 2
-  attackDamage: 1
+  attackDamage: 10
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
@@ -146609,8 +146608,21 @@ MonoBehaviour:
     m_Bits: 0
   jumpTriggerLayer:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 0
   jumpCheckDistance: 1
+  magicBallPrefab: {fileID: 0}
+  magicBallSpeed: 5
+  magicBallDamage: 2
+  laserBeam1: {fileID: 0}
+  laserBeam2: {fileID: 0}
+  laserBeam3: {fileID: 0}
+  laserBeam4: {fileID: 0}
+  laserBehavior1: {fileID: 0}
+  laserBehavior2: {fileID: 0}
+  laserBehavior3: {fileID: 0}
+  laserBehavior4: {fileID: 0}
+  laserBeam: {fileID: 0}
+  laserBehavior: {fileID: 0}
 --- !u!95 &2072648185
 Animator:
   serializedVersion: 5
@@ -147001,7 +147013,7 @@ MonoBehaviour:
   moveSpeed: 3
   attackRange: 1.5
   attackCooldown: 2
-  attackDamage: 1
+  attackDamage: 10
   stunDuration: 2
   maxHealth: 100
   hurtAnimationDuration: 0.5
