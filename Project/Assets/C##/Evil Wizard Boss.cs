@@ -350,7 +350,7 @@ public class EvilWizardBoss : MonoBehaviour
         AttackPlayer(damage);  
         yield return new WaitForSeconds(cooldown - 0.5f);  
         canAttack = true;  
-        Debug.Log("Boss can attack again");  
+//        Debug.Log("Boss can attack again");  
     }  
 
     private void AttackPlayer(float damage)  
@@ -363,7 +363,7 @@ public class EvilWizardBoss : MonoBehaviour
                 float reducedDamage = damage * bossDamageReductionFactor;  
                 bool isHeavyAttack = damage == heavyAttackDamage; // Determine if it's a heavy attack  
                 int roundedDamage = Mathf.RoundToInt(reducedDamage); // Convert float to int  
-                Debug.Log($"Boss attacking player. Base damage: {damage}, Reduced damage: {reducedDamage}, Rounded damage: {roundedDamage}, Is Heavy Attack: {isHeavyAttack}");  
+//                Debug.Log($"Boss attacking player. Base damage: {damage}, Reduced damage: {reducedDamage}, Rounded damage: {roundedDamage}, Is Heavy Attack: {isHeavyAttack}");  
                 playerCombat.ReceiveAttack(this, roundedDamage, isHeavyAttack);  
             }  
             else  
@@ -382,7 +382,7 @@ public class EvilWizardBoss : MonoBehaviour
 
         currentHealth = Mathf.Max(0, currentHealth - damage);
         health = (int)currentHealth; // Update the 'health' variable to match 'currentHealth'
-        Debug.Log($"Boss took {damage} damage. Current health: {currentHealth}");
+       // Debug.Log($"Boss took {damage} damage. Current health: {currentHealth}");
         
         if (bossHealthBar != null)  
         {  

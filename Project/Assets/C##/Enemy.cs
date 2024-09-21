@@ -76,28 +76,25 @@ public class Enemy : MonoBehaviour
         }  
     }  
 
-    void Attack()  
-    {  
-        // Stop moving  
-        rb.velocity = Vector2.zero;  
+    void Attack()
+    {
+        rb.velocity = Vector2.zero; // Stop the enemy from moving during the attack
+        animator.SetTrigger("attack"); // Trigger attack animation
 
-        // Trigger attack animation  
-        animator.SetTrigger("attack");  
+        // Damage the player
+        if (playerCombat != null)
+        {
+            bool isHeavyAttack = canPerformHeavyAttack && Random.value > 0.7f; // 30% chance for heavy attack
+            int damageToApply = isHeavyAttack ? heavyAttackDamage : attackDamage;
 
-        // Attempt to damage the player    
-        if (playerCombat != null)  
-        {  
-            bool isHeavyAttack = canPerformHeavyAttack && Random.value > 0.7f; // 30% chance for heavy attack if capable  
-            int damageToApply = isHeavyAttack ? heavyAttackDamage : attackDamage;  
-            playerCombat.Takedamage(damageToApply, isHeavyAttack); // Update to include the heavy attack parameter
-        }  
-        else  
-        {  
-            Debug.LogError("PlayerCombat component not found!");  
-        }  
+            playerCombat.Takedamage(damageToApply, isHeavyAttack); // Apply damage to player
+        }
+        else
+        {
+            Debug.LogError("PlayerCombat component not found!");
+        }
 
-        // Start attack cooldown  
-        StartCoroutine(AttackCooldown());  
+        StartCoroutine(AttackCooldown()); // Start attack cooldown
     }
 
     IEnumerator AttackCooldown()  
@@ -125,7 +122,7 @@ public class Enemy : MonoBehaviour
         isStunned = false;  
     }  
 
-    public void Takedamage(int damage, bool isHeavyAttack)  // Only takes damage as an integer
+    public void Takedamage(int damage, bool isHeavyAttack)  
     {  
         if (isHurt) return; // Prevent taking damage while already hurt  
 
@@ -135,6 +132,7 @@ public class Enemy : MonoBehaviour
         isHurt = true;  
         rb.velocity = Vector2.zero; // Stop moving when hurt  
         animator.SetTrigger("Hurt");  
+        ApplyKnockback(isHeavyAttack);  // Pass the isHeavyAttack variable
         StartCoroutine(ResetHurtState());  
 
         if (currentHealth <= 0)  
@@ -143,6 +141,13 @@ public class Enemy : MonoBehaviour
             StartCoroutine(TriggerDeathAnimation()); 
         }  
     } 
+
+    void ApplyKnockback(bool isHeavyAttack)  
+    {  
+        Vector2 knockbackDirection = (transform.position - player.position).normalized; // Get direction away from the player
+        float knockbackForce = isHeavyAttack ? 500f : 300f; // Adjust force depending on whether it's a heavy attack
+        rb.AddForce(knockbackDirection * knockbackForce);  // Apply knockback force
+    }
 
     IEnumerator TriggerDeathAnimation()
     {

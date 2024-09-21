@@ -48,7 +48,7 @@ public class Health : MonoBehaviour
     }
 
     currentHealth = Mathf.Clamp(currentHealth - _damage, 0, startingHealth);   
-    Debug.Log($"Damage taken: {_damage}. Current health: {currentHealth}");
+//    Debug.Log($"Damage taken: {_damage}. Current health: {currentHealth}");
 
     if (currentHealth > 0)  
     {  

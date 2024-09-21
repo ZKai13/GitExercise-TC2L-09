@@ -13,7 +13,7 @@ public class PlayerCombat : MonoBehaviour
     public int lightAttackDamage = 20;  
     public int heavyAttackDamage = 40;  
     public float heavyAttackThreshold = 1f;  
-    public float attackAnimationDuration = 0.25f;  
+    public float attackAnimationDuration = 1f;  
 
     public float lightAttackStaminaCost = 10f;  
     public float heavyAttackStaminaCost = 25f;  
@@ -362,7 +362,7 @@ public class PlayerCombat : MonoBehaviour
                 }  
 
                 healthSystem.Takedamage(damage);  
-                Debug.Log($"Player took {damage} damage. Current health: {healthSystem.currentHealth}");  
+//                Debug.Log($"Player took {damage} damage. Current health: {healthSystem.currentHealth}");  
 
                 // Trigger the Hurt animation  
                 if (animator != null)  

@@ -24,9 +24,9 @@ public class BossHealthBar : MonoBehaviour
         {
             fillImage.fillAmount = healthPercentage;    
         }
-        else
-        {
-            Debug.LogError("Cannot update health bar: Fill Image is null!");
-        }
+       // else
+       // {
+       //     Debug.LogError("Cannot update health bar: Fill Image is null!");
+       // }
     }
 }
