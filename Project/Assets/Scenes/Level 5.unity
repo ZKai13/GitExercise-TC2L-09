@@ -4888,7 +4888,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   magicBallPrefab: {fileID: 2023709977}
-  poolSize: 10
+  poolSize: 2
 --- !u!4 &825899131
 Transform:
   m_ObjectHideFlags: 0
@@ -35607,7 +35607,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 8
-  lifetime: 5
+  lifetime: 0.01
   damage: 1
 --- !u!58 &2023709979
 CircleCollider2D:

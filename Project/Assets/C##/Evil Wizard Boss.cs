@@ -293,7 +293,7 @@ public class EvilWizardBoss : MonoBehaviour
                 ballScript.damage = magicBallDamage; // Set the damage here  
 
                 // Set it active  
-                magicBall.SetActive(true);  
+               // magicBall.SetActive(true);  
             }  
         }  
     }  
