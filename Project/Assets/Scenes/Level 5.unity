@@ -7024,9 +7024,19 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   jumpCheckDistance: 4.9
-  magicBallPrefab: {fileID: 0}
+  magicBallPrefab: {fileID: 2023709977}
   magicBallSpeed: 5
-  magicBallDamage: 10
+  magicBallDamage: 2
+  laserBeam1: {fileID: 239295742}
+  laserBeam2: {fileID: 648083905}
+  laserBeam3: {fileID: 1961597706}
+  laserBeam4: {fileID: 852006228}
+  laserBehavior1: {fileID: 239295744}
+  laserBehavior2: {fileID: 648083907}
+  laserBehavior3: {fileID: 1961597709}
+  laserBehavior4: {fileID: 852006230}
+  laserBeam: {fileID: 239295742}
+  laserBehavior: {fileID: 239295744}
 --- !u!95 &1224230707
 Animator:
   serializedVersion: 5
