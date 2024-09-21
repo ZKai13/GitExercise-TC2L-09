@@ -10585,8 +10585,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 298523b3e6ad0d14eb63103686d73855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 20
-  PLAYER: {fileID: 0}
+  startingHealth: 100
   staminaImage: {fileID: 0}
   PotionsCanvasGroup: {fileID: 0}
 --- !u!50 &1422776078

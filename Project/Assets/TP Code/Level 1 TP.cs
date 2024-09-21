@@ -32,7 +32,7 @@ public class Teleporter : MonoBehaviour
             Health playerHealth = other.GetComponent<Health>();  
             if (playerHealth != null)  
             {  
-                playerHealth.Takedamage(20);  
+                playerHealth.Takedamage(100);  
             }  
 
              

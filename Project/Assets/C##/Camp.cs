@@ -54,7 +54,7 @@ public class Camp : MonoBehaviour
     {  
         if (playerHealth != null)  
         {  
-            playerHealth.Heal(20);
+            playerHealth.Heal(100);
             potionScript.ResetPotionCount();
             hasInteracted = true;
         }  

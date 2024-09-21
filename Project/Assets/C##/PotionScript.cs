@@ -35,7 +35,7 @@ public class PotionScript : MonoBehaviour
         {
             potionCount--; 
             UpdatePotionCountUI(); 
-            playerHealth.Heal(20);
+            playerHealth.Heal(100);
             SavePotionCount();
         }
     }
