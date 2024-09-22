@@ -60,32 +60,13 @@ public class AchievementsMenu : MonoBehaviour
             ahYesButton.gameObject.SetActive(true);
         }
 
-        // if (PlayerPrefs.HasKey("HeroKnight"))
-        //     heroKnightButton.gameObject.SetActive(true);
+        if (PlayerPrefs.GetInt("HeroKnight", 0) == 1)
+        {
+            heroKnightButton.gameObject.SetActive(true);
+        }
 
     
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

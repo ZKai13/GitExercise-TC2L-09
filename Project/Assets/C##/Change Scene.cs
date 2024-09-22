@@ -3,13 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
-    
 public class Finish : MonoBehaviour
 {
+    private PopUp popUp;
     public AchievementsMenu achievementsMenu;
     private bool levelCompleted = false;
 
+    private void Start()
+    {
+        popUp = FindObjectOfType<PopUp>();
+
+        if (popUp == null)
+        {
+            Debug.LogError("PopUp script not found! Make sure it is attached to a GameObject in the scene.");
+        }
+    }
 
     // This method will be triggered when the player reaches the finish point
     private void OnTriggerEnter2D(Collider2D collision)
@@ -35,17 +43,18 @@ public class Finish : MonoBehaviour
         {
             // Save the new reached index (current scene index + 1)
             PlayerPrefs.SetInt("ReachedIndex", SceneManager.GetActiveScene().buildIndex + 1);
-            
+
             // Unlock the next level by incrementing the unlocked level count
             PlayerPrefs.SetInt("UnlockedLevel", PlayerPrefs.GetInt("UnlockedLevel", 1) + 1);
-            
-            
+
             // Save the PlayerPrefs changes
             PlayerPrefs.Save();
 
-            if (PlayerPrefs.GetInt("UnlockedLevel", 1) == 2)
+            // Show the achievement pop-up for "Into The Dungeon" when level 2 is unlocked
+            if (PlayerPrefs.GetInt("UnlockedLevel", 1) == 2 && popUp != null)
             {
                 Debug.Log("Achievement Unlocked: Into The Dungeon");
+                popUp.DisplayAchievement(popUp.intoTheDungeonSprite); // Correct instance call
             }
         }
     }

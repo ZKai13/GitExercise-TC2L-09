@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Camp : MonoBehaviour
 {  
+    private PopUp popUp;
     private bool isNearInteractable = false;
     private bool hasInteracted = false;  
     public Health playerHealth;
@@ -13,6 +14,10 @@ public class Camp : MonoBehaviour
 
     public float fadeDuration = 1.0f;
 
+    private void Start()
+    {
+        popUp = FindObjectOfType<PopUp>();
+    }
     void Update()  
     {  
         if (isNearInteractable && Input.GetKeyDown(KeyCode.F) && !hasInteracted)  
@@ -25,6 +30,7 @@ public class Camp : MonoBehaviour
                 PlayerPrefs.SetInt("AhhYes", PlayerPrefs.GetInt("AhhYes", 0) + 1); // Achievement unlocked
                 PlayerPrefs.Save(); // Ensure changes are saved
                 Debug.Log("Achievement Unlocked: Ahh..Yes, The campfire");
+                popUp.DisplayAchievement(popUp.campfireSprite);
             }
               
         }  

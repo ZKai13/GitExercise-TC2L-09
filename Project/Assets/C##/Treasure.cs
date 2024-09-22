@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Treasure : MonoBehaviour  
 {  
+    private PopUp popUp;
     public AudioClip openSound;  
     private bool isOpen = false;  
     private Animator animator;  
@@ -12,6 +13,7 @@ public class Treasure : MonoBehaviour
 
     private void Start()  
     {  
+        popUp = FindObjectOfType<PopUp>();
         animator = GetComponent<Animator>();  
         audioSource = GetComponent<AudioSource>();  
         uiManager = FindObjectOfType<UIManager>();
@@ -60,6 +62,7 @@ public class Treasure : MonoBehaviour
             PlayerPrefs.SetInt("FirstTreasure", 1); // Achievement unlocked
             PlayerPrefs.Save(); // Ensure changes are saved
             Debug.Log("Achievement Unlocked: First Treasure");
+            popUp.DisplayAchievement(popUp.intoTheDungeonSprite);
         }
         
     }  

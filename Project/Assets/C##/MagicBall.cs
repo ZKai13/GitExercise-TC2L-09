@@ -231,7 +231,7 @@ public class MagicBall : MonoBehaviour
             // Return the magic ball to the pool instead of destroying it  
             ReturnToPool();  
         }  
-        //else if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Obstacle"))  
+        else if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Obstacle"))  
         {  
             // Return the magic ball to the pool upon collision with the ground or obstacles  
             ReturnToPool();  

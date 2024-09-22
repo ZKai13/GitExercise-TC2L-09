@@ -9,7 +9,7 @@ public class KeybindManager : MonoBehaviour
     public Button jumpButton;
     public Button attackButton;
     public Button blockButton;
-    public Text feedbackText; // Optional: to display which button is currently being rebound
+    //public Text feedbackText;
 
     void Start()
     {
@@ -23,13 +23,12 @@ public class KeybindManager : MonoBehaviour
     private void StartRebinding(string action, Button button)
     {
         keyRebinding.StartRebinding(action);
-//        feedbackText.text = $"Press a key for {action}"; // Optional: show feedback text
+        //feedbackText.text = $"Press a key for {action}"; // Optional: show feedback text
         UpdateButtonText(button, action);
     }
 
     private void UpdateButtonText(Button button, string action)
     {
-        // Store the action to update the button text later
         button.GetComponentInChildren<Text>().text = $"Rebinding {action}";
     }
 }

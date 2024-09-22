@@ -22,11 +22,13 @@ public class Enemy : MonoBehaviour
     private bool isHurt = false;  
     public bool canPerformHeavyAttack = false;  
     public int heavyAttackDamage = 20;  
+    private PopUp popUp;
 
     
 
     void Start()  
     {  
+        popUp = FindObjectOfType<PopUp>();
         player = GameObject.FindGameObjectWithTag("Player").transform;  
         playerCombat = player.GetComponent<PlayerCombat>();  
         rb = GetComponent<Rigidbody2D>();  
@@ -137,7 +139,9 @@ public class Enemy : MonoBehaviour
 
         if (currentHealth <= 0)  
         {
-            Die(); 
+            Die();
+            AchievementsGoblin();
+            PlayerPrefs.SetInt("HeroKnight", PlayerPrefs.GetInt("HeroKnight", 0) + 1); 
             StartCoroutine(TriggerDeathAnimation()); 
         }  
     } 
@@ -165,17 +169,28 @@ public class Enemy : MonoBehaviour
     {  
         Debug.Log($"Enemy {gameObject.name} died!"); 
         
-         
-
         // Disable components  
         GetComponent<Collider2D>().enabled = false;  
         this.enabled = false;  
         rb.velocity = Vector2.zero;  
         rb.isKinematic = true;  
 
+        
         // Destroy the enemy object after animation  
         StartCoroutine(DestroyAfterAnimation());  
     }  
+
+    void AchievementsGoblin()
+    {
+        if (!PlayerPrefs.HasKey("TheGoblin"))
+        {
+            if (PlayerPrefs.GetInt("TheGoblin", 0) == 1 && popUp != null) // Achievement unlocked
+            PlayerPrefs.Save(); // Ensure changes are saved
+            Debug.Log("Achievement Unlocked: The Goblin");
+            popUp.DisplayAchievement(popUp.goblinSprite);
+        }
+    }
+
 
     IEnumerator DestroyAfterAnimation()  
     {  

@@ -8,6 +8,12 @@ public class Camp1 : MonoBehaviour
     public Health playerHealth;
     private bool used = false;
 
+
+    private PopUp popUp;
+    private void Start()
+    {
+        popUp = FindObjectOfType<PopUp>();
+    }
     void Update()  
     {  
         if (isNearInteractable && Input.GetKeyDown(KeyCode.F) && !used)  
@@ -18,6 +24,7 @@ public class Camp1 : MonoBehaviour
                 PlayerPrefs.SetInt("AhhYes", PlayerPrefs.GetInt("AhhYes", 0) + 1); // Achievement unlocked
                 PlayerPrefs.Save(); // Ensure changes are saved
                 Debug.Log("Achievement Unlocked: Ahh..Yes, The campfire");
+                popUp.DisplayAchievement(popUp.campfireSprite);
             }  
         }  
     }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ItemCollect : MonoBehaviour
 {
+    private PopUp popUp;
     [SerializeField] private int melonCountToCollect = 3;
     private int Melon = 0;
     public GameObject box2;
@@ -13,6 +14,7 @@ public class ItemCollect : MonoBehaviour
 
     private void Start()
     {
+        popUp = FindObjectOfType<PopUp>();
         audioSource = GetComponent<AudioSource>();
     }
 
@@ -43,6 +45,7 @@ public class ItemCollect : MonoBehaviour
             PlayerPrefs.SetInt("TheMissingCoin", 3); // Achievement unlocked
             PlayerPrefs.Save(); // Ensure changes are saved
             Debug.Log("Achievement Unlocked: The Missing Coin");
+            popUp.DisplayAchievement(popUp.missingCoinSprite);
         }
 
        Debug.Log("Collected three Coins!");  
