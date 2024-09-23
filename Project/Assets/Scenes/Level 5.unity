@@ -2065,7 +2065,7 @@ GameObject:
   - component: {fileID: 239295744}
   m_Layer: 8
   m_Name: laser beams 1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2097,7 +2097,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8ed8777c3d63749ad22bc71a9a1cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 10
+  damageAmount: 50
 --- !u!65 &239295745
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2113,7 +2113,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -4381,7 +4381,7 @@ GameObject:
   - component: {fileID: 648083907}
   m_Layer: 8
   m_Name: laser beams 2
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4413,7 +4413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8ed8777c3d63749ad22bc71a9a1cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 10
+  damageAmount: 50
 --- !u!65 &648083908
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4429,7 +4429,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -5043,7 +5043,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   magicBallPrefab: {fileID: 2023709977}
-  poolSize: 2
+  poolSize: 10
 --- !u!4 &825899131
 Transform:
   m_ObjectHideFlags: 0
@@ -5149,7 +5149,7 @@ Transform:
   m_GameObject: {fileID: 831939871}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 146.37, y: -4.99, z: 0}
+  m_LocalPosition: {x: 148.2, y: -4.99, z: 0}
   m_LocalScale: {x: 1.3879579, y: 1.4267521, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5948,7 +5948,7 @@ GameObject:
   - component: {fileID: 852006230}
   m_Layer: 8
   m_Name: laser beams 4
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5980,7 +5980,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8ed8777c3d63749ad22bc71a9a1cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 10
+  damageAmount: 50
 --- !u!65 &852006231
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5996,7 +5996,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -7573,8 +7573,8 @@ MonoBehaviour:
   heavyAttackCooldown: 4
   jumpForce: 10
   jumpCooldown: 3
-  lightAttackDamage: 10
-  heavyAttackDamage: 20
+  lightAttackDamage: 20
+  heavyAttackDamage: 40
   bossDamageReductionFactor: 0.25
   groundCheck: {fileID: 1862139712}
   groundCheckRadius: 0.2
@@ -35201,7 +35201,7 @@ GameObject:
   - component: {fileID: 1943761426}
   m_Layer: 8
   m_Name: Lasers Group
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -35220,7 +35220,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Evil_Wizard_Boss: {fileID: 1224230704}
   rotationSpeed: 30
-  laserDistance: 2
+  laserDistance: 1.5
 --- !u!4 &1943761427
 Transform:
   m_ObjectHideFlags: 0
@@ -35382,7 +35382,7 @@ GameObject:
   - component: {fileID: 1961597708}
   m_Layer: 8
   m_Name: laser beams 3
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -35417,7 +35417,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -35435,7 +35435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8ed8777c3d63749ad22bc71a9a1cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 10
+  damageAmount: 50
 --- !u!212 &1961597710
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -35846,7 +35846,7 @@ GameObject:
   - component: {fileID: 2023709978}
   m_Layer: 0
   m_Name: MagicBall
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -35863,9 +35863,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74b0378116d27ed46a0a6c7a324adb81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 8
-  lifetime: 0.01
-  damage: 1
+  speed: 10
+  lifetime: 5
+  damage: 10
 --- !u!58 &2023709979
 CircleCollider2D:
   m_ObjectHideFlags: 0

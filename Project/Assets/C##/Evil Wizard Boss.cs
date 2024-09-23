@@ -147,31 +147,25 @@ public class EvilWizardBoss : MonoBehaviour
 
     private void Update()  
     {  
-     if (!isStunned)  
-    {  
-        UpdateAnimatorParameters();  
-        HandleMovement();  
-        CheckForAttack();  
-        CheckForJump();  
-        TryStartFlyingIfNeeded();  
+        if (!isStunned)  
+        {  
+            UpdateAnimatorParameters();  
+            HandleMovement();  
+            CheckForAttack();  
+            CheckForJump();  
+            TryStartFlyingIfNeeded();  
 
-        // Check if the boss's health is at or below half  
-        if (currentHealth <= maxHealth / 2 && currentHealth > maxHealth / 4)    
-        {  
-            ShowLaserBeams();  
+            // Show laser beams if currentHealth is below half  
+            if (currentHealth < maxHealth / 2)  
+            {  
+                ShowLaserBeams();  // Keep lasers visible if health is under half  
+            }  
+            else  
+            {  
+                HideLaserBeams();  // Hide lasers if health is above half  
+            }  
         }  
-        else  
-        {  
-            HideLaserBeams();  
-        }  
-
-        // Check if the boss's health is at or below a quarter  
-        if (currentHealth <= maxHealth / 4)  
-        {  
-            ShootMagicBall();  
-        }  
-    }   
-    } 
+    }
     private void ShowLaserBeams()  
     {  
         if (laserBehavior1 != null)  
@@ -281,22 +275,25 @@ public class EvilWizardBoss : MonoBehaviour
             GameObject magicBall = magicBallPool.GetMagicBall();  
             if (magicBall != null)  
             {  
-                // Set the position to the boss  
+                Debug.Log("Magic Ball generated and initialized.");  
                 magicBall.transform.position = transform.position;  
 
-                // Determine the direction the boss is facing  
                 Vector2 shootDirection = facingRight ? Vector2.right : Vector2.left;  
 
-                // Initialize the magic ball with the direction and damage  
                 MagicBall ballScript = magicBall.GetComponent<MagicBall>();  
                 ballScript.Initialize(shootDirection);  
-                ballScript.damage = magicBallDamage; // Set the damage here  
-
-                // Set it active  
-               // magicBall.SetActive(true);  
+                ballScript.damage = magicBallDamage;  
+            }  
+            else  
+            {  
+                Debug.LogWarning("No magic balls available in the pool!");  
             }  
         }  
-    }  
+        else  
+        {  
+            Debug.LogError("MagicBallPool not found!");  
+        }  
+    }
 
     private void CheckForJump()  
     {  

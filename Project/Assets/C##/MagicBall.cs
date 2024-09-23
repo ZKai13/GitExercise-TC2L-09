@@ -184,7 +184,7 @@ using UnityEngine;
 public class MagicBall : MonoBehaviour  
 {  
     public float speed = 5f; // Speed of the magic ball  
-    public float lifetime = 10f; // Lifetime of the magic ball before it is returned to the pool  
+    public float lifetime = 20f; // Lifetime of the magic ball before it is returned to the pool  
     public int damage = 2; // Damage dealt by the magic ball  
 
     private Vector2 direction; // Direction towards the player  
@@ -220,21 +220,59 @@ public class MagicBall : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)  
     {  
+        Debug.Log("MagicBall collided with " + collision.gameObject.name);  // Log collision details  
+        
+        // Check if the magic ball collides with the Player  
         if (collision.gameObject.CompareTag("Player"))  
         {  
-            // Damage the player if needed  
             PlayerCombat playerCombat = collision.gameObject.GetComponent<PlayerCombat>();  
             if (playerCombat != null)  
             {  
-                playerCombat.ReceiveAttack(null, damage, false); // Use the damage variable  
+                playerCombat.ReceiveAttack(null, damage, false);  // Inflict damage to the player  
             }  
-            // Return the magic ball to the pool instead of destroying it  
-            ReturnToPool();  
+            ReturnToPool();  // Return ball to pool after collision  
         }  
+        // Check for collision with the Ground or Obstacle  
         else if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Obstacle"))  
         {  
-            // Return the magic ball to the pool upon collision with the ground or obstacles  
-            ReturnToPool();  
+            ReturnToPool();  // Return ball to pool after collision with ground or obstacles  
         }  
-    }  
+    }
 }
+// using UnityEngine;  
+// using System.Collections.Generic;  
+
+// public class MagicBallPool : MonoBehaviour  
+// {  
+//     public GameObject magicBallPrefab; // Assign your magic ball prefab in the inspector  
+//     public int poolSize = 10; // Number of magic balls to pool  
+//     private Queue<GameObject> magicBallPool = new Queue<GameObject>();  
+
+//     private void Start()  
+//     {  
+//         // Initialize the pool  
+//         for (int i = 0; i < poolSize; i++)  
+//         {  
+//             GameObject magicBall = Instantiate(magicBallPrefab);  
+//             magicBall.SetActive(false);  
+//             magicBallPool.Enqueue(magicBall);  
+//         }  
+//     }  
+
+//     public GameObject GetMagicBall()  
+//     {  
+//         if (magicBallPool.Count > 0)  
+//         {  
+//             GameObject magicBall = magicBallPool.Dequeue();  
+//             magicBall.SetActive(true); // Activate the magic ball  
+//             return magicBall;  
+//         }  
+//         return null; // Return null if no magic balls are available  
+//     }  
+
+//     public void ReturnMagicBall(GameObject magicBall)  
+//     {  
+//         magicBall.SetActive(false); // Deactivate the magic ball  
+//         magicBallPool.Enqueue(magicBall); // Return it to the pool  
+//     }  
+// }

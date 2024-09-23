@@ -3,7 +3,7 @@ using System.Collections;
 
 public class LaserBehavior : MonoBehaviour  
 {  
-    public float damageAmount = 10f;  
+    public float damageAmount   = 10f;  
     private Coroutine laserCoroutine;  // To manage laser activation timing  
 
     private void Start()  
@@ -15,13 +15,23 @@ public class LaserBehavior : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)  
     {  
-        // Check if the colliding object is the player  
+        Debug.Log("Laser collided with: " + collision.gameObject.name); // Log the collision  
         if (collision.CompareTag("Player"))  
         {  
-            // Apply damage to the player  
-            collision.GetComponent<Health>().Takedamage(damageAmount);  
+            Debug.Log("Laser hit the player!"); // Confirm laser hit  
+
+            Health playerHealth = collision.GetComponent<Health>(); // Get the Health component  
+            if (playerHealth != null)  
+            {  
+                Debug.Log("Applying damage to the player: " + damageAmount);  
+                playerHealth.Takedamage((int)damageAmount); // Apply damage to the player as int  
+            }  
+            else  
+            {  
+                Debug.LogError("Health component not found on player!");  
+            }  
         }  
-    }  
+    }
 
     public void ShowLaserBeam()  
     {  
