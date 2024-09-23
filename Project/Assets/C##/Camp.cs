@@ -11,6 +11,8 @@ public class Camp : MonoBehaviour
     public PotionScript potionScript;
     public CanvasGroup campCanvasGroup;
     public GameObject itemToHide;
+    public CanvasGroup StaminaCanvasGroup;
+    public CanvasGroup PotionsCanvasGroup;
 
     public float fadeDuration = 1.0f;
 
@@ -24,6 +26,8 @@ public class Camp : MonoBehaviour
         {  
 
             StartCoroutine(FadeInAndInteract());
+            HideStaminaUI();
+            HidePotionUI();
             Interact();
             if (!PlayerPrefs.HasKey("AhhYes"))
             {
@@ -39,8 +43,10 @@ public class Camp : MonoBehaviour
      private IEnumerator FadeInAndInteract()
      {
         yield return StartCoroutine(FadeCanvas(campCanvasGroup, 0, 1, fadeDuration)); 
-        Interact();
+        Interact(); 
         yield return new WaitForSeconds(2.0f); 
+        ShowStaminaUI();
+        ShowPotionUI();
 
         if (itemToHide != null)
         {
@@ -53,6 +59,7 @@ public class Camp : MonoBehaviour
         }
 
         yield return StartCoroutine(FadeCanvas(campCanvasGroup, 1, 0, fadeDuration)); 
+
     }
 
 
@@ -74,6 +81,7 @@ public class Camp : MonoBehaviour
             canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / duration);
             elapsedTime += Time.deltaTime;
             yield return null;
+            
         }
         canvasGroup.alpha = endAlpha; 
     } 
@@ -93,4 +101,24 @@ public class Camp : MonoBehaviour
             isNearInteractable = false;  
         }  
     }  
+
+    public void HideStaminaUI()  
+    {  
+        StaminaCanvasGroup.alpha = 0; 
+    }
+
+    public void ShowStaminaUI()  
+    {  
+        StaminaCanvasGroup.alpha = 1; 
+    }
+
+    public void HidePotionUI()  
+    {  
+        PotionsCanvasGroup.alpha = 0; 
+    } 
+
+    public void ShowPotionUI()  
+    {  
+        PotionsCanvasGroup.alpha = 1; 
+    } 
 }
