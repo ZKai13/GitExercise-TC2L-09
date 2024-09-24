@@ -41,34 +41,35 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        if (isStunned || isHurt)
-            return;
+    void Update()  
+    {  
+        if (isStunned || isHurt)  
+            return;  
 
-        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+        float distanceToPlayer = Vector2.Distance(transform.position, player.position);  
 
-        // 只有玩家在追击范围内，敌人才会开始移动
-        if (distanceToPlayer <= chaseRange)
-        {
-            if (distanceToPlayer <= attackRange && canAttack)
-            {
-                Attack();
-            }
-            else
-            {
-                Move();
-            }
+        // Only move if within chase range  
+        if (distanceToPlayer <= chaseRange)  
+        {  
+            // If attacking range is met, attempt an attack  
+            if (distanceToPlayer <= attackRange && canAttack)  
+            {  
+                Attack();  
+            }  
+            else  
+            {  
+                Move();  
+            }  
 
-            // 更新动画参数
-            animator.SetBool("isWalking", rb.velocity.magnitude > 0.1f);
-        }
-        else
-        {
-            rb.velocity = Vector2.zero;  // 玩家在追击范围外，停止移动
-            animator.SetBool("isWalking", false);  // 停止行走动画
-        }
-    }
+            // Update animation parameters  
+            animator.SetBool("isWalking", rb.velocity.magnitude > 0.1f);  
+        }  
+        else  
+        {  
+            rb.velocity = Vector2.zero;  // Stop moving if out of chase range  
+            animator.SetBool("isWalking", false);  // Stop walk animation  
+        }  
+    }  
 
     void Move()
     {
@@ -86,41 +87,52 @@ public class Enemy : MonoBehaviour
         }
     }
 
-void Attack()  
-{  
-    rb.velocity = Vector2.zero; // Stop moving when attacking  
-    animator.SetTrigger("attack"); // Trigger attack animation  
-
-    // Check if player is blocking before applying damage  
-    if (playerCombat != null)  
-    {  
-        bool isHeavyAttack = canPerformHeavyAttack && Random.value > 0.7f; // 30% chance for heavy attack  
-        int damageToApply = isHeavyAttack ? heavyAttackDamage : attackDamage;  
-
-        // Check if player is blocking  
-        if (!playerCombat.IsBlocking())  
+    void Attack()  
+    {    
+        // Prevent attacking if the enemy is stunned  
+        if (isStunned)  
         {  
-            playerCombat.Takedamage(damageToApply, isHeavyAttack); // Apply damage if not blocking  
+            Debug.Log("Enemy is stunned and cannot attack.");  
+            return;  
+        }  
+
+        Debug.Log("Enemy attacking");  
+        rb.velocity = Vector2.zero; // Stop moving when attacking  
+        animator.SetTrigger("attack"); // Trigger attack animation  
+
+        // Check if player is blocking before applying damage  
+        if (playerCombat != null)  
+        {  
+            bool isHeavyAttack = canPerformHeavyAttack && Random.value > 0.7f; // 30% chance for heavy attack  
+            int damageToApply = isHeavyAttack ? heavyAttackDamage : attackDamage;  
+
+            // Check if player is blocking  
+            if (!playerCombat.IsBlocking())  
+            {  
+                playerCombat.Takedamage(damageToApply, isHeavyAttack); // Apply damage if not blocking  
+            }  
+            else  
+            {  
+                Debug.Log("Player is blocking, no damage taken.");   
+                StartCoroutine(Stun());  
+            }  
         }  
         else  
         {  
-            Debug.Log("Player is blocking, no damage taken."); 
-            StartCoroutine(Stun());
+            Debug.LogError("PlayerCombat component not found!");  
         }  
-    }  
-    else  
+
+        StartCoroutine(AttackCooldown()); // Start attack cooldown  
+    }   
+    IEnumerator Stun()  
     {  
-        Debug.LogError("PlayerCombat component not found!");  
+        // Ensure enemy cannot attack while being stunned  
+        if (isStunned) yield break; // Exit if already stunned  
+
+        GetStunned();  // Call to update the stunned state  
+        yield return new WaitForSeconds(stunDuration); // Wait for stun duration  
+        isStunned = false; // Reset stun state  
     }  
-
-    StartCoroutine(AttackCooldown()); // Start attack cooldown  
-}
-
-    IEnumerator Stun()
-    {
-        yield return new WaitForSeconds(1f);
-        GetStunned();
-    }
 
     IEnumerator AttackCooldown()
     {

@@ -265,7 +265,7 @@ private void NewHeavyAttack()
             FlyingEye flyingEye = target.GetComponent<FlyingEye>();  
             if (flyingEye != null)  
             {  
-                flyingEye.Takedamage(heavyAttackDamage); // Only pass damage as an argument  
+                //flyingEye.TakeDamage(heavyAttackDamage); // Only pass damage as an argument  
                 Debug.Log("Attacked a FlyingEye with heavy damage!");  
             }  
         }       
@@ -375,6 +375,7 @@ private void NewHeavyAttack()
 
     public void ReceiveAttack(MonoBehaviour attacker, int damage, bool isHeavyAttack)  
     {  
+        
         // Handle enemy attack  
         if (isBlocking && canBlockImpact)  
         {  

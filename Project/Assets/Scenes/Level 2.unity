@@ -140733,7 +140733,7 @@ MonoBehaviour:
   staminaSystem: {fileID: 779914567}
   healthSystem: {fileID: 1110314181}
   blockDuration: 2
-  blockCooldown: 1
+  blockCooldown: 0.5
   successfulBlockDuration: 0.5
   isAttacking: 0
   lightAttackPushForce: 3

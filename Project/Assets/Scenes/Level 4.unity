@@ -1099,9 +1099,9 @@ GameObject:
   - component: {fileID: 186821006}
   - component: {fileID: 186821005}
   - component: {fileID: 186821004}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Flying_eye
-  m_TagString: FlyingEye
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1173,14 +1173,14 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!58 &186821007
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1375,15 +1375,7 @@ Transform:
   m_GameObject: {fileID: 189458682}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-<<<<<<< HEAD
-<<<<<<< HEAD
-  m_LocalPosition: {x: 61.42, y: -4.04, z: 0}
-=======
   m_LocalPosition: {x: 63.11, y: -3.99, z: 0}
->>>>>>> 49acdb71f79497ad1c2912c31baef989c10f5be1
-=======
-  m_LocalPosition: {x: 63.11, y: -3.99, z: 0}
->>>>>>> 49acdb71f79497ad1c2912c31baef989c10f5be1
   m_LocalScale: {x: 1.3879579, y: 1.4267521, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -44951,7 +44943,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1868037775}
   - component: {fileID: 1868037774}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Heavyattack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45550,7 +45542,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2001338509}
   - component: {fileID: 2001338508}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Lightattack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
