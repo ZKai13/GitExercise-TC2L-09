@@ -33,6 +33,7 @@ public class FlyingEye : MonoBehaviour
     public float heavyAttackRange = 8f;  
     public float heavyAttackDashSpeed = 10f;  
     private bool isPerformingHeavyAttack = false;  
+    private Flying_Eye_Health healthComponent;  
 
     private static readonly int IdleHash = Animator.StringToHash("Idle");  
     private static readonly int LightAttackHash = Animator.StringToHash("LightAttack");  
@@ -47,7 +48,8 @@ public class FlyingEye : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();  
         player = GameObject.FindGameObjectWithTag("Player").transform;  
         PlayIdle();  
-        StartCoroutine(RandomRotation());  
+        StartCoroutine(RandomRotation()); 
+        healthComponent = GetComponent<Flying_Eye_Health>();   
 
         // Ensure attack colliders are disabled at start  
         lightAttackCollider.enabled = false;  
@@ -239,14 +241,15 @@ public class FlyingEye : MonoBehaviour
         this.enabled = false;  
     }  
 
-    private void ApplyDamage(int damage)  
+private void ApplyDamage(int damage)  
+{  
+    if (player != null && player.GetComponent<Collider2D>().IsTouching(GetComponent<Collider2D>()))  
     {  
-        if (player != null)  
-        {  
-            player.SendMessage("ReceiveAttack", new AttackData(this, damage, damage == heavyAttackDamage), SendMessageOptions.DontRequireReceiver);  
-            Debug.Log($"Applied {damage} damage to player");  
-        }  
+        player.GetComponent<PlayerCombat>().ReceiveAttack(this, damage, damage == heavyAttackDamage);  
+        GetComponent<Flying_Eye_Health>().TakeDamage(damage);  
+        Debug.Log($"Applied {damage} damage to player and Flying Eye");  
     }  
+}
 
     public void GetStunned(float duration)  
     {  

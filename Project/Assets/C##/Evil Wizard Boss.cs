@@ -3,28 +3,28 @@ using System.Collections;
 
 public class EvilWizardBoss : MonoBehaviour  
 {  
-    [Header("Boss Stats")]  
-    public int health = 100;
-    public float currentHealth;  
-    public int maxHealth = 100;  
-    public float attackRange = 5f;  
-    public float heavyAttackThreshold = 30f;  
-    public float fallThreshold = -5f;  
-    public float walkSpeed = 3f;
+    [Header("Boss Stats")] // Boss相关属性  
+    public int health = 100;// Boss血量 
+    public float currentHealth;  // 当前血量    
+    public int maxHealth = 100;  // 最大血量  
+    public float attackRange = 5f;  // 攻击范围  
+    public float heavyAttackThreshold = 30f;  // 使用重攻击的血量阈值 
+    public float fallThreshold = -5f;  // 掉落阈值
+    public float walkSpeed = 3f;// 移动速度
     public GameObject Border1;
     public GameObject Border2;
-    public GameObject HealthUI;
+    public GameObject HealthUI;// 血条UI
     public GameObject audioManager;
     private AudioSource audioSource;
     public AudioClip deathClip;
 
     [Header("References")]  
-    public Transform player;  
-    public BossHealthBar bossHealthBar;  
+    public Transform player;  // 玩家Transform 
+    public BossHealthBar bossHealthBar;  // Boss血条 
 
     [Header("Combat Settings")]  
-    public float lightAttackCooldown = 2f;  
-    public float heavyAttackCooldown = 4f;  
+    public float lightAttackCooldown = 2f;  // 轻攻击冷却时间  
+    public float heavyAttackCooldown = 4f;  // 重攻击冷却时间  
     public float jumpForce = 10f;  
     public float jumpCooldown = 3f;  
     public float lightAttackDamage = 10f;  
@@ -80,7 +80,7 @@ public class EvilWizardBoss : MonoBehaviour
         laserBehavior2 = laserBeam2.GetComponent<LaserBehavior>();  
         laserBehavior3 = laserBeam3.GetComponent<LaserBehavior>(); 
         laserBehavior4 = laserBeam4.GetComponent<LaserBehavior>(); 
-        HideLaserBeams();  // Set it to maximum at the start (this should be checked in the Unity Inspector)  
+        HideLaserBeams();  // 初始化时隐藏激光 
         if (bossHealthBar != null)  
         {  
             float healthPercentage = currentHealth / maxHealth; // Use this for health bar update  
@@ -153,21 +153,22 @@ public class EvilWizardBoss : MonoBehaviour
             HandleMovement();  
             CheckForAttack();  
             CheckForJump();  
-            TryStartFlyingIfNeeded();  
+            TryStartFlyingIfNeeded();   // 尝试启动飞行 
 
-            // Show laser beams if currentHealth is below half  
+            // 如果当前血量低于一半,显示激光   
             if (currentHealth < maxHealth / 2)  
             {  
-                ShowLaserBeams();  // Keep lasers visible if health is under half  
+                ShowLaserBeams();  // 保持激光可见  
             }  
             else  
             {  
-                HideLaserBeams();  // Hide lasers if health is above half  
+                HideLaserBeams();  // 隐藏激光
             }  
         }  
     }
     private void ShowLaserBeams()  
     {  
+        // 显示所有激光 
         if (laserBehavior1 != null)  
             laserBehavior1.ShowLaserBeam();  
         if (laserBehavior2 != null)  
@@ -179,6 +180,7 @@ public class EvilWizardBoss : MonoBehaviour
     }
     private void HideLaserBeams()  
     {  
+        // 隐藏所有激光 
         if (laserBehavior1 != null)  
             laserBehavior1.HideLaserBeam();  
         if (laserBehavior2 != null)  
@@ -190,6 +192,7 @@ public class EvilWizardBoss : MonoBehaviour
     }
     private void TryStartFlyingIfNeeded()
     {
+        // 如果需要且可以飞行,则开始飞行  
         if (flyScript != null && canFly && currentHealth < maxHealth / 2)
         {
             Debug.Log($"Trying to start flying. Current health: {currentHealth}, Max health: {maxHealth}");
@@ -200,6 +203,7 @@ public class EvilWizardBoss : MonoBehaviour
     }
     private IEnumerator ResetFlyingCooldown()
     {
+        // 重置飞行冷却时间
         yield return new WaitForSeconds(5f); // Adjust this cooldown as needed
         canFly = true;
     }
@@ -269,6 +273,7 @@ public class EvilWizardBoss : MonoBehaviour
     }  
     private void ShootMagicBall()  
     {  
+        // 发射魔法球
         MagicBallPool magicBallPool = FindObjectOfType<MagicBallPool>();  
         if (magicBallPool != null)  
         {  

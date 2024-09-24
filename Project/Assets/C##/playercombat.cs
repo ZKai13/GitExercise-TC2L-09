@@ -373,44 +373,34 @@ private void NewHeavyAttack()
         return isBlocking;  
     }  
 
-    public void ReceiveAttack(MonoBehaviour attacker, int damage, bool isHeavyAttack)  
+public void ReceiveAttack(MonoBehaviour attacker, int damage, bool isHeavyAttack)  
+{  
+    if (healthSystem != null)  
     {  
-        
-        // Handle enemy attack  
-        if (isBlocking && canBlockImpact)  
+        // Apply damage reduction if the player is blocking  
+        if (isBlocking)  
         {  
-            Debug.Log("Successful block!");  
-            StartCoroutine(SuccessfulBlock());  
+            damage = (int)(damage * 0.25f); // Reduce damage by 75% when blocking  
+        }  
+
+        healthSystem.Takedamage(damage);  
+        Debug.Log($"Player took {damage} damage. Current health: {healthSystem.currentHealth}");  
+
+        // Trigger the Hurt animation  
+        if (animator != null)  
+        {  
+            animator.SetTrigger("Hurt");  
         }  
         else  
         {  
-            if (healthSystem != null)  
-            {  
-                // Apply damage reduction if the player is blocking  
-                if (isBlocking)  
-                {  
-                    damage = (int)(damage * 0.25f);     // Reduce damage by 50% when blocking  
-                }  
-
-                healthSystem.Takedamage(damage);  
-//                Debug.Log($"Player took {damage} damage. Current health: {healthSystem.currentHealth}");  
-
-                // Trigger the Hurt animation  
-                if (animator != null)  
-                {  
-                    animator.SetTrigger("Hurt");  
-                }  
-                else  
-                {  
-                    Debug.LogError("Animator component not found on the player!");  
-                }  
-            }  
-            else  
-            {  
-                Debug.LogError("Health component is not assigned to the player!");  
-            }  
+            Debug.LogError("Animator component not found on the player!");  
         }  
     }  
+    else  
+    {  
+        Debug.LogError("Health component is not assigned to the player!");  
+    }  
+}
 
     IEnumerator SuccessfulBlock()  
     {  
