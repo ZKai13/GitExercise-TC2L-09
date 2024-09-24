@@ -164,7 +164,7 @@ void Attack()
         {
             Die();
             AchievementsGoblin();
-            PlayerPrefs.SetInt("HeroKnight", PlayerPrefs.GetInt("HeroKnight", 0) + 1);
+            PlayerPrefs.SetInt("TheGoblin", PlayerPrefs.GetInt("TheGoblin", 0) + 1);
             StartCoroutine(TriggerDeathAnimation());
         }
     }
