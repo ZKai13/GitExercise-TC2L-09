@@ -104,7 +104,8 @@ void Attack()
         }  
         else  
         {  
-            Debug.Log("Player is blocking, no damage taken.");  
+            Debug.Log("Player is blocking, no damage taken."); 
+            StartCoroutine(Stun());
         }  
     }  
     else  
@@ -114,6 +115,12 @@ void Attack()
 
     StartCoroutine(AttackCooldown()); // Start attack cooldown  
 }
+
+    IEnumerator Stun()
+    {
+        yield return new WaitForSeconds(1f);
+        GetStunned();
+    }
 
     IEnumerator AttackCooldown()
     {

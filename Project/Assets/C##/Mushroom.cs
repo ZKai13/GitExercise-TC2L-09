@@ -275,27 +275,17 @@ public class Mushroom : MonoBehaviour
     void Die()  
     {  
         isDead = true;  
-        animator.SetTrigger("Die");  
-        StartCoroutine(DestroyAfterAnimation());  
-    }  
+        StartCoroutine(TriggerDeathAnimation());  
+        //StartCoroutine(DestroyAfterAnimation());  
+    } 
 
-    IEnumerator DestroyAfterAnimation()  
-    {  
-        yield return new WaitForEndOfFrame();  
+    IEnumerator TriggerDeathAnimation()
+    {
+        yield return new WaitForEndOfFrame();
+        animator.SetTrigger("Die");
 
-        if (animator != null)  
-        {  
-            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);  
-            if (stateInfo.IsName("Mushroom_die"))  
-            {  
-                float dieAnimationLength = stateInfo.length;  
-                Destroy(gameObject, dieAnimationLength);  
-            }  
-            else  
-            {  
-                Destroy(gameObject, 1f);  
-            }  
-        }  
+        yield return new WaitForSeconds(2f);
+        Destroy(gameObject);
     }  
 
     IEnumerator EnableColliderForDuration(Collider2D collider, float duration)  
