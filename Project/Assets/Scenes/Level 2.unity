@@ -1281,7 +1281,7 @@ MonoBehaviour:
   attackDamage: 10
   stunDuration: 2
   maxHealth: 100
-  hurtAnimationDuration: 0.5
+  hurtAnimationDuration: 0.98
   chaseRange: 7
   canPerformHeavyAttack: 0
   heavyAttackDamage: 20

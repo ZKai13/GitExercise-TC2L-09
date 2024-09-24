@@ -30,7 +30,7 @@ public class PlayerCombat : MonoBehaviour
     private float holdTime = 0f;  
     public bool isAttacking = false;  
     private bool attackButtonHeld = false;  
-    private bool isBlocking = false;  
+    private bool isBlocking; 
     private bool canBlockImpact = true;  
     public float lightAttackPushForce = 3f;  
     public float heavyAttackPushForce = 5f;  
@@ -180,11 +180,11 @@ public class PlayerCombat : MonoBehaviour
     }  
 
     void NewLightAttack()  
-    {
-        if (audioSource != null && lightAttackSound != null)
-        {
-            audioSource.PlayOneShot(lightAttackSound);
-        }
+    {  
+        if (audioSource != null && lightAttackSound != null)  
+        {  
+            audioSource.PlayOneShot(lightAttackSound);  
+        }  
 
         animator.SetBool("isHeavyAttack", false);  
         animator.SetTrigger("attack");  
@@ -193,34 +193,30 @@ public class PlayerCombat : MonoBehaviour
 
         foreach (Collider2D enemy in hitEnemies)  
         {  
-            Enemy enemyScript = enemy.GetComponent<Enemy>();  
-            if (enemyScript != null)  
+            // Use the base class (or specific methods) to check for specific enemies like Mushroom  
+            Mushroom mushroom = enemy.GetComponent<Mushroom>();  
+            if (mushroom != null)  
             {  
-                enemyScript.Takedamage(lightAttackDamage, false);  
+                mushroom.Takedamage(lightAttackDamage, false);  
+                Debug.Log("Attacked a Mushroom with light damage!");  
             }  
-        } 
-
-        // Raycast-based attack detection  
-        RaycastHit2D hit = Physics2D.Raycast(attackPoint.position, transform.right, attackRange, enemyLayers);  
-        if (hit.collider != null)  
-        {  
-            EvilWizardBoss bossScript = hit.collider.GetComponent<EvilWizardBoss>();  
-            if (bossScript != null)  
+            else  
             {  
-                // Apply damage reduction factor  
-                float reducedDamage = lightAttackDamage * bossScript.bossDamageReductionFactor;  
-                bossScript.Takedamage((int)reducedDamage);  
-                hit.rigidbody.AddForce((hit.transform.position - transform.position).normalized * lightAttackPushForce, ForceMode2D.Impulse);  
+                Enemy enemyScript = enemy.GetComponent<Enemy>();  
+                if (enemyScript != null)  
+                {  
+                    enemyScript.Takedamage(lightAttackDamage, false);  
+                }  
             }  
-        }  
-    }    
+        }   
+    }   
 
     void NewHeavyAttack()  
-    {
-        if (audioSource != null && heavyAttackSound != null)
-        {
-            audioSource.PlayOneShot(heavyAttackSound);
-        } 
+    {  
+        if (audioSource != null && heavyAttackSound != null)  
+        {  
+            audioSource.PlayOneShot(heavyAttackSound);  
+        }   
 
         animator.SetBool("isHeavyAttack", true);  
         animator.SetTrigger("attack");  
@@ -229,26 +225,23 @@ public class PlayerCombat : MonoBehaviour
 
         foreach (Collider2D enemy in hitEnemies)  
         {  
-            Enemy enemyScript = enemy.GetComponent<Enemy>();  
-            if (enemyScript != null)  
+            // Again, check if the enemy is a Mushroom or any other enemy  
+            Mushroom mushroom = enemy.GetComponent<Mushroom>();  
+            if (mushroom != null)  
             {  
-                enemyScript.Takedamage(heavyAttackDamage, false); 
+                mushroom.Takedamage(heavyAttackDamage, false);  
+                Debug.Log("Attacked a Mushroom with heavy damage!");  
             }  
-        }
-        // Raycast-based attack detection  
-        RaycastHit2D hit = Physics2D.Raycast(attackPoint.position, transform.right, attackRange, enemyLayers);  
-        if (hit.collider != null)  
-        {  
-            EvilWizardBoss bossScript = hit.collider.GetComponent<EvilWizardBoss>();  
-            if (bossScript != null)  
+            else  
             {  
-                // Apply damage reduction factor  
-                float reducedDamage = heavyAttackDamage * bossScript.bossDamageReductionFactor;  
-                bossScript.Takedamage((int)reducedDamage);  
-                hit.rigidbody.AddForce((hit.transform.position - transform.position).normalized * heavyAttackPushForce, ForceMode2D.Impulse);  
+                Enemy enemyScript = enemy.GetComponent<Enemy>();  
+                if (enemyScript != null)  
+                {  
+                    enemyScript.Takedamage(heavyAttackDamage, false);  
+                }  
             }  
         }  
-    }  
+    }
 
     public void Takedamage(int damage, bool someFlag)  
     {  

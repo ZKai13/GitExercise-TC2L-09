@@ -86,26 +86,34 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void Attack()
-    {
-        rb.velocity = Vector2.zero; // 攻击时停止移动
-        animator.SetTrigger("attack"); // 触发攻击动画
+void Attack()  
+{  
+    rb.velocity = Vector2.zero; // Stop moving when attacking  
+    animator.SetTrigger("attack"); // Trigger attack animation  
 
-        // 造成伤害
-        if (playerCombat != null)
-        {
-            bool isHeavyAttack = canPerformHeavyAttack && Random.value > 0.7f; // 30%概率发动重击
-            int damageToApply = isHeavyAttack ? heavyAttackDamage : attackDamage;
+    // Check if player is blocking before applying damage  
+    if (playerCombat != null)  
+    {  
+        bool isHeavyAttack = canPerformHeavyAttack && Random.value > 0.7f; // 30% chance for heavy attack  
+        int damageToApply = isHeavyAttack ? heavyAttackDamage : attackDamage;  
 
-            playerCombat.Takedamage(damageToApply, isHeavyAttack); // 对玩家造成伤害
-        }
-        else
-        {
-            Debug.LogError("PlayerCombat component not found!");
-        }
+        // Check if player is blocking  
+        if (!playerCombat.IsBlocking())  
+        {  
+            playerCombat.Takedamage(damageToApply, isHeavyAttack); // Apply damage if not blocking  
+        }  
+        else  
+        {  
+            Debug.Log("Player is blocking, no damage taken.");  
+        }  
+    }  
+    else  
+    {  
+        Debug.LogError("PlayerCombat component not found!");  
+    }  
 
-        StartCoroutine(AttackCooldown()); // 开始攻击冷却
-    }
+    StartCoroutine(AttackCooldown()); // Start attack cooldown  
+}
 
     IEnumerator AttackCooldown()
     {
