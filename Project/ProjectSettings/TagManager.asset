@@ -9,6 +9,7 @@ TagManager:
   - Audio
   - MovingPlatform
   - DE
+  - FlyingEye
   layers:
   - Default
   - TransparentFX

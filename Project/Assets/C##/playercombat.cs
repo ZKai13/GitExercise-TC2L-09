@@ -179,8 +179,9 @@ public class PlayerCombat : MonoBehaviour
         StartCoroutine(ResetAttackState());  
     }  
 
-    void NewLightAttack()  
+    private void NewLightAttack()  
     {  
+        // Play sound for the light attack  
         if (audioSource != null && lightAttackSound != null)  
         {  
             audioSource.PlayOneShot(lightAttackSound);  
@@ -189,60 +190,96 @@ public class PlayerCombat : MonoBehaviour
         animator.SetBool("isHeavyAttack", false);  
         animator.SetTrigger("attack");  
 
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);  
+        // Check for all objects in the attack range  
+        Collider2D[] hitTargets = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);  
 
-        foreach (Collider2D enemy in hitEnemies)  
+        foreach (Collider2D target in hitTargets)  
         {  
-            // Use the base class (or specific methods) to check for specific enemies like Mushroom  
-            Mushroom mushroom = enemy.GetComponent<Mushroom>();  
-            if (mushroom != null)  
+            // Check for the Player  
+            PlayerCombat playerCombat = target.GetComponent<PlayerCombat>();  
+            if (playerCombat != null)  
             {  
-                mushroom.Takedamage(lightAttackDamage, false);  
-                Debug.Log("Attacked a Mushroom with light damage!");  
+                // Apply damage to the player  
+                playerCombat.ReceiveAttack(this, lightAttackDamage, false);  
+                Debug.Log("Attacked the player with light damage!");  
             }  
-            else  
+            // Check for Mushroom enemies  
+            else   
             {  
-                Enemy enemyScript = enemy.GetComponent<Enemy>();  
-                if (enemyScript != null)  
+                Mushroom mushroom = target.GetComponent<Mushroom>();  
+                if (mushroom != null)  
                 {  
-                    enemyScript.Takedamage(lightAttackDamage, false);  
+                    mushroom.Takedamage(lightAttackDamage, false);  
+                    Debug.Log("Attacked a Mushroom with light damage!");  
+                }  
+                else  
+                {  
+                    Enemy enemyScript = target.GetComponent<Enemy>();  
+                    if (enemyScript != null)  
+                    {  
+                        enemyScript.Takedamage(lightAttackDamage, false);  
+                        Debug.Log("Attacked an Enemy with light damage!");  
+                    }  
                 }  
             }  
         }   
-    }   
+    } 
 
-    void NewHeavyAttack()  
+private void NewHeavyAttack()  
+{  
+    // Play sound for the heavy attack  
+    if (audioSource != null && heavyAttackSound != null)  
     {  
-        if (audioSource != null && heavyAttackSound != null)  
+        audioSource.PlayOneShot(heavyAttackSound);  
+    }  
+
+    // Set the animator to trigger heavy attack animation  
+    animator.SetBool("isHeavyAttack", true);  
+    animator.SetTrigger("attack");  
+
+    // Check for all targets in the attack range  
+    Collider2D[] hitTargets = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);  
+
+    foreach (Collider2D target in hitTargets)  
+    {  
+        // Check for the Player  
+        PlayerCombat playerCombat = target.GetComponent<PlayerCombat>();  
+        if (playerCombat != null)  
         {  
-            audioSource.PlayOneShot(heavyAttackSound);  
-        }   
-
-        animator.SetBool("isHeavyAttack", true);  
-        animator.SetTrigger("attack");  
-
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);  
-
-        foreach (Collider2D enemy in hitEnemies)  
+            // Apply heavy damage to the player  
+            playerCombat.ReceiveAttack(this, heavyAttackDamage, true);  
+            Debug.Log("Attacked the player with heavy damage!");  
+        }  
+        // Check for Mushroom enemies  
+        else if (target.CompareTag("Mushroom"))  // Prefer using tags for a more generic check; ensure mushrooms have this tag in Unity  
         {  
-            // Again, check if the enemy is a Mushroom or any other enemy  
-            Mushroom mushroom = enemy.GetComponent<Mushroom>();  
+            Mushroom mushroom = target.GetComponent<Mushroom>();  
             if (mushroom != null)  
             {  
                 mushroom.Takedamage(heavyAttackDamage, false);  
                 Debug.Log("Attacked a Mushroom with heavy damage!");  
-            }  
-            else  
-            {  
-                Enemy enemyScript = enemy.GetComponent<Enemy>();  
-                if (enemyScript != null)  
-                {  
-                    enemyScript.Takedamage(heavyAttackDamage, false);  
-                }  
-            }  
-        }  
-    }
+            } 
 
+                else if (target.GetComponent("FlyingEye")) // Ensure that this tag is assigned to your FlyingEye GameObjects  
+        {  
+            FlyingEye flyingEye = target.GetComponent<FlyingEye>();  
+            if (flyingEye != null)  
+            {  
+                flyingEye.Takedamage(heavyAttackDamage); // Only pass damage as an argument  
+                Debug.Log("Attacked a FlyingEye with heavy damage!");  
+            }  
+        }       
+        }  
+        // Check for FlyingEye enemies  
+
+        // Check for other Enemy types  
+        else if (target.GetComponent<Enemy>() is Enemy enemyScript)  
+        {  
+            enemyScript.Takedamage(heavyAttackDamage, false);  
+            Debug.Log("Attacked an Enemy with heavy damage!");  
+        }  
+    }   
+}
     public void Takedamage(int damage, bool someFlag)  
     {  
         if (healthSystem != null)  
@@ -449,6 +486,8 @@ public class PlayerCombat : MonoBehaviour
     {
         throw new NotImplementedException();
     }
+
+
 }
 
 

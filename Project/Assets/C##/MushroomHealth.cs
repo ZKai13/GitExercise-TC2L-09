@@ -5,7 +5,7 @@ using UnityEngine;
 public class MushroomHealth : MonoBehaviour  
 {  
     public int maxHealth = 100; // Maximum health of the mushroom  
-    private int currentHealth; // Current health of the mushroom  
+    public int currentHealth; // Current health of the mushroom  
 
     void Start()  
     {  
@@ -29,6 +29,6 @@ public class MushroomHealth : MonoBehaviour
     {  
         Debug.Log("Mushroom died.");  
         // Add death logic here (e.g., play death animation, destroy object)  
-        Destroy(gameObject); // Destroy the mushroom object  
+       // Destroy(gameObject); // Destroy the mushroom object  
     }  
 }

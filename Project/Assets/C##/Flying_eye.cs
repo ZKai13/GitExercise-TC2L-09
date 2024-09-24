@@ -106,7 +106,7 @@ public class FlyingEye : MonoBehaviour
         bool playerInLightAttackRange = distanceToPlayer <= lightAttackRange;  
         bool playerInHeavyAttackRange = distanceToPlayer <= heavyAttackRange;  
 
-        Debug.Log($"Distance: {distanceToPlayer}, Light Range: {playerInLightAttackRange}, Heavy Range: {playerInHeavyAttackRange}, Can Light: {canLightAttack}, Can Heavy: {canHeavyAttack}");  
+        //Debug.Log($"Distance: {distanceToPlayer}, Light Range: {playerInLightAttackRange}, Heavy Range: {playerInHeavyAttackRange}, Can Light: {canLightAttack}, Can Heavy: {canHeavyAttack}");  
         // 如果玩家在重攻击范围内且可以执行重攻击,则执行重攻击  
         
         if (playerInHeavyAttackRange && canHeavyAttack && !isPerformingHeavyAttack)  
@@ -220,16 +220,17 @@ public class FlyingEye : MonoBehaviour
 
     public void TakeDamage(int amount)  
     {  
-        health -= amount;  
+        health -= amount;
         if (health <= 0)  
-        {  
+        {
             Die();  
-        }  
+        }
+         
         else  
         {  
-            animator.SetTrigger(HurtHash);  
+            animator.SetTrigger(HurtHash);
         }  
-    }  
+    }
 
     private void Die()  
     {  
