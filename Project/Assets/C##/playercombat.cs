@@ -212,17 +212,41 @@ public class PlayerCombat : MonoBehaviour
                     mushroom.Takedamage(lightAttackDamage, false);  
                     Debug.Log("Attacked a Mushroom with light damage!");  
                 }  
-                else  
+                else 
                 {  
                     Enemy enemyScript = target.GetComponent<Enemy>();  
                     if (enemyScript != null)  
                     {  
-                        enemyScript.Takedamage(lightAttackDamage, false);  
-                        Debug.Log("Attacked an Enemy with light damage!");  
+                    enemyScript.Takedamage(lightAttackDamage, false);  
+                    Debug.Log("Attacked an Enemy with light damage!");  
                     }  
-                }  
-            }  
+                    else  
+                    {  
+                        FlyingEye flyingeye = target.GetComponent<FlyingEye>();  
+                        if (flyingeye != null)  
+                        {  
+                        flyingeye.Takedamage(lightAttackDamage, false);  
+                        Debug.Log("Attacked an Eye with light damage!");  
+                        }  
+                    }  
+}
+
+                
+            } 
         }   
+
+        RaycastHit2D hit = Physics2D.Raycast(attackPoint.position, transform.right, attackRange, enemyLayers);  
+        if (hit.collider != null)  
+        {  
+            EvilWizardBoss bossScript = hit.collider.GetComponent<EvilWizardBoss>();  
+            if (bossScript != null)  
+            {  
+                // Apply damage reduction factor  
+                float reducedDamage = lightAttackDamage * bossScript.bossDamageReductionFactor;  
+                bossScript.Takedamage((int)reducedDamage);  
+                hit.rigidbody.AddForce((hit.transform.position - transform.position).normalized * lightAttackPushForce, ForceMode2D.Impulse);  
+            }  
+        } 
     } 
 
 private void NewHeavyAttack()  
@@ -278,7 +302,20 @@ private void NewHeavyAttack()
             enemyScript.Takedamage(heavyAttackDamage, false);  
             Debug.Log("Attacked an Enemy with heavy damage!");  
         }  
-    }   
+    }
+
+     RaycastHit2D hit = Physics2D.Raycast(attackPoint.position, transform.right, attackRange, enemyLayers);  
+        if (hit.collider != null)  
+        {  
+            EvilWizardBoss bossScript = hit.collider.GetComponent<EvilWizardBoss>();  
+            if (bossScript != null)  
+            {  
+                // Apply damage reduction factor  
+                float reducedDamage = heavyAttackDamage * bossScript.bossDamageReductionFactor;  
+                bossScript.Takedamage((int)reducedDamage);  
+                hit.rigidbody.AddForce((hit.transform.position - transform.position).normalized * heavyAttackPushForce, ForceMode2D.Impulse);  
+            }  
+        }   
 }
     public void Takedamage(int damage, bool someFlag)  
     {  

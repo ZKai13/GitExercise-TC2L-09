@@ -7,22 +7,23 @@ public class Flying_Eye_Health : MonoBehaviour
 
     private void Start()  
     {  
-        currentHealth = maxHealth;  
+        currentHealth = maxHealth; 
     }  
 
-    public void TakeDamage(float amount)  
+    public void TakeDamage(int damage)  
     {  
-        currentHealth -= amount;  
+        currentHealth -= damage; // Reduce current health by damage amount  
+        Debug.Log($"Mushroom took {damage} damage. Current health: {currentHealth}");  
+
         if (currentHealth <= 0)  
         {  
-            Die();  
+            Die(); // Call die method if health is zero or below  
         }  
-    }  
+    } 
 
     private void Die()  
     {  
-        // Implement the death logic for the Flying Eye  
-        Destroy(gameObject);  
+        //Destroy(gameObject);  
     }  
 
     public float GetHealthPercentage()  

@@ -33,7 +33,8 @@ public class FlyingEye : MonoBehaviour
     public float heavyAttackRange = 8f;  
     public float heavyAttackDashSpeed = 10f;  
     private bool isPerformingHeavyAttack = false;  
-    private Flying_Eye_Health healthComponent;  
+    private Flying_Eye_Health healthComponent; 
+     
 
     private static readonly int IdleHash = Animator.StringToHash("Idle");  
     private static readonly int LightAttackHash = Animator.StringToHash("LightAttack");  
@@ -220,25 +221,54 @@ public class FlyingEye : MonoBehaviour
         animator.SetTrigger(IdleHash);  
     }  
 
-    public void TakeDamage(int amount)  
+    public void Takedamage(int damage, bool isBlocking)  
     {  
-        health -= amount;
-        if (health <= 0)  
-        {
-            Die();  
-        }
-         
+        Debug.Log($"Takedamage called with damage: {damage}, isBlocking: {isBlocking}");  
+
+        if (health <= 0) return;  
+
+        if (isBlocking)  
+        {  
+            Debug.Log("Enemy is stunned due to block.");   
+        }  
         else  
         {  
-            animator.SetTrigger(HurtHash);
+            if (healthComponent == null)  
+            {  
+                Debug.LogError("healthComponent is null at the time of taking damage.");  
+                return;  
+            }  
+
+            health -= damage;  
+            healthComponent.TakeDamage(damage);  
+
+            if (health <= 0)  
+            {  
+                Die();  
+            }  
+            else  
+            {  
+                animator.SetTrigger(HurtHash);  
+            }  
         }  
     }
 
+
     private void Die()  
     {  
-        animator.SetTrigger(DieHash);  
         GetComponent<Collider2D>().enabled = false;  
-        this.enabled = false;  
+        StartCoroutine(TriggerDeathAnimation());  
+    }
+
+    IEnumerator TriggerDeathAnimation()
+    {
+        yield return new WaitForEndOfFrame();
+        animator.SetTrigger(DieHash);
+        
+
+        yield return new WaitForSeconds(2f);
+        this.enabled = false;
+        Destroy(gameObject);
     }  
 
 private void ApplyDamage(int damage)  
@@ -267,6 +297,7 @@ private void ApplyDamage(int damage)
         canHeavyAttack = true;  
     }  
 }  
+
 
 public struct AttackData  
 {  
