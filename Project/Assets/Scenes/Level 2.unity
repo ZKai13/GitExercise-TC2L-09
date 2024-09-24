@@ -77412,8 +77412,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 540, y: -145}
-  m_SizeDelta: {x: 250, y: 104.1667}
+  m_AnchoredPosition: {x: 540, y: -169}
+  m_SizeDelta: {x: 208.466, y: 69.841}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &756743399
 GameObject:
@@ -77857,17 +77857,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 588e4dbad0678bb4d82f440faca43b3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intoTheDungeonSprite: {fileID: 21300000, guid: 61757751f1341cc41b989b76d57c53c1, type: 3}
-  firstTreasureSprite: {fileID: 21300000, guid: 650b82827a2f69343996aaa619801562, type: 3}
-  missingCoinSprite: {fileID: 21300000, guid: e4c83a664e0579642ae8ce3ea7eea8b5, type: 3}
-  goblinSprite: {fileID: 21300000, guid: c38f9c3bc515eec48a1a6838ab096a75, type: 3}
-  heroKnightSprite: {fileID: 21300000, guid: f2920ab233fcff942819c1f580c13380, type: 3}
-  campfireSprite: {fileID: 21300000, guid: 9bdc9c12a0dfe3f40918933e662f1287, type: 3}
+  intoTheDungeonSprite: {fileID: 21300000, guid: 89e49ddd7809e144c89da5be3fa408b6, type: 3}
+  firstTreasureSprite: {fileID: 21300000, guid: 96855e20b254d5f4d988f31d6d2fb803, type: 3}
+  missingCoinSprite: {fileID: 21300000, guid: 95ff54f1112953c44b41ef27a68b571b, type: 3}
+  goblinSprite: {fileID: 21300000, guid: fa17f71390694a94a9f80ccd2670179e, type: 3}
+  heroKnightSprite: {fileID: 21300000, guid: 6ed0150864cd5604aa9bcedd897e4b06, type: 3}
+  campfireSprite: {fileID: 21300000, guid: 248f4d139addca242a1cd9e5c249a161, type: 3}
   achievementsCanvasGroup: {fileID: 825073772}
   achievementsPanelRect: {fileID: 1903795901}
   achievementsTweenDuration: 0.5
   autoHideDelay: 4
-  middlePosX: -300
+  middlePosX: -250
   leftPosX: 0
   achievementImage: {fileID: 745514701}
 --- !u!225 &825073772
