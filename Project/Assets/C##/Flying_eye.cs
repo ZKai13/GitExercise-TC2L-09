@@ -277,7 +277,7 @@ private void ApplyDamage(int damage)
     {  
         player.GetComponent<PlayerCombat>().ReceiveAttack(this, damage, damage == heavyAttackDamage);  
         GetComponent<Flying_Eye_Health>().TakeDamage(damage);  
-        Debug.Log($"Applied {damage} damage to player and Flying Eye");  
+        Debug.Log($"Applied {damage} damage to player and Flying Eye");
     }  
 }
 
