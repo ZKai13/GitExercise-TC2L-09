@@ -289,7 +289,7 @@ private void NewHeavyAttack()
             FlyingEye flyingEye = target.GetComponent<FlyingEye>();  
             if (flyingEye != null)  
             {  
-                //flyingEye.TakeDamage(heavyAttackDamage); // Only pass damage as an argument  
+                flyingEye.Takedamage(heavyAttackDamage); // Only pass damage as an argument  
                 Debug.Log("Attacked a FlyingEye with heavy damage!");  
             }  
         }       
