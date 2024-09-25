@@ -15,12 +15,13 @@ public class Evil_wizard_fly : MonoBehaviour
 
     private void Start()
     {
+        // 获取所需的引用  
         bossScript = GetComponent<EvilWizardBoss>();
         rb2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         player = bossScript.player;
 
-        // Ensure the Rigidbody2D is not kinematic and gravity is enabled
+        // 确保刚体不是运动学的,并启用重力  
         if (rb2D != null)
         {
             rb2D.isKinematic = false;
@@ -30,6 +31,7 @@ public class Evil_wizard_fly : MonoBehaviour
 
     public void TryStartFlying()
     {
+        // 在Boss血量低于一半时尝试开始飞行  
         if (bossScript.currentHealth < bossScript.maxHealth / 2 && !isFlying)
         {
             Debug.Log("Boss health below half, trying to start flying");
@@ -43,32 +45,35 @@ public class Evil_wizard_fly : MonoBehaviour
 
     public void StopFlying()
     {
+         // 停止飞行  
         if (isFlying)
         {
             StopCoroutine(FlyAroundPlayer());
             isFlying = false;
-            // Re-enable gravity when stopping flight
+            // 重新启用重力
             rb2D.gravityScale = 1f;
         }
     }
 
     private void StartFlying()
     {
+        // 开始执行飞行协程 
         StartCoroutine(FlyAroundPlayer());
     }
 
     private IEnumerator FlyAroundPlayer()
     {
+        // 禁用跳跃和下落动画  
         isFlying = true;
 
         // Disable jumping and falling animations
         animator.SetBool("IsJumping", false);
         animator.SetBool("IsFalling", false);
 
-        // Disable gravity while flying
+        // 飞行时禁用重力  
         rb2D.gravityScale = 0f;
 
-        // Fly up to the specified height
+        // 飞升到指定高度
         float startY = transform.position.y;
         float targetY = startY + flyingHeight;
         while (transform.position.y < targetY)
@@ -81,7 +86,7 @@ public class Evil_wizard_fly : MonoBehaviour
 
         Debug.Log("Reached target height, starting circular movement");
 
-        // Fly around the player in a circular pattern
+        // 围绕玩家进行环形飞行 
         float angle = 0f;
         while (isFlying)
         {
@@ -94,7 +99,7 @@ public class Evil_wizard_fly : MonoBehaviour
             angle += 45f * Time.deltaTime;
             yield return null;
 
-            // Check if the boss's health is above or equal to half and stop flying
+            // 检查Boss的血量是否恢复到一半及以上,如果是则停止飞行 
             if (bossScript.currentHealth >= bossScript.maxHealth / 2)
             {
                 StopFlying();
@@ -102,7 +107,7 @@ public class Evil_wizard_fly : MonoBehaviour
             }
         }
 
-        // Land back on the ground
+        // 降落回地面 
         while (transform.position.y > startY)
         {
             Vector2 newPosition = new Vector2(transform.position.x, transform.position.y - flyingSpeed * Time.deltaTime);
@@ -110,7 +115,7 @@ public class Evil_wizard_fly : MonoBehaviour
             yield return null;
         }
 
-        // Re-enable gravity
+        // 重新启用重力
         rb2D.gravityScale = 1f;
 
         transform.position = new Vector3(transform.position.x, startY, transform.position.z);

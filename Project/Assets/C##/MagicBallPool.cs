@@ -1,101 +1,37 @@
-// using System.Collections.Generic;  
-// using UnityEngine;  
-
-// public class MagicBallPool : MonoBehaviour  
-// {  
-//     // Public variable to assign magic ball prefab from the Inspector  
-//     public GameObject magicBallPrefab;  
-
-//     // List to keep track of available magic balls  
-//     private List<GameObject> availableBalls = new List<GameObject>();  
-
-//     // List to keep track of active magic balls  
-//     private List<GameObject> activeBalls = new List<GameObject>();  
-
-//     // Method to get an available magic ball from the pool  
-//     public GameObject GetAvailableMagicBall()  
-//     {  
-//         // If there are available balls, return one  
-//         if (availableBalls.Count > 0)  
-//         {  
-//             GameObject ball = availableBalls[0];  
-//             availableBalls.RemoveAt(0);  
-//             activeBalls.Add(ball);  
-//             ball.SetActive(true); // Ensure the ball is active  
-//             return ball;  
-//         }  
-
-//         // If no available balls, create a new one  
-//         return SpawnMagicBall(Vector2.zero, Vector2.zero); // Default position and velocity  
-//     }  
-
-//     // Method to spawn a magic ball at specified position and velocity  
-//     public GameObject SpawnMagicBall(Vector2 position, Vector2 velocity)  
-//     {  
-//         GameObject ball = Instantiate(magicBallPrefab, position, Quaternion.identity);  
-//         Rigidbody2D rb = ball.GetComponent<Rigidbody2D>();  
-//         if (rb != null)  
-//         {  
-//             rb.velocity = velocity; // Set initial velocity  
-//         }  
-        
-//         // Add to active list  
-//         activeBalls.Add(ball);  
-//         return ball;  
-//     }  
-
-//     // Method to return a magic ball to the pool  
-//     public void ReturnMagicBall(GameObject ball)  
-//     {  
-//         // Disable the ball and remove from active list  
-//         ball.SetActive(false);  
-//         activeBalls.Remove(ball);  
-//         availableBalls.Add(ball); // Add to available pool  
-//     }  
-
-//     // Method to resize the pool  
-//     public void ResizePool(int count)  
-//     {  
-//         for (int i = 0; i < count; i++)  
-//         {  
-//             GameObject newBall = Instantiate(magicBallPrefab);  
-//             newBall.SetActive(false); // Disable immediately  
-//             availableBalls.Add(newBall); // Add to available ball list  
-//         }  
-//     }  
-// }
 using System.Collections.Generic;  
 using UnityEngine;  
 
 public class MagicBallPool : MonoBehaviour  
 {  
-    public GameObject magicBallPrefab; // The prefab to pool  
-    public int poolSize = 10; // Number of magic balls to create in the pool  
 
-    private Queue<GameObject> magicBallPool = new Queue<GameObject>();  
+    public GameObject magicBallPrefab; // 魔法球预制体 
+    public int poolSize = 10; // 对象池的大小   
+
+    private Queue<GameObject> magicBallPool = new Queue<GameObject>();  // 用于存储和管理魔法球的队列  
 
     private void Start()  
     {  
-        // Initialize the pool  
+        // 初始化对象池   
         for (int i = 0; i < poolSize; i++)  
         {  
             GameObject magicBall = Instantiate(magicBallPrefab);  
-            magicBall.SetActive(false); // Deactivate the magic ball  
-            magicBallPool.Enqueue(magicBall); // Add to the pool  
+            magicBall.SetActive(false); // 将魔法球设为不活跃状态    
+            magicBallPool.Enqueue(magicBall);  // 将魔法球添加到对象池   
         }  
     }  
 
     public GameObject GetMagicBall()  
     {  
+        // 从对象池中获取一个可用的魔法球  
         if (magicBallPool.Count > 0)  
         {  
-            GameObject magicBall = magicBallPool.Dequeue(); // Get a magic ball from the pool  
-            magicBall.SetActive(true); // Activate the magic ball  
+            GameObject magicBall = magicBallPool.Dequeue(); // 从队列中取出一个魔法球 
+            magicBall.SetActive(true); // 激活该魔法球   
             return magicBall;  
         }  
         else  
         {  
-            // Optionally, instantiate a new magic ball if the pool is empty  
+            // 如果对象池为空,则实例化一个新的魔法球 
             GameObject magicBall = Instantiate(magicBallPrefab);  
             return magicBall;  
         }  
@@ -103,7 +39,8 @@ public class MagicBallPool : MonoBehaviour
 
     public void ReturnMagicBall(GameObject magicBall)  
     {  
-        magicBall.SetActive(false); // Deactivate the magic ball  
-        magicBallPool.Enqueue(magicBall); // Return it to the pool  
+        // 将使用完的魔法球返回到对象池 
+        magicBall.SetActive(false); // 将魔法球设为不活跃状态 
+        magicBallPool.Enqueue(magicBall); // 将魔法球添加到队列尾部  
     }  
 }
