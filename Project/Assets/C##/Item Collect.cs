@@ -42,8 +42,8 @@ public class ItemCollect : MonoBehaviour
     {  
        if (!PlayerPrefs.HasKey("TheMissingCoin"))
         {
-            PlayerPrefs.SetInt("TheMissingCoin", 3); // Achievement unlocked
-            PlayerPrefs.Save(); // Ensure changes are saved
+            PlayerPrefs.SetInt("TheMissingCoin", 3); 
+            PlayerPrefs.Save(); 
             Debug.Log("Achievement Unlocked: The Missing Coin");
             popUp.DisplayAchievement(popUp.missingCoinSprite);
         }

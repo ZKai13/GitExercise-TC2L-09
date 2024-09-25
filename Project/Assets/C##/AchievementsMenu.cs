@@ -60,7 +60,7 @@ public class AchievementsMenu : MonoBehaviour
             ahYesButton.gameObject.SetActive(true);
         }
 
-        if (PlayerPrefs.GetInt("HeroKnight", 0) == 1)
+        if (PlayerPrefs.GetInt("UnlockedLevel", 1) == 6)
         {
             heroKnightButton.gameObject.SetActive(true);
         }

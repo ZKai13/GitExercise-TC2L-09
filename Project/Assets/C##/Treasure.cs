@@ -62,7 +62,7 @@ public class Treasure : MonoBehaviour
             PlayerPrefs.SetInt("FirstTreasure", 1); // Achievement unlocked
             PlayerPrefs.Save(); // Ensure changes are saved
             Debug.Log("Achievement Unlocked: First Treasure");
-            popUp.DisplayAchievement(popUp.intoTheDungeonSprite);
+            popUp.DisplayAchievement(popUp.firstTreasureSprite);
         }
         
     }  
