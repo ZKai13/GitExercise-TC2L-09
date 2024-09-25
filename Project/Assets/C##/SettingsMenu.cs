@@ -54,7 +54,7 @@ public class SettingsMenu : MonoBehaviour
     {
         settingsMenu.SetActive(true);
         audioManager.PlaySFX(audioManager.buttonClick);
-        Time.timeScale = 0;
+        Time.timeScale = 1;
         ChangeLayerOrder();
         SettingsPanelIntro();
     }
