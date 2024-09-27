@@ -35,6 +35,7 @@ public class FlyingEye : MonoBehaviour
     public float heavyAttackDashSpeed = 10f;  
     private bool isPerformingHeavyAttack = false;  
     private Flying_Eye_Health healthComponent; 
+    public float chaseDistance = 10f;
      
 
     private static readonly int IdleHash = Animator.StringToHash("Idle");  
@@ -95,44 +96,48 @@ public class FlyingEye : MonoBehaviour
     }  
     
 
-private void Update()  
-{  
-    if (health <= 0) return;  
-
-    if (player == null)  
+    private void Update()  
     {  
-        Debug.LogWarning("Player reference is null!");  
-        return;  
-    }  
+        if (health <= 0) return;  
 
-    Vector2 directionToPlayer = player.position - transform.position;  
-    float distanceToPlayer = directionToPlayer.magnitude;  
-
-    bool playerInLightAttackRange = distanceToPlayer <= lightAttackRange;  
-    bool playerInHeavyAttackRange = distanceToPlayer <= heavyAttackRange;  
-
-    // Always move towards the player  
-    MoveTowardsPlayer();  
-
-    if (Time.time >= nextAttackTime)  
-    {  
-        if (playerInHeavyAttackRange && canHeavyAttack)  
+        if (player == null)  
         {  
-            Debug.Log("Initiating Heavy Attack");  
-            nextAttackTime = Time.time + heavyAttackCooldown; // Set the next available attack time  
-            StartCoroutine(PerformHeavyAttackSequence());  
+            Debug.LogWarning("Player reference is null!");  
+            return;  
         }  
-        else if (playerInLightAttackRange && canLightAttack)  
-        {  
-            Debug.Log("Performing Light Attack");  
-            nextAttackTime = Time.time + lightAttackCooldown; // Set the next available attack time  
-            PerformLightAttack();  
-        }  
-    }  
 
-    FacePlayer();  
-    RotateBody();  
-}  
+        Vector2 directionToPlayer = player.position - transform.position;  
+        float distanceToPlayer = directionToPlayer.magnitude;  
+
+        bool playerInLightAttackRange = distanceToPlayer <= lightAttackRange;  
+        bool playerInHeavyAttackRange = distanceToPlayer <= heavyAttackRange;  
+
+        // Check if the player is within chase distance  
+        if (distanceToPlayer <= chaseDistance)  
+        {  
+            // Always move towards the player  
+            MoveTowardsPlayer();  
+
+            if (Time.time >= nextAttackTime)  
+            {  
+                if (playerInHeavyAttackRange && canHeavyAttack)  
+                {  
+                    Debug.Log("Initiating Heavy Attack");  
+                    nextAttackTime = Time.time + heavyAttackCooldown; // Set the next available attack time  
+                    StartCoroutine(PerformHeavyAttackSequence());  
+                }  
+                else if (playerInLightAttackRange && canLightAttack)  
+                {  
+                    Debug.Log("Performing Light Attack");  
+                    nextAttackTime = Time.time + lightAttackCooldown; // Set the next available attack time  
+                    PerformLightAttack();  
+                }  
+            }  
+        }  
+
+        FacePlayer();  
+        RotateBody();  
+    } 
 
 private void MoveTowardsPlayer()  
 {  

@@ -5744,7 +5744,7 @@ Transform:
   m_GameObject: {fileID: 831939871}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -37.53, y: -6.5, z: 0}
+  m_LocalPosition: {x: 141.47, y: -4.39, z: 0}
   m_LocalScale: {x: 1.3879579, y: 1.4267521, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8352,6 +8352,7 @@ MonoBehaviour:
   magicBallPrefab: {fileID: 2023709977}
   magicBallSpeed: 5
   magicBallDamage: 2
+  chaseDistance: 40
   laserBeam1: {fileID: 239295742}
   laserBeam2: {fileID: 648083905}
   laserBeam3: {fileID: 1961597706}

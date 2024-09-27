@@ -57,6 +57,7 @@ public class EvilWizardBoss : MonoBehaviour
     public GameObject magicBallPrefab; // Reference to the MagicBall prefab  
     public float magicBallSpeed = 5f; 
     public int magicBallDamage = 2;  
+    public float chaseDistance = 10f;
     [SerializeField] private GameObject laserBeam1;  
     [SerializeField] private GameObject laserBeam2;  
     [SerializeField] private GameObject laserBeam3;
@@ -224,25 +225,36 @@ public class EvilWizardBoss : MonoBehaviour
         if (player != null)  
         {  
             float distanceToPlayer = player.position.x - transform.position.x;  
-            float moveDirection = Mathf.Sign(distanceToPlayer);  
 
-            if (Mathf.Abs(distanceToPlayer) > attackRange)  
+            // Check if the player is within chase distance  
+            if (Mathf.Abs(distanceToPlayer) < chaseDistance)  
             {  
-                rb2D.velocity = new Vector2(moveDirection * walkSpeed, rb2D.velocity.y);  
-                animator.SetTrigger("Walk");  
+                float moveDirection = Mathf.Sign(distanceToPlayer);  
+
+                if (Mathf.Abs(distanceToPlayer) > attackRange)  
+                {  
+                    rb2D.velocity = new Vector2(moveDirection * walkSpeed, rb2D.velocity.y);  
+                    animator.SetTrigger("Walk");  
+                }  
+                else  
+                {  
+                    rb2D.velocity = new Vector2(0, rb2D.velocity.y);  
+                    animator.SetFloat("Speed", 0);  
+                }  
+
+                if ((moveDirection > 0 && !facingRight) || (moveDirection < 0 && facingRight))  
+                {  
+                    Flip();  
+                }  
             }  
             else  
             {  
+                // Stop moving if the player is out of chase distance  
                 rb2D.velocity = new Vector2(0, rb2D.velocity.y);  
-                animator.SetFloat("Speed", 0);
-            }  
-
-            if ((moveDirection > 0 && !facingRight) || (moveDirection < 0 && facingRight))  
-            {  
-                Flip();  
+                animator.SetFloat("Speed", 0);  
             }  
         }  
-    }  
+    }
 
     private void Flip()  
     {  
