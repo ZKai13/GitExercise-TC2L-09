@@ -6,9 +6,10 @@ public class FlyingEye : MonoBehaviour
     public float health = 100f;  
     public float lightAttackCooldown = 2f;  
     public float heavyAttackCooldown = 7f;  
-    public float lightAttackChance = 0.7f;  
+    public float lightAttackChance = 100f;  
     public float moveSpeed = 3f;  
-
+    private float attackCooldown = 1f; // Cooldown period in seconds  
+    private float nextAttackTime = 0f;  
     public int lightAttackDamage = 10;  
     public int heavyAttackDamage = 25;  
 
@@ -92,53 +93,55 @@ public class FlyingEye : MonoBehaviour
         isPerformingHeavyAttack = false;  
         StartCoroutine(HeavyAttackCooldown());  
     }  
+    
 
-    private void Update()  
+private void Update()  
+{  
+    if (health <= 0) return;  
+
+    if (player == null)  
     {  
-        if (health <= 0) return;  
+        Debug.LogWarning("Player reference is null!");  
+        return;  
+    }  
 
-        if (player == null)  
-        {  
-            Debug.LogWarning("Player reference is null!");  
-            return;  
-        }  
+    Vector2 directionToPlayer = player.position - transform.position;  
+    float distanceToPlayer = directionToPlayer.magnitude;  
 
-        Vector2 directionToPlayer = player.position - transform.position;  
-        float distanceToPlayer = directionToPlayer.magnitude;  
-        // 检查玩家是否在普通攻击和重攻击范围内
-        bool playerInLightAttackRange = distanceToPlayer <= lightAttackRange;  
-        bool playerInHeavyAttackRange = distanceToPlayer <= heavyAttackRange;  
+    bool playerInLightAttackRange = distanceToPlayer <= lightAttackRange;  
+    bool playerInHeavyAttackRange = distanceToPlayer <= heavyAttackRange;  
 
-        //Debug.Log($"Distance: {distanceToPlayer}, Light Range: {playerInLightAttackRange}, Heavy Range: {playerInHeavyAttackRange}, Can Light: {canLightAttack}, Can Heavy: {canHeavyAttack}");  
-        // 如果玩家在重攻击范围内且可以执行重攻击,则执行重攻击  
-        
-        if (playerInHeavyAttackRange && canHeavyAttack && !isPerformingHeavyAttack)  
+    // Always move towards the player  
+    MoveTowardsPlayer();  
+
+    if (Time.time >= nextAttackTime)  
+    {  
+        if (playerInHeavyAttackRange && canHeavyAttack)  
         {  
             Debug.Log("Initiating Heavy Attack");  
+            nextAttackTime = Time.time + heavyAttackCooldown; // Set the next available attack time  
             StartCoroutine(PerformHeavyAttackSequence());  
         }  
         else if (playerInLightAttackRange && canLightAttack)  
         {  
             Debug.Log("Performing Light Attack");  
+            nextAttackTime = Time.time + lightAttackCooldown; // Set the next available attack time  
             PerformLightAttack();  
         }  
-        else if (!isPerformingHeavyAttack)  
-        {  
-            MoveTowardsPlayer();  
-            PlayIdle();  
-        }  
-
-        FacePlayer();  
-        RotateBody();  
     }  
 
-    private void MoveTowardsPlayer()  
-    {  
-        if (isPerformingHeavyAttack) return;  
+    FacePlayer();  
+    RotateBody();  
+}  
 
-        Vector2 direction = (player.position - transform.position).normalized;  
-        rb.MovePosition(rb.position + direction * moveSpeed * Time.fixedDeltaTime);  
-    }  
+private void MoveTowardsPlayer()  
+{  
+    if (health <= 0) return;  // Ensure no movement when dead.  
+    
+    // Calculate the direction to the player and stop if already close enough  
+    Vector2 direction = (player.position - transform.position).normalized;  
+    rb.MovePosition(rb.position + direction * moveSpeed * Time.fixedDeltaTime);  
+}
 
     private void FacePlayer()  
     {  
@@ -191,19 +194,29 @@ public class FlyingEye : MonoBehaviour
         StartCoroutine(ActivateAttackCollider(heavyAttackCollider, 1f)); // Activate for 1 second  
     }  
 
+    private bool hasDamagedPlayer = false;  
     private IEnumerator ActivateAttackCollider(Collider2D attackCollider, float duration)  
     {  
         attackCollider.enabled = true;  
+        hasDamagedPlayer = false; // Reset damage flag  
+
+        // Only activate collider for a short amount of time  
         yield return new WaitForSeconds(duration);  
-        attackCollider.enabled = false;  
 
-        // Apply damage if player is still in range  
-        if (attackCollider.IsTouching(player.GetComponent<Collider2D>()))  
+        // Apply damage if player is in range when collider is enabled  
+        Collider2D[] hitColliders = Physics2D.OverlapBoxAll(attackCollider.bounds.center, attackCollider.bounds.size, 0f);  
+        foreach (var hitCollider in hitColliders)  
         {  
-            ApplyDamage(attackCollider == lightAttackCollider ? lightAttackDamage : heavyAttackDamage);  
+            if (hitCollider.CompareTag("Player") && !hasDamagedPlayer)  
+            {  
+                ApplyDamage(attackCollider == lightAttackCollider ? lightAttackDamage : heavyAttackDamage);  
+                hasDamagedPlayer = true; // Mark as damaged to prevent repeat damage  
+                break;  
+            }  
         }  
-    }  
 
+        attackCollider.enabled = false; // Deactivate collider after checking  
+    }    
     private IEnumerator LightAttackCooldown()  
     {  
         yield return new WaitForSeconds(lightAttackCooldown);  
@@ -271,15 +284,13 @@ public class FlyingEye : MonoBehaviour
         Destroy(gameObject);
     }  
 
-private void ApplyDamage(int damage)  
-{  
-    if (player != null && player.GetComponent<Collider2D>().IsTouching(GetComponent<Collider2D>()))  
+    private void ApplyDamage(int damage)  
     {  
-        player.GetComponent<PlayerCombat>().ReceiveAttack(this, damage, damage == heavyAttackDamage);  
-        GetComponent<Flying_Eye_Health>().TakeDamage(damage);  
-        Debug.Log($"Applied {damage} damage to player and Flying Eye");
+        if (player != null)  
+        {  
+            player.GetComponent<PlayerCombat>().ReceiveAttack(this, damage, damage == heavyAttackDamage);  
+        }  
     }  
-}
 
     public void GetStunned(float duration)  
     {  
@@ -295,7 +306,25 @@ private void ApplyDamage(int damage)
 
         canLightAttack = true;  
         canHeavyAttack = true;  
+    } 
+    private void EnableAttackCollider()  
+    {  
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("LightAttack"))  
+        {  
+            StartCoroutine(ActivateAttackCollider(lightAttackCollider, 0.5f)); // Adjust duration as needed  
+        }  
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("HeavyAttack"))  
+        {  
+            StartCoroutine(ActivateAttackCollider(heavyAttackCollider, 0.5f)); // Adjust duration as needed  
+        }  
     }  
+
+    private void DisableAttackCollider()  
+    {  
+        lightAttackCollider.enabled = false;  
+        heavyAttackCollider.enabled = false;  
+    }  
+
 }  
 
 

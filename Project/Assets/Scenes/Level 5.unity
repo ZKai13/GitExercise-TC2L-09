@@ -2518,7 +2518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8ed8777c3d63749ad22bc71a9a1cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 50
+  damageAmount: 20
 --- !u!212 &239295746
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4510,7 +4510,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8ed8777c3d63749ad22bc71a9a1cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 50
+  damageAmount: 20
 --- !u!212 &648083909
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6192,7 +6192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8ed8777c3d63749ad22bc71a9a1cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 50
+  damageAmount: 20
 --- !u!212 &852006232
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -36151,7 +36151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8ed8777c3d63749ad22bc71a9a1cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 50
+  damageAmount: 20
 --- !u!212 &1961597710
 SpriteRenderer:
   m_ObjectHideFlags: 0
