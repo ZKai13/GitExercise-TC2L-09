@@ -355,7 +355,7 @@ MonoBehaviour:
   playerCombat: {fileID: 0}
   playerHealth: {fileID: 0}
   cooldownTime: 3
-  heavyAttackDamage: 20
+  heavyAttackDamage: 15
   normalAttackDamage: 10
   normalAttackRange: 1.5
   heavyAttackRange: 3.5
@@ -2518,7 +2518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8ed8777c3d63749ad22bc71a9a1cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 20
+  damageAmount: 10
 --- !u!212 &239295746
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3331,7 +3331,7 @@ MonoBehaviour:
   lightAttackChance: 1
   moveSpeed: 3
   lightAttackDamage: 10
-  heavyAttackDamage: 25
+  heavyAttackDamage: 15
   rotationSpeed: 100
   rotationChangeInterval: 2
   maxRotationAngle: 10
@@ -3340,6 +3340,7 @@ MonoBehaviour:
   lightAttackRange: 2
   heavyAttackRange: 6
   heavyAttackDashSpeed: 8
+  chaseDistance: 10
 --- !u!95 &401685351
 Animator:
   serializedVersion: 5
@@ -4724,7 +4725,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8ed8777c3d63749ad22bc71a9a1cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 20
+  damageAmount: 10
 --- !u!212 &648083909
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5744,7 +5745,7 @@ Transform:
   m_GameObject: {fileID: 831939871}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 141.47, y: -4.39, z: 0}
+  m_LocalPosition: {x: -38.73, y: -6.4, z: 0}
   m_LocalScale: {x: 1.3879579, y: 1.4267521, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6473,7 +6474,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8ed8777c3d63749ad22bc71a9a1cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 20
+  damageAmount: 10
 --- !u!212 &852006232
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7327,7 +7328,7 @@ MonoBehaviour:
   playerCombat: {fileID: 0}
   playerHealth: {fileID: 0}
   cooldownTime: 3
-  heavyAttackDamage: 20
+  heavyAttackDamage: 15
   normalAttackDamage: 10
   normalAttackRange: 1.5
   heavyAttackRange: 3.5
@@ -36501,7 +36502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8ed8777c3d63749ad22bc71a9a1cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 20
+  damageAmount: 10
 --- !u!212 &1961597710
 SpriteRenderer:
   m_ObjectHideFlags: 0
