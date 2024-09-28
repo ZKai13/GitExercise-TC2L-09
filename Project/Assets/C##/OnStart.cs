@@ -14,7 +14,7 @@ public class OnStart : MonoBehaviour
         if (PlayerPrefs.GetInt("UnlockedLevel", 1) == 2 && popUp != null)
             {
                 Debug.Log("Achievement Unlocked: Into The Dungeon");
-                popUp.DisplayAchievement(popUp.firstTreasureSprite);
+                popUp.DisplayAchievement(popUp.intoTheDungeonSprite);
             }
         else if (PlayerPrefs.GetInt("UnlockedLevel", 1) == 6 && popUp != null)
             {
