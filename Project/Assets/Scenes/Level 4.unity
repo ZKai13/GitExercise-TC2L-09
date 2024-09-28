@@ -1202,7 +1202,7 @@ MonoBehaviour:
   lightAttackChance: 1
   moveSpeed: 3
   lightAttackDamage: 10
-  heavyAttackDamage: 25
+  heavyAttackDamage: 15
   rotationSpeed: 100
   rotationChangeInterval: 2
   maxRotationAngle: 10
@@ -1211,6 +1211,7 @@ MonoBehaviour:
   lightAttackRange: 2
   heavyAttackRange: 6
   heavyAttackDashSpeed: 8
+  chaseDistance: 10
 --- !u!95 &186821005
 Animator:
   serializedVersion: 5
@@ -39186,7 +39187,7 @@ MonoBehaviour:
   lightAttackChance: 1
   moveSpeed: 3
   lightAttackDamage: 10
-  heavyAttackDamage: 25
+  heavyAttackDamage: 15
   rotationSpeed: 100
   rotationChangeInterval: 2
   maxRotationAngle: 10
@@ -39195,6 +39196,7 @@ MonoBehaviour:
   lightAttackRange: 2
   heavyAttackRange: 6
   heavyAttackDashSpeed: 8
+  chaseDistance: 10
 --- !u!95 &713146575
 Animator:
   serializedVersion: 5
@@ -43459,7 +43461,7 @@ MonoBehaviour:
   playerCombat: {fileID: 0}
   playerHealth: {fileID: 0}
   cooldownTime: 3
-  heavyAttackDamage: 20
+  heavyAttackDamage: 15
   normalAttackDamage: 10
   normalAttackRange: 1.5
   heavyAttackRange: 3.5
@@ -46025,7 +46027,7 @@ MonoBehaviour:
   playerCombat: {fileID: 0}
   playerHealth: {fileID: 0}
   cooldownTime: 3
-  heavyAttackDamage: 20
+  heavyAttackDamage: 15
   normalAttackDamage: 10
   normalAttackRange: 1.5
   heavyAttackRange: 3.5
@@ -46504,7 +46506,7 @@ MonoBehaviour:
   lightAttackChance: 1
   moveSpeed: 3
   lightAttackDamage: 10
-  heavyAttackDamage: 25
+  heavyAttackDamage: 15
   rotationSpeed: 100
   rotationChangeInterval: 2
   maxRotationAngle: 10
@@ -46513,6 +46515,7 @@ MonoBehaviour:
   lightAttackRange: 2
   heavyAttackRange: 6
   heavyAttackDashSpeed: 8
+  chaseDistance: 10
 --- !u!95 &1778887826
 Animator:
   serializedVersion: 5
@@ -47971,7 +47974,7 @@ MonoBehaviour:
   playerCombat: {fileID: 0}
   playerHealth: {fileID: 0}
   cooldownTime: 3
-  heavyAttackDamage: 20
+  heavyAttackDamage: 15
   normalAttackDamage: 10
   normalAttackRange: 1.5
   heavyAttackRange: 3.5

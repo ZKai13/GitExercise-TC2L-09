@@ -35639,7 +35639,7 @@ MonoBehaviour:
   playerCombat: {fileID: 1179138653}
   playerHealth: {fileID: 1179138657}
   cooldownTime: 3
-  heavyAttackDamage: 20
+  heavyAttackDamage: 15
   normalAttackDamage: 10
   normalAttackRange: 1.5
   heavyAttackRange: 3.5
@@ -38925,7 +38925,7 @@ MonoBehaviour:
   playerCombat: {fileID: 1179138653}
   playerHealth: {fileID: 1179138657}
   cooldownTime: 3
-  heavyAttackDamage: 20
+  heavyAttackDamage: 15
   normalAttackDamage: 10
   normalAttackRange: 1.5
   heavyAttackRange: 3.5
@@ -39367,7 +39367,7 @@ MonoBehaviour:
   playerCombat: {fileID: 1179138653}
   playerHealth: {fileID: 1179138657}
   cooldownTime: 3
-  heavyAttackDamage: 20
+  heavyAttackDamage: 15
   normalAttackDamage: 10
   normalAttackRange: 1.5
   heavyAttackRange: 3.5
@@ -39657,7 +39657,7 @@ MonoBehaviour:
   playerCombat: {fileID: 1179138653}
   playerHealth: {fileID: 1179138657}
   cooldownTime: 3
-  heavyAttackDamage: 20
+  heavyAttackDamage: 15
   normalAttackDamage: 10
   normalAttackRange: 1.5
   heavyAttackRange: 3.5
