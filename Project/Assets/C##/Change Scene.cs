@@ -54,7 +54,7 @@ public class Finish : MonoBehaviour
             if (PlayerPrefs.GetInt("UnlockedLevel", 1) == 2 && popUp != null)
             {
                 Debug.Log("Achievement Unlocked: Into The Dungeon");
-                popUp.DisplayAchievement(popUp.intoTheDungeonSprite); // Correct instance call
+                popUp.DisplayAchievement(popUp.intoTheDungeonSprite); 
             }
         }
     }

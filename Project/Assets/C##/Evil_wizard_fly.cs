@@ -87,16 +87,24 @@ public class Evil_wizard_fly : MonoBehaviour
         Debug.Log("Reached target height, starting circular movement");
 
         // 围绕玩家进行环形飞行 
-        float angle = 0f;
+        float angle = 0f;//这行代码初始化一个变量 angle 为 0
         while (isFlying)
         {
             float x = player.position.x + Mathf.Cos(angle * Mathf.Deg2Rad) * circleRadius;
+            //x 坐标正在计算
+            //Adding the result of the cosine function, which is based on the 
+            //current angle (converted from degrees to radians) multiplied by the circleRadius. 
+            //This creates the circular movement around the player
             float y = player.position.y + Mathf.Sin(angle * Mathf.Deg2Rad) * circleRadius + flyingHeight;
+            //An additional offset based on the sine function (also converted from degrees to radians) multiplied by the circleRadius
+
             Vector2 targetPosition = new Vector2(x, y);
 
             rb2D.MovePosition(Vector2.Lerp(rb2D.position, targetPosition, flyingSpeed * Time.deltaTime));
+            //这一行将法师的刚体移动到 targetPosition。Lerp 函数创建了一个平滑的过渡：
 
             angle += 45f * Time.deltaTime;
+            //angle 每秒增量为 45f 度。这个逐渐增加使法师在一段时间内绕着玩家完成一个圆形路径。Time.deltaTime 确保了无论帧率如何，增量都是一致的
             yield return null;
 
             // 检查Boss的血量是否恢复到一半及以上,如果是则停止飞行 
