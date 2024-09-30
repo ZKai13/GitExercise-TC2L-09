@@ -1979,8 +1979,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parallaxFactor: {x: 0.6, y: 0.8}
-  lockX: 0
-  lockY: 0
 --- !u!1 &221486026
 GameObject:
   m_ObjectHideFlags: 0
@@ -3341,8 +3339,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parallaxFactor: {x: 0.8, y: 0.6}
-  lockX: 0
-  lockY: 0
 --- !u!1 &408621367
 GameObject:
   m_ObjectHideFlags: 0
@@ -47566,8 +47562,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parallaxFactor: {x: 0.8, y: 0.6}
-  lockX: 0
-  lockY: 0
 --- !u!1 &2037389965
 GameObject:
   m_ObjectHideFlags: 0
